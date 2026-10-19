@@ -28,7 +28,7 @@ AppSideService(
       if (request.method !== 'commute.get')
         return reply(null, { error: 'Unknown request' })
       try {
-        reply(null, await getCommute())
+        reply(null, await getCommute(request.params?.direction))
       } catch {
         reply(null, {
           config: { error: 'Could not read settings. Open Zepp.' },

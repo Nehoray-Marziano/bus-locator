@@ -4,21 +4,48 @@ export const FRESH_MS = 120000
 export const SCHEDULE_MAX_AGE_MS = 24 * 3600000
 export const REQUEST_GAP_MS = 30000
 
-export function activeTrip(config, now) {
+export function activeTrip(config, now, direction = null) {
   if (!config || config.error || !Array.isArray(config.trips)) return null
   const time = israelTime(now)
-  const trip = config.trips.find(
+  const automatic = config.trips.find(
     (item) => time.minute >= item.startMinute && time.minute < item.endMinute,
   )
+  const trip =
+    normalizeDirection(direction) && direction !== automatic?.id
+      ? config.trips.find((item) => item.id === direction)
+      : automatic
   return trip
-    ? { ...trip, serviceDate: addDays(time.date, trip.dayOffset || 0) }
+    ? {
+        ...trip,
+        dayOffset: automatic?.dayOffset || 0,
+        serviceDate: addDays(time.date, automatic?.dayOffset || 0),
+      }
     : null
 }
 
-export function viewModel(snapshot, config, now, busy = false) {
+export function normalizeDirection(value) {
+  return value === 'morning' || value === 'return' ? value : null
+}
+
+// A second tap returns to automatic selection, even across a clock boundary.
+export function switchedDirection(config, now, direction) {
+  if (direction) return null
   const trip = activeTrip(config, now)
+  return trip ? (trip.id === 'morning' ? 'return' : 'morning') : null
+}
+
+export function viewModel(
+  snapshot,
+  config,
+  now,
+  busy = false,
+  direction = null,
+) {
+  const trip = activeTrip(config, now, direction)
   const tomorrow = Boolean(trip && trip.serviceDate !== israelTime(now).date)
   const base = {
+    direction: trip?.id || null,
+    manual: Boolean(normalizeDirection(direction)),
     boarding: trip?.from || 'Your stop',
     destination: trip?.to || '',
     tomorrow,

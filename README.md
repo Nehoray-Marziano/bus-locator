@@ -17,24 +17,26 @@ returned schedule or the official daily timetable. Tomorrow uses the daily
 calendar directly. No timetable or arrival is fabricated when the provider has
 none. Source, boarding town and tomorrow context are explicit on both surfaces.
 
-Requests happen only when opening/resuming the app or tapping Refresh. The phone
+Requests happen only when opening/resuming the app, swapping direction there, or tapping Refresh. The phone
 has a 30-second request cooldown and caches compact daily timetables for 30 minutes.
 Live predictions expire after two minutes; an actual supplied timetable time can
 replace an expired live prediction. Scheduled cache lasts up to 24 hours and never
 beyond the selected service date or passed arrival. No GPS, background polling,
 server, API key, telemetry, remote fonts or map is needed.
 
-Version 0.3.0 has a dark, bold UI with green live ETAs and amber schedules. Native
+Version 0.4.0 has a dark, bold UI with green live ETAs and amber schedules. Native
 bus, broadcast, calendar and refresh icons replace repeated explanatory text. The
 220px shortcut card uses a single column and conservative side insets to prevent
 right-edge clipping. Two bundled DM Sans weights total about 40 KB.
-[Design preview](artifacts/design-icons-preview-0.3.0.png),
-[14 watch states](artifacts/watch-icons-states-0.3.0.png), and
-[12 card layouts](artifacts/card-icons-states-0.3.0.png) use synthetic examples.
+[Design preview](artifacts/design-icons-preview-0.4.0.png),
+[16 watch states](artifacts/watch-icons-states-0.4.0.png), and
+[18 card layouts](artifacts/card-icons-states-0.4.0.png) use synthetic examples.
+
+**Temporary direction switch:** tap **Swap** beside the boarding town in either view. The button becomes **Auto** to restore the clock choice immediately. Refresh keeps your temporary choice; leaving the view clears it. After 18:00 either direction checks tomorrow. The card switches cached views; tap its body to open the selected direction in the app for a fresh ETA. Neither view saves a direction preference.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.3.0.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.4.0.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 

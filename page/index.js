@@ -22,10 +22,23 @@ function writeCache(value) {
 
 Page(
   BasePage({
+    onInit(params) {
+      try {
+        this.initialDirection = JSON.parse(params || '{}').direction
+      } catch {
+        this.initialDirection = null
+      }
+    },
     build() {
-      const render = buildWatchView(ui, () => this.controller.refresh())
+      const render = buildWatchView(
+        ui,
+        () => this.controller.refresh(),
+        () => this.controller.switchDirection(),
+      )
       this.controller = createController({
-        request: () => this.request({ method: 'commute.get', params: {} }),
+        request: (direction) =>
+          this.request({ method: 'commute.get', params: { direction } }),
+        initialDirection: this.initialDirection,
         render,
         readCache,
         writeCache,

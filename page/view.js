@@ -1,8 +1,9 @@
 import { colors, fonts, sizes } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
 import { drawIcon } from '../shared/icons.js'
+import { buildDirectionButton } from '../shared/direction-button.js'
 
-export function buildWatchView(ui, refresh) {
+export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const { createWidget, widget, align, text_style, prop } = ui
   const labels = {}
   const text = (
@@ -39,7 +40,12 @@ export function buildWatchView(ui, refresh) {
     color: colors.background,
   })
   drawIcon(ui, 'bus', 82, 85, 28, colors.text, colors.background)
-  text('journey', 122, 76, 290, 44, 30, colors.text, fonts.bold, align.LEFT)
+  text('journey', 116, 76, 238, 44, 26, colors.text, fonts.bold, align.LEFT)
+  const updateDirection = buildDirectionButton(
+    ui,
+    { x: 360, y: 76, w: 56, h: 48 },
+    switchDirection,
+  )
   text('number', 64, 153, 352, 142, sizes.countdown, colors.success, fonts.bold)
   text('unit', 64, 293, 352, 30, 22, colors.muted)
   text('headline', 70, 168, 340, 126, 32, colors.text, fonts.bold)
@@ -86,6 +92,7 @@ export function buildWatchView(ui, refresh) {
   )
   return (model) => {
     const display = presentation(model)
+    updateDirection(model)
     const values = {
       journey: `440 · ${model.boarding}`,
       number: display.hasArrival ? display.value : '',

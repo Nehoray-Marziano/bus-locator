@@ -1,6 +1,7 @@
 import { colors, fonts } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
 import { drawIcon } from '../shared/icons.js'
+import { buildDirectionButton } from '../shared/direction-button.js'
 
 // Keep content clear of the system card margin and rounded side edges. Never
 // place a unit/status column against the right edge of a circular watch.
@@ -17,7 +18,7 @@ export function cardLayout(bounds) {
   }
 }
 
-export function buildCardView(ui, bounds, open) {
+export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
   const { widget, prop, align } = ui
   ui.createWidget(widget.BUTTON, {
     x: 0,
@@ -31,11 +32,11 @@ export function buildCardView(ui, bounds, open) {
     click_func: open,
   })
   const { left, top, scale, width } = cardLayout(bounds)
-  const text = (y, h, size, font = fonts.body, indent = 0) =>
+  const text = (y, h, size, font = fonts.body, indent = 0, right = 0) =>
     ui.createWidget(widget.TEXT, {
       x: left + indent * scale,
       y: top + y * scale,
-      w: width - indent * scale,
+      w: width - indent * scale - right,
       h: h * scale,
       text: '',
       font,
@@ -54,7 +55,13 @@ export function buildCardView(ui, bounds, open) {
     colors.text,
     colors.surface,
   )
-  const heading = text(0, 34, 24, fonts.bold, 36)
+  const heading = text(0, 34, 22, fonts.bold, 36, 64)
+  const updateDirection = buildDirectionButton(
+    ui,
+    { x: left + width - 56, y: top - 7, w: 56, h: 48 },
+    switchDirection,
+    true,
+  )
   const value = text(38, 80, 64, fonts.bold)
   const live = drawIcon(
     ui,
@@ -77,6 +84,7 @@ export function buildCardView(ui, bounds, open) {
   const status = text(126, 30, 21, fonts.body, 36)
   return (model) => {
     const display = presentation(model)
+    updateDirection(model)
     heading.setProperty(prop.TEXT, `440 · ${model.boarding}`)
     value.setProperty(prop.TEXT, display.cardValue)
     value.setProperty(

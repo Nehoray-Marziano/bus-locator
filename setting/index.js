@@ -19,7 +19,7 @@ AppSettingsPage({
       Toggle({ label: 'Demo mode · sample arrivals', settingsKey: 'demo' }),
       Text(
         { paragraph: true },
-        'Requests only when you open the watch app or tap Refresh, at most once per 30 seconds. No background tracking. Demo mode uses no internet. After changing settings, reopen the app.',
+        'Requests only when you open the watch app, tap Refresh, or swap direction there; at most once per direction per 30 seconds. No background tracking. Demo mode uses no internet. After changing settings, reopen the app.',
       ),
     ])
   },

@@ -30,6 +30,7 @@ components:
   arrival-display: {}
   refresh-button: {}
   shortcut-card: {}
+  direction-button: {}
 ---
 
 # Meitar Bus design system
@@ -63,12 +64,15 @@ The two static, renamed Latin subsets total about 40 KB and include OFL licenses
 They are bundled and never downloaded at runtime. Nearby arrivals use large
 minutes; waits of an hour or more use an 82px clock instead of a three-digit
 countdown. Tomorrow has an explicit Tomorrow label. Due means at your stop.
-Supporting labels are 20–24px; the combined route/town heading is 30px. No animation.
+Supporting labels are 20–24px; the combined route/town heading is 26px. The compact
+direction control uses 18px text on a 56×48px touch target. No animation.
 
 ## Layout
 
 480×480 round canvas: a bus icon beside one route/town heading, large arrival
 value and unit/date, one source icon/label, and a fixed Refresh button with arrow.
+The existing heading row contains a small Swap button, changing to Auto during a
+temporary selection. Its placement never adds an information row or moves the ETA.
 No repeated arrival time, separate boarding label or visible check-age line.
 Empty states replace the arrival with a short headline and one recovery action.
 No large cream panel, shadows, or decorative border.
@@ -110,9 +114,19 @@ Default selection is Meitar before 10:00, Jerusalem 10:00–18:00, and tomorrow'
 Meitar from 18:00. Both boundaries are editable in Zepp's native settings.
 Clock conversion handles Israel DST and calendar rollovers.
 
+`shared/direction-button.js` owns the same labelled Swap/Auto control on both
+surfaces. Swap temporarily selects the other boarding town; Auto restores the
+clock decision immediately. Selection lives in the view controller only and is
+cleared on pause/destroy. Both directions retain the automatic service date,
+including tomorrow after 18:00. No permanent direction setting is introduced.
+The card can pass its temporary direction into a new app page via router params;
+that page clears it on exit too. `shared/cache.js` retains one observation per
+direction, validates it through the shared model, and never saves the selection.
+
 Refresh requests are explicit; busy taps are guarded. The card reads cache on
 build/resume, updates locally every 15 seconds while focused, and stops on pause.
-Tap opens the full app for a phone fetch. There is no GPS, background polling,
+Tap opens the full app for a phone fetch. The card's Swap action uses cache;
+missing data still requires opening the app. There is no GPS, background polling,
 keep-awake, timer-triggered network work, custom popup, table or destructive UI.
 
 ## Do's and Don'ts

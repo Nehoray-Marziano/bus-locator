@@ -47,3 +47,7 @@ app. Adding this card on the actual firmware remains a device acceptance check.
 - If firmware offers Meitar Bus in shortcut-card settings, add it and verify cached content and tap-to-open. Otherwise launch the full app, or assign it to a programmable watch shortcut if your firmware supports one.
 
 Account sign-in, QR scanning, physical watch behavior and the final live 440 comparison require your device. They cannot be validated by unit tests or a desktop rendering.
+
+## Temporary direction switching
+
+Tap Swap beside the boarding town in the app or shortcut card. Refresh stays on that direction. Tap Auto to restore the time rule, or leave the view: the next session is automatic. After 18:00 both directions check tomorrow. The card uses cached data; tap its body to open the selected direction in the app for a phone check. Verify that tapping Swap does not also open the app, that the selected direction reaches the app, and that returning to either view resets it.

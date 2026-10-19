@@ -10,16 +10,26 @@ to follow the return switch. Rules apply daily using Israel time, including DST.
 Evening's target service date is tomorrow; after midnight it is today, preserving
 the same morning schedule. Opposite-direction/date cache must never leak through.
 
-| Capability                        | Canonical owner                                   | Source of truth                                     | Allowed variants                  | Verification                                    |
-| --------------------------------- | ------------------------------------------------- | --------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
-| Journey and service date          | shared/config.js; shared/model.js; shared/time.js | User's 10:00/18:00 instructions                     | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
-| Arrival freshness and source      | shared/model.js                                   | User's scheduled-fallback requirement               | live / scheduled / demo / empty   | tests/schedule.test.js                          |
-| Shared UI vocabulary              | shared/presentation.js                            | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |
-| Refresh and page lifecycle        | page/controller.js                                | No background network work                          | active / paused                   | tests/controller.test.js                        |
-| Shortcut card focus and countdown | app-widget/controller.js                          | Zepp card lifecycle                                 | build / focused / paused          | tests/card.test.js                              |
-| Card clipping-safe geometry       | app-widget/view.js                                | User's observed right-edge clipping                 | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
-| Settings inputs and scrolling     | Zepp TextInput/Toggle                             | Platform native UI                                  | two clock fields / demo           | tests/model.test.js; device validation          |
-| Phone request and timetable cache | app-side/service.js; app-side/provider.js         | On-demand data constraint                           | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
+The user also requested a temporary direction switch on both surfaces. Swap picks
+the opposite boarding town for the current view; Auto restores the clock choice.
+Refresh preserves that temporary selection. Pause/destroy clears it, and no
+direction preference is saved. Both directions retain the automatic service date
+(tomorrow after 18:00). A card opening the app passes its choice in router params
+for that page session only. The card itself remains cache-only; an uncached
+direction shows no borrowed ETA and can be checked by opening the app.
+
+| Capability                        | Canonical owner                                               | Source of truth                                     | Allowed variants                  | Verification                                    |
+| --------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Journey and service date          | shared/config.js; shared/model.js; shared/time.js             | User's 10:00/18:00 instructions                     | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
+| Temporary direction switch        | shared/model.js; shared/direction-button.js; view controllers | User's temporary-switch request                     | app / card; Swap / Auto           | tests/direction.test.js                         |
+| Bounded watch cache               | shared/cache.js                                               | Cache both directions without persisting selection  | legacy / two observations         | tests/direction.test.js                         |
+| Arrival freshness and source      | shared/model.js                                               | User's scheduled-fallback requirement               | live / scheduled / demo / empty   | tests/schedule.test.js                          |
+| Shared UI vocabulary              | shared/presentation.js                                        | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |
+| Refresh and page lifecycle        | page/controller.js                                            | No background network work                          | active / paused                   | tests/controller.test.js                        |
+| Shortcut card focus and countdown | app-widget/controller.js                                      | Zepp card lifecycle                                 | build / focused / paused          | tests/card.test.js                              |
+| Card clipping-safe geometry       | app-widget/view.js                                            | User's observed right-edge clipping                 | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
+| Settings inputs and scrolling     | Zepp TextInput/Toggle                                         | Platform native UI                                  | two clock fields / demo           | tests/model.test.js; device validation          |
+| Phone request and timetable cache | app-side/service.js; app-side/provider.js                     | On-demand data constraint                           | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
 
 Green Live ETA requires a fresh, explicitly live provider entry. Strict false
 entries are usable schedules, labelled amber Scheduled. Missing/failed current
@@ -38,7 +48,7 @@ waves and a dot; Scheduled has a calendar. Text accompanies both source icons.
 Nearby arrivals use minutes. An hour or more uses a clock; tomorrow is explicit.
 Demo remains labelled and never uses green Live ETA.
 
-Only opening/resuming the full app or tapping Refresh requests phone data. The
+Only opening/resuming the full app, swapping there, or tapping Refresh requests phone data. The
 phone shares concurrent requests and throttles checks to 30 seconds per journey
 and service date. Its daily timetable cache retains one date per direction for
 30 minutes, without resetting original check age on reuse. A missing live result
@@ -47,7 +57,7 @@ phone's nine-second deadline and watch's 12-second response guard. Late page
 responses cannot redraw after pause, timeout or a newer generation.
 
 Both surfaces redraw locally every 15 seconds only while active/focused. The card
-reads cache on build/resume, with no storage reads on timer ticks. All its content
+reads cache on build/resume, with no storage reads on swaps or timer ticks. All its content
 fits a conservative column; height is 220px and native margin/radius are respected.
 Timers clear on pause/destroy. Tap opens the app for a fresh phone check. Zepp's
 documented card Bluetooth limitation still applies; no full-screen SecondaryWidget,

@@ -2,35 +2,31 @@ import { readConfig } from '../shared/config.js'
 import { activeTrip, REQUEST_GAP_MS, validateArrival } from '../shared/model.js'
 import { withDeadline } from '../shared/deadline.js'
 
-// Request only on opening or tapping. No intervals, alarms, or scheduled jobs.
+// Two bounded slots preserve cooldowns when the user swaps directions rapidly.
+// Each retains only its latest service date/mode, with no background requests.
 export function createCommuteService({
   getSetting,
   fetchArrival,
   now = Date.now,
 }) {
-  let currentKey = ''
-  let cached = null
-  let inFlight = null
-  let nextRequestAt = 0
-
-  return async function getCommute() {
+  const journeys = {}
+  return async function getCommute(direction = null) {
     const config = readConfig(getSetting)
     const time = now()
-    const trip = activeTrip(config, time)
+    const trip = activeTrip(config, time, direction)
     if (!trip) return { config, snapshot: null }
     const date = trip.serviceDate
-    const key = `${config.demo}|${trip.id}|${date}`
-    if (key !== currentKey) {
-      currentKey = key
-      cached = null
-      inFlight = null
-      nextRequestAt = 0
+    const key = `${config.demo}|${date}`
+    let state = journeys[trip.id]
+    if (!state || state.key !== key) {
+      state = { key, cached: null, inFlight: null, nextRequestAt: 0 }
+      journeys[trip.id] = state
     }
-    if (inFlight) return inFlight
-    if (time < nextRequestAt) return { config, snapshot: cached }
-    nextRequestAt = time + REQUEST_GAP_MS
+    if (state.inFlight) return { config, snapshot: await state.inFlight }
+    if (time < state.nextRequestAt) return { config, snapshot: state.cached }
+    state.nextRequestAt = time + REQUEST_GAP_MS
     if (config.demo) {
-      cached = {
+      state.cached = {
         kind: 'arrival',
         tripId: trip.id,
         date,
@@ -43,31 +39,28 @@ export function createCommuteService({
         stopName: 'Sample stop',
         demo: true,
       }
-      return { config, snapshot: cached }
+      return { config, snapshot: state.cached }
     }
-    inFlight = (async () => {
+    state.inFlight = (async () => {
       try {
         const data = await withDeadline(fetchArrival(trip), 9000)
-        const snapshot = validateArrival(data, trip.id, now(), trip.serviceDate)
-        if (currentKey === key) cached = snapshot
-        return { config, snapshot }
+        state.cached = validateArrival(data, trip.id, now(), trip.serviceDate)
       } catch {
-        // Retain a still-valid prediction without resetting its source timestamp.
-        const snapshot =
-          cached?.kind === 'arrival'
-            ? cached
-            : {
-                kind: 'error',
-                tripId: trip.id,
-                date,
-                message: 'Check phone and internet; retry.',
-              }
-        if (currentKey === key) cached = snapshot
-        return { config, snapshot }
-      } finally {
-        if (currentKey === key) inFlight = null
+        // Retain the original timestamp. The watch still enforces source expiry.
+        if (state.cached?.kind !== 'arrival')
+          state.cached = {
+            kind: 'error',
+            tripId: trip.id,
+            date,
+            message: 'Check phone and internet; retry.',
+          }
       }
+      return state.cached
     })()
-    return inFlight
+    try {
+      return { config, snapshot: await state.inFlight }
+    } finally {
+      state.inFlight = null
+    }
   }
 }

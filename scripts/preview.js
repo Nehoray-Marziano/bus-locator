@@ -76,6 +76,27 @@ const scenes = [
     'Offline cached ETA',
     { ...viewModel(sample, config, now), status: 'PHONE UNREACHABLE' },
   ],
+  [
+    'Manual return / synthetic prediction',
+    viewModel({ ...sample, tripId: 'return' }, config, now, false, 'return'),
+  ],
+  [
+    'Manual return / tomorrow scheduled',
+    viewModel(
+      {
+        ...sample,
+        tripId: 'return',
+        date: '2026-10-20',
+        source: 'scheduled',
+        checkedAt: now + 10 * 3600000,
+        arrivalAt: Date.parse('2026-10-20T11:58:59Z'),
+      },
+      config,
+      now + 10 * 3600000,
+      false,
+      'return',
+    ),
+  ],
 ]
 const output = scenes.map(([title, model]) => {
   const ui = nativeUI()
@@ -99,7 +120,7 @@ for (const bounds of [
   { w: 400, h: 220, radius: 32, margin: 20 },
   { w: 320, h: 220, radius: 32, margin: 16 },
 ])
-  for (const index of [0, 1, 11, 12]) {
+  for (const index of [0, 1, 11, 12, 14, 15]) {
     const ui = nativeUI()
     buildCardView(ui, bounds, () => {})(scenes[index][1])
     cards.push({

@@ -59,7 +59,9 @@ test('native refresh button calls refresh and is at least 48px high', () => {
   const ui = nativeUI()
   let calls = 0
   buildWatchView(ui, () => calls++)
-  const button = ui.commands.find((command) => command.type === 'BUTTON')
+  const button = ui.commands.find(
+    (command) => command.type === 'BUTTON' && command.text === 'Refresh',
+  )
   assert.ok(button.h >= 48)
   button.click_func()
   assert.equal(calls, 1)

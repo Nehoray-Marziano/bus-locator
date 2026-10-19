@@ -1,5 +1,6 @@
 import { readConfig } from '../shared/config.js'
-import { viewModel } from '../shared/model.js'
+import { switchedDirection } from '../shared/model.js'
+import { cachedView } from '../shared/cache.js'
 
 // Shortcut cards cannot start the documented phone BLE bridge. Read cache only,
 // and keep its countdown/freshness honest while this card has focus.
@@ -13,6 +14,7 @@ export function createCardController({
   let timer = null
   let active = false
   let value
+  let direction = null
   function load() {
     try {
       value = readCache()
@@ -22,13 +24,7 @@ export function createCardController({
     }
   }
   function draw() {
-    render(
-      viewModel(
-        value?.snapshot,
-        value?.config || readConfig(() => null),
-        now(),
-      ),
-    )
+    render(cachedView(value, now(), false, direction))
   }
   load()
   draw()
@@ -44,8 +40,19 @@ export function createCardController({
     },
     pause() {
       active = false
+      direction = null
       if (timer !== null) clearTimer(timer)
       timer = null
     },
+    switchDirection() {
+      if (!active) return
+      direction = switchedDirection(
+        value?.config || readConfig(() => null),
+        now(),
+        direction,
+      )
+      draw()
+    },
+    getDirection: () => direction,
   }
 }

@@ -11,7 +11,16 @@ AppWidget({
   build() {
     const bounds = { ...ui.getAppWidgetSize(), h: 220 }
     ui.setAppWidgetSize({ h: bounds.h })
-    const render = buildCardView(ui, bounds, () => push({ url: 'page/index' }))
+    const render = buildCardView(
+      ui,
+      bounds,
+      () =>
+        push({
+          url: 'page/index',
+          params: JSON.stringify({ direction: controller?.getDirection() }),
+        }),
+      () => controller?.switchDirection(),
+    )
     const store = new LocalStorage()
     controller = createCardController({
       readCache: () => store.getItem('commute'),

@@ -96,7 +96,7 @@ hero = Image.new('RGB', (1600, 650), canvas)
 pen = ImageDraw.Draw(hero)
 pen.text((60, 35), 'MEITAR  /  440', font=font('fonts/MeitarSans.ttf', 14), fill=color(tokens['primary']))
 pen.text((60, 80), 'Your next journey, at a glance.', font=font('fonts/MeitarSans.ttf', 18), fill=color(tokens['text']))
-for index, scene_index in enumerate([0, 11, 12]):
+for index, scene_index in enumerate([0, 14, 15]):
     hero.paste(images[scene_index], (40 + index * 520, 150), mask)
 hero.save(artifacts / f'design-icons-preview-{version}.png')
 card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 440, 220, False)

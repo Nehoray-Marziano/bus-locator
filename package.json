@@ -1,6 +1,6 @@
 {
   "name": "meitar-bus",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "An on-demand Meitar\u2013Jerusalem commute companion for Amazfit T-Rex 3",
