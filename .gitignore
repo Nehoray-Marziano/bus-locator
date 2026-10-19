@@ -1,10 +1,12 @@
 node_modules/
 node_modules.failed/
 .tooling/
-dist/
+/dist/*
+!/dist/Meitar-Bus-0.2.1.zab
 coverage/
 .wrangler/
 .dev.vars
 .env*
 !.env.example
 artifacts/*.png
+!artifacts/*-0.2.1.png
