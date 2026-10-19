@@ -32,6 +32,21 @@ node scripts/zeus.cjs preview
 
 Scan the resulting QR using the **Zepp phone app's developer-mode scanner** with the paired watch connected. Open Meitar Bus from the watch app list. No API credentials or server setup is needed. Under the app's Zepp settings, keep Demo mode off and set the return switch time if 10:00/18:00 are unsuitable. Reopen the watch app after settings changes.
 
+### Windows: EPERM on `.tooling/watch`
+
+Update the launcher, then retry:
+
+```sh
+git pull --ff-only
+npm run preview
+```
+
+Each dev, preview or build command now uses its own folder under `.tooling/runs/`.
+An open dev session can keep the old `.tooling/watch` locked without blocking
+preview. You do not need to delete that folder or run as administrator. Cleanup
+retries brief Windows locks; if a private folder remains locked, the launcher
+leaves it behind and the next command uses a fresh folder.
+
 ## 4. Hardware acceptance
 
 To add the vertical-list shortcut card, swipe right from the watch face, scroll

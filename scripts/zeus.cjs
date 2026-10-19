@@ -10,17 +10,6 @@ if (fs.existsSync(path.join(localNpm, 'npm.cmd'))) {
   process.env.PATH = localNpm + path.delimiter + process.env.PATH
 }
 const cli = path.dirname(require.resolve('@zeppos/zeus-cli/package.json'))
-const runtime = [
-  'app.js',
-  'app.json',
-  'package.json',
-  'page',
-  'shared',
-  'app-side',
-  'app-widget',
-  'setting',
-  'assets',
-]
 
 if (args[0] === '--native' || !['build', 'preview', 'dev'].includes(args[0])) {
   if (args[0] === '--native') process.argv.splice(2, 1)
@@ -28,61 +17,47 @@ if (args[0] === '--native' || !['build', 'preview', 'dev'].includes(args[0])) {
   require('module-alias')({ base: cli })
   require(path.join(cli, 'bin/main.js'))
 } else {
-  const stage = path.join(project, '.tooling', 'watch')
-  if (!stage.startsWith(project + path.sep))
-    throw new Error('Invalid staging path')
-  if (fs.existsSync(stage)) {
-    if (
-      fs.lstatSync(stage).isSymbolicLink() ||
-      !fs.realpathSync(stage).startsWith(project + path.sep)
-    )
-      throw new Error('Staging path escaped workspace')
-    fs.rmSync(stage, { recursive: true, force: true })
-  }
-  fs.mkdirSync(stage, { recursive: true })
-  const copy = (name) =>
-    fs.cpSync(path.join(project, name), path.join(stage, name), {
-      recursive: true,
-    })
-  runtime.forEach(copy)
-  fs.writeFileSync(path.join(stage, '.gitignore'), 'node_modules/\ndist/\n')
-  fs.symlinkSync(
-    fs.realpathSync(path.join(project, 'node_modules')),
-    path.join(stage, 'node_modules'),
-    process.platform === 'win32' ? 'junction' : 'dir',
-  )
+  const stage = require('./zeus-stage.cjs').createStage(project)
   const watchers =
     args[0] === 'dev'
-      ? runtime.map((name) =>
+      ? stage.runtime.map((name) =>
           fs.watch(path.join(project, name), { recursive: true }, () =>
-            copy(name),
+            stage.sync(name),
           ),
         )
       : []
   const child = spawn(process.execPath, [__filename, '--native', ...args], {
-    cwd: stage,
+    cwd: stage.directory,
     stdio: 'inherit',
   })
   child.on('error', (error) => {
     console.error(error.message)
     process.exitCode = 1
   })
-  child.on('exit', (code) => {
+  child.on('close', (code) => {
     watchers.forEach((watcher) => watcher.close())
-    const output = path.join(stage, 'dist')
-    if (args[0] === 'build') {
-      const hasPackage =
-        fs.existsSync(output) &&
-        fs
-          .readdirSync(output, { recursive: true })
-          .some((name) => name.endsWith('.zab'))
-      if (!hasPackage) {
-        console.error('Zeus did not produce an installable package.')
-        process.exitCode = 1
-        return
+    try {
+      const output = path.join(stage.directory, 'dist')
+      if (args[0] === 'build' && code === 0) {
+        const hasPackage =
+          fs.existsSync(output) &&
+          fs
+            .readdirSync(output, { recursive: true })
+            .some((name) => name.endsWith('.zab'))
+        if (!hasPackage)
+          throw new Error('Zeus did not produce an installable package.')
+        fs.cpSync(output, path.join(project, 'dist'), { recursive: true })
       }
-      fs.cpSync(output, path.join(project, 'dist'), { recursive: true })
+    } catch (error) {
+      console.error(error.message)
+      process.exitCode = 1
+    } finally {
+      if (!stage.dispose())
+        console.warn(
+          `Windows is still holding a temporary folder: ${stage.directory}. The next run will use a different folder.`,
+        )
     }
-    process.exitCode = code ?? 1
+    // Preserve a missing-package/spawn failure even if Zeus returned success.
+    if (!process.exitCode) process.exitCode = code ?? 1
   })
 }

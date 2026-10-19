@@ -2,7 +2,7 @@
 
 Implementation checks: 2026-10-19, version 0.5.0.
 
-- 82 deterministic Node tests cover journey/service-date selection, Israel DST,
+- 88 deterministic Node tests cover journey/service-date selection, Israel DST,
   the 10:00/18:00 boundaries, midnight/year rollover, live/scheduled flags,
   canceled and mismatched entries, scheduled fallback, cache ages, errors,
   throttling, timeouts, pause/resume and late responses.
@@ -13,6 +13,13 @@ Implementation checks: 2026-10-19, version 0.5.0.
   boarding, clock and check-age labels were removed from the compact layout.
 - Ten direction-switch tests cover session reset, card-to-app selection, quick swaps, stale responses, bounded cache migration, per-direction cooldowns and synchronous failure recovery.
 - TypeScript and syntax checks cover all 19 application modules.
+- Six launcher regression tests run on Windows, including child processes holding
+  the legacy and private staging folders as working directories. They verify
+  independent concurrent commands, dev synchronization, runtime-only staging,
+  retryable cleanup, preservation of linked dependencies and rejection of unsafe
+  junction targets. The revised launcher also completes a real Zeus build and
+  removes its private staging folder. Authenticated QR preview remains a device
+  acceptance check.
 - 16 watch states and 18 cards render from native widget commands and the actual
   bundled Fredoka/Nunito fonts. Card cases include widths 320/400/480, margins, rounded
   corners, Jerusalem and tomorrow labels. Text bounds pass. These desktop renders
