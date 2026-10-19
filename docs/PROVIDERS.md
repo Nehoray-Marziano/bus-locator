@@ -1,18 +1,57 @@
 # Data source validation
 
-Checked on 2026-10-19. Runtime provider: the [official MOT journey planner](https://route.bus.gov.il/), using its public calendar endpoint:
+Checked on 2026-10-19 against the [official MOT planner](https://route.bus.gov.il/)
+and its currently deployed JavaScript clients. No GTFS/SIRI client, authentication
+key, relay, location request or provider SDK is used.
 
-`https://api.bus.gov.il/prod/mot-scheduler-prod/api/en/Calendar/GetRouteCalendarAtStopsByStopCodes`
+## Live and scheduled arrivals
 
-Query parameters are `stopCodes` and `routeDesc`. The app sends only one fixed pair: morning `14100` / `10440-2-#`; return `222` / `10440-1-#`. The hash is URI-encoded. No authentication, server, GTFS download, location request, map, analytics or provider SDK is used.
+`Calendar/GetRouteCalendarAtStopsByStopCodes` accepts `stopCodes` and `routeDesc`.
+The fixed pairs are `14100` / `10440-2-#` and `222` / `10440-1-#`.
+Strict `isRealTime: true` means live; strict false means scheduled. Other values,
+canceled entries, invalid dates, old query timestamps and mismatched stops are
+rejected. Live entries are preferred. `staticArrivalTime`, when present and in
+the future, is retained as an honest fallback after live data expires.
 
-The official `Stops/RefreshStopTimesAtStop` response confirmed morning line 440 and descriptor `10440-2-#`. The opposite descriptor follows the route's direction 1 convention; its full stop-discovery response repeatedly timed out locally, so confirming that mapping during service is a remaining device/integration check. Both configured calendar requests returned HTTP 200 with valid null/no-upcoming-service payloads at the time of validation. This checks connectivity and the empty state; it does not prove a live 440 arrival.
+`startTime` is query time, not the vehicle's last report. The app uses it for
+cache expiry and cannot measure the underlying vehicle report's freshness.
+Coordinates are discarded. Real-time 440 service still needs comparison on watch.
 
-A separate live request for line 250 at the same physical stop returned a 1,015-byte response containing both `isRealTime: true` and `false` entries, `arrivalTime`, `minutesToArrival`, and `startTime`. This verified the real response shape without inventing a 440 prediction outside its operating period. Only strict true entries are used; coordinates present in provider responses are ignored and are never sent to the watch or saved by the app.
+## Daily timetable and tomorrow
 
-`startTime` is the provider query time, not a vehicle observation timestamp. The screen says "checked" accordingly. The application cannot measure how recently the operator reported the underlying vehicle. Unzoned provider dates are interpreted as Israel local time, including DST. Responses older than two minutes, future searches and mismatched stop payloads are rejected.
+The official frontend's daily-calendar request is
+`Calendar/GetRouteDailyCalendar?routeId=...&startStopId=...&endStopId=...&day=...`.
+Unlike the live endpoint, this supports an explicit service date. Supplying
+`day`, `dateTime` or `startTime` to the live endpoint was experimentally shown to
+be ignored; the implementation therefore uses the daily endpoint for tomorrow.
 
-Run `npm run check:provider` to make exactly two explicit integration requests and save `artifacts/provider-probe.json`. Automated tests use synthetic provider fixtures; integration probes run separately. Zepp phone fetch and Bluetooth still need physical-device checks. Public web endpoints are subject to changes and availability; there is no SLA or claimed official SDK contract.
+Verified metadata (not GPS):
+
+| Direction           | Route ID | Boarding stop ID / code | End stop ID |
+| ------------------- | -------- | ----------------------- | ----------- |
+| Meitar to Jerusalem | 28879    | 26745 / 14100           | 11734       |
+| Jerusalem to Meitar | 28878    | 8750 / 222              | 27918       |
+
+Actual 2026-10-20 daily responses returned line 440 at the correct boarding codes
+and route descriptors in both directions. The morning response was 2,180 bytes
+and included 06:18 and 11:28. Return was 3,279 bytes and included 07:08:59,
+10:28:59 and 14:58:59. These are dated observations, not hardcoded departures.
+The implementation uses only the boarding rows and validates stop code, route
+ID and route descriptor before accepting a time. If MOT changes numeric IDs,
+those configured IDs need revalidation; wrong-route data is rejected.
+
+A missing/failed current feed triggers timetable fallback. Tomorrow skips the
+live query. Timetable arrays are cached on the phone for 30 minutes, bounded to
+one date per direction, and filtered against the current time on reuse. No
+continuous downloads occur. Returned scheduled observations retain their original
+check timestamp and remain visibly scheduled for up to 24 hours before expiry.
+The combined request path has deadlines inside the phone's nine-second guard.
+
+Run `npm run check:provider` for three explicit lookups: today's two directions
+and tomorrow's morning, with at most five HTTP calls. The resulting source,
+clock time and request count are in artifacts/provider-probe.json. Unit tests
+use synthetic fixtures. Public endpoints have no SLA and may change. No fresh
+time is fabricated when both sources fail or no service is returned.
 
 ## Open Bus evidence
 
@@ -22,4 +61,4 @@ Open Bus does ingest real-time data. The distinction is the fields its public in
 - [Stride API schema](https://open-bus-stride-api.hasadna.org.il/openapi.json) documents `/stop_arrivals/list` as currently returning planned times.
 - [Maintained map-search station service](https://github.com/hasadna/open-bus-map-search/blob/main/src/api/siriService.ts) looks up vehicle observations around a chosen time and finds the location nearest the stop. It does not calculate a future ETA.
 
-These sources are useful for analysis and discovery; this app needs the public planner's explicitly marked stop predictions.
+These sources are useful for analysis and discovery; this app uses the public planner's stop predictions and daily timetable, with explicit source labels.

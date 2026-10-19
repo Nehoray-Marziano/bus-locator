@@ -24,10 +24,12 @@ def render(commands, width=480, height=480, round_screen=True):
     image = Image.new('RGB', (width * SCALE, height * SCALE), color(tokens['background']))
     pen = ImageDraw.Draw(image)
     for item in commands:
+        if item.get('visible') is False:
+            continue
         x, y, w, h = (item[k] * SCALE for k in ['x', 'y', 'w', 'h'])
         fill = color(item.get('color', 0))
         if item['type'] == 'ARC':
-            pen.arc((x, y, x + w, y + h), item['start_angle'], item['end_angle'], fill=fill, width=SCALE)
+            pen.arc((x, y, x + w, y + h), item['start_angle'], item['end_angle'], fill=fill, width=round(item.get('line_width', 1) * SCALE))
             continue
         if item['type'] in ['FILL_RECT', 'BUTTON']:
             pen.rounded_rectangle((x, y, x + w, y + h), item.get('radius', 0) * SCALE,
@@ -88,17 +90,30 @@ for index, scene in enumerate(scenes):
     x, y = index % 4 * 520 + 20, index // 4 * 555 + 16
     sheet.paste(image, (x, y), mask)
     pen.text((x + 10, y + 492), scene['title'], font=caption, fill=color(tokens['muted']))
-sheet.save(artifacts / f'watch-states-{version}.png')
+sheet.save(artifacts / f'watch-icons-states-{version}.png')
 
 hero = Image.new('RGB', (1600, 650), canvas)
 pen = ImageDraw.Draw(hero)
 pen.text((60, 35), 'MEITAR  /  440', font=font('fonts/MeitarSans.ttf', 14), fill=color(tokens['primary']))
 pen.text((60, 80), 'Your next journey, at a glance.', font=font('fonts/MeitarSans.ttf', 18), fill=color(tokens['text']))
-for index, scene_index in enumerate([0, 1, 4]):
+for index, scene_index in enumerate([0, 11, 12]):
     hero.paste(images[scene_index], (40 + index * 520, 150), mask)
-hero.save(artifacts / f'design-preview-{version}.png')
-card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 440, 200, False)
-card.save(artifacts / f'card-preview-{version}.png')
+hero.save(artifacts / f'design-icons-preview-{version}.png')
+card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 440, 220, False)
+card.save(artifacts / f'card-icons-preview-{version}.png')
+cards = json.loads((artifacts / 'card-scenes.json').read_text(encoding='utf-8'))
+card_sheet = Image.new('RGB', (4 * 500, math.ceil(len(cards) / 4) * 280), canvas)
+card_pen = ImageDraw.Draw(card_sheet)
+for index, scene in enumerate(cards):
+    bounds = scene['bounds']
+    try:
+        card = render(scene['commands'], bounds['w'], bounds['h'], False)
+    except ValueError as error:
+        raise ValueError(f"{scene['title']}: {error}") from error
+    x, y = index % 4 * 500 + 10, index // 4 * 280 + 10
+    card_sheet.paste(card, (x, y))
+    card_pen.text((x + 10, y + 230), scene['title'], font=caption, fill=color(tokens['muted']))
+card_sheet.save(artifacts / f'card-icons-states-{version}.png')
 
 # Original vector-like icon, rendered with the same runtime palette.
 icon = Image.new('RGB', (248, 248), color(tokens['background']))
@@ -111,4 +126,4 @@ pen.ellipse((77, 162, 95, 180), fill=color(tokens['ink']))
 pen.ellipse((153, 162, 171, 180), fill=color(tokens['ink']))
 pen.text((124, 67), '440', font=font('fonts/MeitarSans.ttf', 19), anchor='mm', fill=color(tokens['ink']))
 icon.resize((124, 124), Image.Resampling.LANCZOS).save(root / 'assets/trex3/icon.png')
-print(f'Rendered {len(scenes)} states and shortcut card with bundled fonts; text bounds passed.')
+print(f'Rendered {len(scenes)} watch states and {len(cards)} cards with bundled fonts; text bounds passed.')

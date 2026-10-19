@@ -1,21 +1,36 @@
 {
-  "checkedAt": "2026-10-19T13:10:33.031Z",
+  "checkedAt": "2026-10-19T19:05:03.521Z",
+  "requests": 5,
   "results": [
     {
       "tripId": "morning",
       "stopCode": "14100",
+      "date": "2026-10-19",
       "status": "passed",
       "kind": "empty",
-      "bytes": 67,
-      "durationMs": 812
+      "source": "scheduled",
+      "arrival": null,
+      "durationMs": 1042
     },
     {
       "tripId": "return",
       "stopCode": "222",
+      "date": "2026-10-19",
       "status": "passed",
       "kind": "empty",
-      "bytes": 65,
-      "durationMs": 490
+      "source": "scheduled",
+      "arrival": null,
+      "durationMs": 386
+    },
+    {
+      "tripId": "morning",
+      "stopCode": "14100",
+      "date": "2026-10-20",
+      "status": "passed",
+      "kind": "arrival",
+      "source": "scheduled",
+      "arrival": "06:18",
+      "durationMs": 139
     }
   ]
 }

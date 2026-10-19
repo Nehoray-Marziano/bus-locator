@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { colors, fonts } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
-import { buildCardView } from '../app-widget/view.js'
+import { buildCardView, cardLayout } from '../app-widget/view.js'
 import { buildWatchView } from '../page/view.js'
 import { viewModel } from '../shared/model.js'
 import { readConfig } from '../shared/config.js'
@@ -24,8 +24,10 @@ test('all text colors meet AA contrast on their actual surfaces', () => {
     ['muted', 'background'],
     ['primary', 'background'],
     ['warning', 'background'],
-    ['ink', 'panel'],
-    ['panelMuted', 'panel'],
+    ['text', 'surface'],
+    ['muted', 'surface'],
+    ['success', 'surface'],
+    ['warning', 'surface'],
     ['ink', 'primary'],
     ['ink', 'pressed'],
   ]) {
@@ -72,11 +74,11 @@ test('watch and shortcut card label the boarding town, not the destination', () 
     const model = viewModel(null, config, time)
     const watch = nativeUI()
     buildWatchView(watch, () => {})(model)
-    assert.ok(watch.commands.some((item) => item.text === boarding))
+    assert.ok(watch.commands.some((item) => item.text === `440 · ${boarding}`))
     assert.ok(!watch.commands.some((item) => item.text === opposite))
     const card = nativeUI()
     buildCardView(card, { w: 440, h: 200, radius: 30 }, () => {})(model)
-    assert.ok(card.commands.some((item) => item.text === `440  /  ${boarding}`))
+    assert.ok(card.commands.some((item) => item.text === `440 · ${boarding}`))
     assert.ok(!card.commands.some((item) => item.text?.includes(opposite)))
   }
 })
@@ -108,14 +110,15 @@ test('native shapes stay within the round display, including rounded edges', () 
   }
 })
 
-test('countdowns retain arrival time and shrink for three digits; demo stays explicit', () => {
+test('long waits use a readable clock time; demo stays explicit', () => {
   const config = readConfig(() => null)
   const long = viewModel(
     prediction({ arrivalAt: NOW + 128 * 60000 }),
     config,
     NOW,
   )
-  assert.equal(presentation(long).numberSize, 104)
+  assert.equal(presentation(long).value, long.eta)
+  assert.equal(presentation(long).valueSize, 82)
   assert.match(long.eta, /^\d{2}:\d{2}$/)
   assert.equal(
     presentation(viewModel(prediction({ demo: true }), config, NOW)).status,
@@ -123,23 +126,20 @@ test('countdowns retain arrival time and shrink for three digits; demo stays exp
   )
 })
 
-test('empty state clears countdown; watch never displays station codes or duplicated ETA', () => {
+test('empty state clears countdown; watch never displays backend station codes', () => {
   const ui = nativeUI()
   const update = buildWatchView(ui, () => {})
   const config = readConfig(() => null)
   update(viewModel(prediction(), config, NOW))
   let content = ui.commands.map((item) => item.text || '').join(' ')
-  assert.doesNotMatch(
-    content,
-    /14100|\b222\b|Metar Junction|arrives|from Meitar/,
-  )
+  assert.doesNotMatch(content, /14100|\b222\b|Metar Junction/)
   update(viewModel(prediction({ kind: 'empty' }), config, NOW))
   assert.equal(
-    ui.commands.find((item) => item.x === 96 && item.y === 178).text,
+    ui.commands.find((item) => item.x === 64 && item.y === 153).text,
     '',
   )
   content = ui.commands.map((item) => item.text || '').join(' ')
-  assert.match(content, /No live ETA/)
+  assert.match(content, /No arrivals/)
   assert.doesNotMatch(content, /14100|\b222\b/)
 })
 
@@ -159,22 +159,35 @@ test('bundled fonts are small and every watch text widget uses them', () => {
   }
 })
 
-test('green live dot never marks demo, expired or offline data', () => {
-  const ui = nativeUI()
-  const update = buildWatchView(ui, () => {})
+test('broadcast waves mark only fresh live data on both surfaces', () => {
   const config = readConfig(() => null)
-  const dot = ui.commands.find(
-    (item) => item.type === 'FILL_RECT' && item.w === 6,
-  )
-  update(viewModel(prediction(), config, NOW))
-  assert.equal(dot.color, colors.success)
-  for (const sample of [
-    prediction({ demo: true }),
-    prediction({ checkedAt: NOW - 121000 }),
-    prediction({ kind: 'error' }),
-  ]) {
-    update(viewModel(sample, config, NOW))
-    assert.equal(dot.color, colors.background)
+  for (const surface of ['watch', 'card']) {
+    const ui = nativeUI()
+    const update =
+      surface === 'watch'
+        ? buildWatchView(ui, () => {})
+        : buildCardView(ui, { w: 440, h: 220, radius: 30 }, () => {})
+    const waves = ui.commands.filter(
+      (item) => item.type === 'ARC' && item.color === colors.success,
+    )
+    assert.equal(waves.length, 3)
+    const calendar = ui.commands.filter((item) => item.color === colors.warning)
+    assert.ok(calendar.length > 0)
+    update(viewModel(prediction(), config, NOW))
+    assert.ok(waves.every((item) => item.visible))
+    assert.ok(calendar.every((item) => item.visible === false))
+    update(viewModel(prediction({ source: 'scheduled' }), config, NOW))
+    assert.ok(calendar.every((item) => item.visible))
+    for (const sample of [
+      prediction({ demo: true }),
+      prediction({ source: 'scheduled' }),
+      prediction({ checkedAt: NOW - 121000 }),
+      prediction({ kind: 'error' }),
+    ]) {
+      update(viewModel(sample, config, NOW))
+      assert.ok(waves.every((item) => item.visible === false))
+    }
+    assert.ok(calendar.every((item) => item.visible === false))
   }
 })
 
@@ -182,6 +195,8 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
   for (const bounds of [
     { w: 440, h: 200, radius: 30 },
     { w: 400, h: 160, radius: 24 },
+    { w: 480, h: 220, radius: 48, margin: 24 },
+    { w: 320, h: 220, radius: 32, margin: 16 },
   ]) {
     const ui = nativeUI()
     let calls = 0
@@ -200,6 +215,10 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
           item.x + item.w <= bounds.w &&
           item.y + item.h <= bounds.h,
       )
+      if (item.type === 'TEXT') {
+        const available = Math.min(bounds.w, 480 - 2 * (bounds.margin || 0))
+        assert.ok(item.x >= 28 && item.x + item.w <= available - 28)
+      }
     }
     ui.commands[0].click_func()
     assert.equal(calls, 1)
@@ -210,7 +229,7 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
         NOW,
       ),
     )
-    assert.ok(ui.commands.some((item) => item.text === 'Tap to check your bus'))
+    assert.ok(ui.commands.some((item) => item.text === 'Tap to check'))
   }
 })
 test('state changes reserve the same geometry and do not allocate more widgets', () => {

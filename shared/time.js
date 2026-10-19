@@ -30,6 +30,12 @@ export function clock(timestamp) {
   return `${String(Math.floor(minute / 60)).padStart(2, '0')}:${String(minute % 60).padStart(2, '0')}`
 }
 
+export function addDays(date, days) {
+  return new Date(Date.parse(`${date}T12:00:00Z`) + days * 86400000)
+    .toISOString()
+    .slice(0, 10)
+}
+
 // The public MOT API emits Israel-local ISO strings without an offset. Resolve
 // both possible offsets and round-trip them so DST gaps cannot be invented.
 export function parseIsraelTimestamp(value, reference) {

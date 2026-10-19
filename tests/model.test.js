@@ -5,16 +5,23 @@ import { activeTrip, validateArrival, viewModel } from '../shared/model.js'
 import { NOW, prediction } from './helpers.js'
 
 const config = readConfig(() => null)
-test('defaults use 14100 before noon and 222 from noon, every day', () => {
+test('defaults switch to Jerusalem at 10:00 and tomorrow Meitar at 18:00 every day', () => {
   for (let day = 18; day <= 24; day++) {
     assert.equal(
-      activeTrip(config, Date.parse(`2026-10-${day}T08:59:59Z`)).stopCode,
+      activeTrip(config, Date.parse(`2026-10-${day}T06:59:59Z`)).stopCode,
       '14100',
     )
     assert.equal(
-      activeTrip(config, Date.parse(`2026-10-${day}T09:00:00Z`)).stopCode,
+      activeTrip(config, Date.parse(`2026-10-${day}T07:00:00Z`)).stopCode,
       '222',
     )
+    assert.equal(
+      activeTrip(config, Date.parse(`2026-10-${day}T14:59:59Z`)).id,
+      'return',
+    )
+    const evening = activeTrip(config, Date.parse(`2026-10-${day}T15:00:00Z`))
+    assert.equal(evening.stopCode, '14100')
+    assert.equal(evening.serviceDate, `2026-10-${day + 1}`)
   }
 })
 test('Zepp JSON strings and raw strings work; switch time is editable', () => {

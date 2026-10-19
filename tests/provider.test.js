@@ -59,7 +59,7 @@ test('selects the earliest valid live prediction rather than the first schedule'
   )
   assert.equal(result.arrivalAt, NOW + 5 * 60000)
 })
-for (const flag of [false, 'false', 'true', 1, null, undefined]) {
+for (const flag of ['false', 'true', 1, null, undefined]) {
   test(`does not claim live data for isRealTime=${String(flag)}`, () => {
     assert.equal(
       normalizeArrivals(

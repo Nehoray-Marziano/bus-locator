@@ -19,10 +19,12 @@ with ZipFile(target) as bundle:
             with ZipFile(BytesIO(package.read(archive))) as runtime:
                 entries.extend(runtime.namelist())
                 for name in runtime.namelist():
-                    if name.endswith('MeitarSans.ttf'):
-                        assert runtime.read(name) == (root / 'assets/trex3/fonts/MeitarSans.ttf').read_bytes()
+                    if name.endswith(('MeitarSans.ttf', 'MeitarBold.ttf')):
+                        assert runtime.read(name) == (root / 'assets/trex3/fonts' / Path(name).name).read_bytes()
 assert any(name.endswith('MeitarSans.ttf') for name in entries), 'Bundled font missing'
+assert any(name.endswith('MeitarBold.ttf') for name in entries), 'Bundled bold font missing'
 assert any(name.endswith('MeitarSans-OFL.txt') for name in entries), 'Font license missing'
+assert any(name.endswith('MeitarBold-OFL.txt') for name in entries), 'Bold font license missing'
 assert not any('MeitarDisplay' in name for name in entries), 'Retired font still packaged'
 assert not any(name.startswith(('tests/', 'scripts/', 'artifacts/')) for name in entries)
 report = {

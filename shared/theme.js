@@ -1,28 +1,23 @@
-// Canonical runtime tokens. DESIGN.md mirrors these values; tests check drift.
+// Canonical native UI tokens; mirrored and checked in DESIGN.md.
 export const colors = {
-  background: 0x1c1624,
-  primary: 0xf0baa0,
-  text: 0xfff5e9,
-  muted: 0xbeb0ca,
-  warning: 0xf0c783,
-  surface: 0x34283f,
-  panel: 0xf4e8dc,
-  ink: 0x302439,
-  panelMuted: 0x705e70,
-  success: 0xbad6c0,
-  pressed: 0xdba38c,
+  background: 0x090d13,
+  surface: 0x151e29,
+  primary: 0x7afc9e,
+  success: 0x7afc9e,
+  text: 0xf6f9fc,
+  muted: 0xa4b2c3,
+  warning: 0xffcf70,
+  ink: 0x08120b,
+  pressed: 0x50ce76,
 }
-
 export const fonts = {
   body: 'fonts/MeitarSans.ttf',
+  bold: 'fonts/MeitarBold.ttf',
 }
-
 export const sizes = {
-  countdown: 128,
-  title: 36,
-  body: 22,
+  countdown: 120,
+  title: 40,
   caption: 20,
   button: 24,
-  radius: 25,
-  panelRadius: 38,
+  radius: 14,
 }

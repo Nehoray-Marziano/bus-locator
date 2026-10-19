@@ -5,8 +5,13 @@ interface CommuteTrip {
   stopCode: string
   stopName: string
   routeDesc: string
+  routeId: number
+  stopId: number
+  endStopId: number
   startMinute: number
   endMinute: number
+  dayOffset?: number
+  serviceDate?: string
 }
 interface CommuteConfig {
   error?: string

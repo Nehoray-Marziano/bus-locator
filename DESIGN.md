@@ -1,35 +1,33 @@
 ---
 version: alpha
 name: Meitar Bus
-description: A quiet countdown in plum, cream and peach for a round watch.
+description: A sharp, readable departure display with green live ETAs.
 colors:
-  background: '#1c1624'
-  primary: '#f0baa0'
-  text: '#fff5e9'
-  muted: '#beb0ca'
-  warning: '#f0c783'
-  surface: '#34283f'
-  panel: '#f4e8dc'
-  ink: '#302439'
-  panelMuted: '#705e70'
-  success: '#bad6c0'
-  pressed: '#dba38c'
+  background: '#090d13'
+  surface: '#151e29'
+  primary: '#7afc9e'
+  success: '#7afc9e'
+  text: '#f6f9fc'
+  muted: '#a4b2c3'
+  warning: '#ffcf70'
+  ink: '#08120b'
+  pressed: '#50ce76'
 typography:
   display:
-    fontFamily: 'Meitar Sans (DM Sans subset)'
-    fontSize: '128px'
+    fontFamily: 'Meitar Bold (DM Sans subset, 700)'
+    fontSize: '120px'
   body:
-    fontFamily: 'Meitar Sans (DM Sans subset)'
-    fontSize: '24px'
+    fontFamily: 'Meitar Sans (DM Sans subset, 500)'
+    fontSize: '23px'
   utility:
-    fontFamily: 'Meitar Sans (DM Sans subset)'
+    fontFamily: 'Meitar Sans (DM Sans subset, 500)'
     fontSize: '20px'
 rounded:
-  DEFAULT: '25px'
+  DEFAULT: '14px'
 spacing:
   safe-inset: '64px'
 components:
-  arrival-panel: {}
+  arrival-display: {}
   refresh-button: {}
   shortcut-card: {}
 ---
@@ -38,83 +36,89 @@ components:
 
 ## Overview
 
-User-approved palette: “Soft luxury — plum, cream, peach; rounded typography.”
-The subsequent correction takes priority: very little text, no station codes,
-and a cleaner font. The primary information is the boarding location and minutes
-remaining. Line 440, a small freshness caption and Refresh complete the screen.
-The condensed display face, split ticket, origin, stop information, duplicate
-arrival clock and decorative perimeter have been removed.
+The user's current direction replaces the calm plum/cream palette: more modern,
+more legible, with a strong green live ETA. The reference is a compact transit
+departure display. One glance identifies where to board, when the bus arrives,
+and whether the time is live or scheduled. English labels and Israel time remain.
+No station codes appear. No Hebrew font coverage is promised.
 
-English labels follow the existing app. Israel time selects direction every
-day. Phone settings retain Zepp's native controls and typography. No Hebrew font
-coverage is promised.
-
-`shared/theme.js` owns runtime tokens; this file mirrors them. Native widgets use
-that module directly. `tests/design.test.js` checks color drift, contrast, font
-assets and the absence of backend stop codes in the visible watch UI.
-`shared/presentation.js` owns short state labels shared by app and card.
-The DESIGN.md linter's orphan-token warnings are expected for empty component
-maps: native component bindings live in JavaScript and are checked by tests.
+`shared/theme.js` owns runtime tokens; this document mirrors them. Both native
+views use these tokens and `shared/presentation.js` for source labels, date
+context and countdown formatting. Tests check drift and actual surface contrast.
+DESIGN.md component maps describe native bindings in prose, so orphan-token
+linter warnings do not replace the JavaScript drift/contrast checks.
 
 ## Colors
 
-Deep plum provides the canvas. A cream panel holds the countdown in dark plum
-ink. Peach marks line 440 and Refresh. Muted lilac carries freshness and recovery
-text. A sage green dot accompanies Live only. Amber accompanies the explicit expired state. All text/surface pairings
-meet 4.5:1 contrast. Status never depends on color alone.
+Near-black canvas, bright white place names and green live arrival numerals.
+Amber marks scheduled times and expiration; muted steel identifies supporting
+text. Color always has an accompanying label: Live, Scheduled, Demo, Cached
+ETA or an actionable empty/error state. Broadcast waves never mark scheduled, demo
+or expired data. Button ink is dark against green; all text combinations meet AA.
 
 ## Typography
 
-Use one clean, rounded family: DM Sans, weight 500, optical size 22. The static
-Latin subset is renamed Meitar Sans and bundled with its OFL license under
-assets/trex3/fonts. It occupies 19,692 bytes and requires no runtime download.
-The original source is the Google Fonts DM Sans variable font; the optional
-preparation script creates this subset from .tooling/fonts/dm-sans.ttf.
-
-Countdown: 128px, reducing to 104px for three characters. Boarding location: 36px.
-Recovery heading: 32px. Button: 24px. Caption and unit: 20px. Whole minutes round
-up. Due replaces zero. No blinking or animated seconds.
+DM Sans 700 provides stronger numbers and headings; weight 500 carries labels.
+The two static, renamed Latin subsets total about 40 KB and include OFL licenses.
+They are bundled and never downloaded at runtime. Nearby arrivals use large
+minutes; waits of an hour or more use an 82px clock instead of a three-digit
+countdown. Tomorrow has an explicit Tomorrow label. Due means at your stop.
+Supporting labels are 20–24px; the combined route/town heading is 30px. No animation.
 
 ## Layout
 
-The 480×480 screen has a small centered route badge, boarding location, one 336×174
-cream countdown panel, one short caption and a fixed 190×48 refresh button.
-No secondary journey details, station codes or duplicate clock appear. Loading and failure
-states use the same panel with a short heading and recovery caption. All states
-reuse existing widgets with stable geometry. Three-digit waits and round-screen
-text bounds have explicit render coverage.
+480×480 round canvas: a bus icon beside one route/town heading, large arrival
+value and unit/date, one source icon/label, and a fixed Refresh button with arrow.
+No repeated arrival time, separate boarding label or visible check-age line.
+Empty states replace the arrival with a short headline and one recovery action.
+No large cream panel, shadows, or decorative border.
+The hierarchy follows the commuter's questions: where, when, how trustworthy.
+Native widgets are allocated once and updated in place.
 
-The optional shortcut card scales to supplied bounds, showing boarding location,
-countdown and one small caption. Tap opens the app. No station code appears.
+`shared/icons.js` owns native bus, broadcast, calendar and refresh pictograms.
+Live uses green waves with a dot; scheduled uses an amber calendar. Icons have
+short text labels, so meaning never depends on shape or color alone. These are
+static native shapes, with no icon font, remote bitmap or animation cost.
+
+The card is explicitly 220px high. A single column replaces the split number/unit
+layout that was clipped on the user's simulator. Its content respects the
+system margin, rounded edges, at least 28px horizontal insets, and a maximum
+320px content width. Units stay with the number, away from the right edge.
+Examples cover narrow cards, wide rounded cards, Jerusalem and tomorrow labels.
 
 ## Elevation & Depth
 
-Flat color and spacing establish hierarchy. There are no images, shadows,
-gradients, blur, decoration, keep-awake behavior or animation. Rendering uses
-native text, rounded rectangles and a button.
+Flat near-black watch canvas; a dark steel shortcut card. No blur, gradients,
+photos, animated decoration or simulated hardware. The original bus icon uses
+the same green and dark ink.
 
 ## Shapes
 
-The panel uses a 38px radius. Refresh is a peach pill with 25px radius. The small
-route badge uses an 18px radius. The card follows the firmware-supplied radius.
-The original app icon is a simple peach bus on plum.
+The refresh button has a 14px radius and at least 48px height.
+Shortcut cards retain the system-supplied corner radius.
 
 ## Components
 
-Live and Due show a countdown and one freshness caption. Demo always says Demo.
-Checking, ready, no live ETA, expired, refresh needed, offline and settings
-replace the countdown with short, actionable copy. Expired results lose their
-number after 120 seconds. Busy refresh is guarded by the existing controller;
-the native button supplies press feedback.
+Live predictions expire after two minutes. When an actual future timetable time
+is available, expiration falls back to Scheduled; it never relabels a stale
+live ETA as a timetable. Scheduled cache is valid for up to 24 hours and never
+beyond its service date/passed arrival. Current-day live failures fall back to
+the official daily timetable. No arrivals found means neither source supplied
+a usable time. Demo remains explicitly labelled.
 
-The cache-only card never fetches. A local 15-second countdown timer runs only while focused and is cleared on pause/destroy. Its availability remains
-unverified on firmware. Zepp owns settings inputs, toggle, scrolling and focus.
-There are no custom popups, forms, tables, search, destructive actions or toasts.
+Default selection is Meitar before 10:00, Jerusalem 10:00–18:00, and tomorrow's
+Meitar from 18:00. Both boundaries are editable in Zepp's native settings.
+Clock conversion handles Israel DST and calendar rollovers.
+
+Refresh requests are explicit; busy taps are guarded. The card reads cache on
+build/resume, updates locally every 15 seconds while focused, and stops on pause.
+Tap opens the full app for a phone fetch. There is no GPS, background polling,
+keep-awake, timer-triggered network work, custom popup, table or destructive UI.
 
 ## Do's and Don'ts
 
-- Do prioritize boarding location and remaining minutes above all other information.
-- Do keep demo and expired data explicit, with concise recovery instructions.
-- Do render native widget commands using the actual bundled font before shipping.
-- Don't expose station codes or repeat origin, stop and clock information.
-- Don't add GPS, background polling, remote fonts or decorative motion.
+- Do show the boarding town and distinguish minutes from a clock time.
+- Do label tomorrow and every data source explicitly.
+- Do keep all card text well inside the system's rounded clipping area.
+- Don't display stop IDs, unlabelled schedule estimates, or invented fallback times.
+- Don't add background networking, remote assets, motion or extra runtime SDKs.

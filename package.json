@@ -1,9 +1,9 @@
 {
   "name": "meitar-bus",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "An on-demand Meitar–Jerusalem commute companion for Amazfit T-Rex 3",
+  "description": "An on-demand Meitar\u2013Jerusalem commute companion for Amazfit T-Rex 3",
   "scripts": {
     "test": "node --test tests/*.test.js",
     "test:coverage": "node --test --experimental-test-coverage tests/*.test.js",

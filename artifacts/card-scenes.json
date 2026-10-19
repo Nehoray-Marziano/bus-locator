@@ -1,0 +1,2606 @@
+[
+  {
+    "title": "480px / Morning · synthetic prediction",
+    "bounds": {
+      "w": 480,
+      "h": 220,
+      "radius": 48,
+      "margin": 24
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 220,
+        "radius": 48,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 59.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 61.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 56,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 56.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 60.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 64.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 66.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 57.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "480px / Return · synthetic prediction",
+    "bounds": {
+      "w": 480,
+      "h": 220,
+      "radius": 48,
+      "margin": 24
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 220,
+        "radius": 48,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 59.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 61.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Jerusalem",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 56,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "4 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 56.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 60.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 64.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 66.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 57.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "480px / Scheduled fallback",
+    "bounds": {
+      "w": 480,
+      "h": 220,
+      "radius": 48,
+      "margin": 24
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 220,
+        "radius": 48,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 59.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 61.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 56,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 56.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 60.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 64.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 66.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 57.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "480px / Tomorrow / scheduled",
+    "bounds": {
+      "w": 480,
+      "h": 220,
+      "radius": 48,
+      "margin": 24
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 480,
+        "h": 220,
+        "radius": 48,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 59.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 61.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 56,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "06:18",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 56.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 60.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 64.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 66.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 57.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 60.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 71.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 62.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 92,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Tomorrow · Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "400px / Morning · synthetic prediction",
+    "bounds": {
+      "w": 400,
+      "h": 220,
+      "radius": 32,
+      "margin": 20
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 43.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 45.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 40,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 40.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 44.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 48.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 50.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 41.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "400px / Return · synthetic prediction",
+    "bounds": {
+      "w": 400,
+      "h": 220,
+      "radius": 32,
+      "margin": 20
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 43.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 45.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Jerusalem",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 40,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "4 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 40.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 44.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 48.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 50.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 41.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "400px / Scheduled fallback",
+    "bounds": {
+      "w": 400,
+      "h": 220,
+      "radius": 32,
+      "margin": 20
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 43.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 45.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 40,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 40.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 44.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 48.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 50.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 41.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "400px / Tomorrow / scheduled",
+    "bounds": {
+      "w": 400,
+      "h": 220,
+      "radius": 32,
+      "margin": 20
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 43.36,
+        "y": 37.92,
+        "w": 17.28,
+        "h": 18,
+        "radius": 3.3600000000000003,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 45.52,
+        "y": 41.52,
+        "w": 12.96,
+        "h": 6.720000000000001,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 51.36,
+        "w": 2.4000000000000004,
+        "h": 1.92,
+        "radius": 0.96,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.8,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 54.480000000000004,
+        "w": 3.5999999999999996,
+        "h": 4.08,
+        "radius": 0.96,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 31,
+        "w": 284,
+        "h": 34,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 24,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 40,
+        "y": 69,
+        "w": 320,
+        "h": 80,
+        "text": "06:18",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 64,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 40.96,
+        "y": 169.64,
+        "w": 22.080000000000002,
+        "h": 22.080000000000002,
+        "radius": 11.040000000000001,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 44.8,
+        "y": 173.48,
+        "w": 14.399999999999999,
+        "h": 14.399999999999999,
+        "radius": 7.199999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 48.64,
+        "y": 177.32,
+        "w": 6.720000000000001,
+        "h": 6.720000000000001,
+        "radius": 3.3600000000000003,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 50.56,
+        "y": 179.24,
+        "w": 2.88,
+        "h": 2.88,
+        "radius": 1.44,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 41.92,
+        "y": 165.32,
+        "w": 20.16,
+        "h": 17.759999999999998,
+        "radius": 2.16,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 44.32,
+        "y": 170.6,
+        "w": 15.36,
+        "h": 10.08,
+        "radius": 0.48,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 55.6,
+        "y": 162.2,
+        "w": 2.4000000000000004,
+        "h": 6,
+        "radius": 0.96,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 46.96,
+        "y": 173.24,
+        "w": 4.32,
+        "h": 4.32,
+        "radius": 0.48,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 76,
+        "y": 157,
+        "w": 284,
+        "h": 30,
+        "text": "Tomorrow · Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 21,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "320px / Morning · synthetic prediction",
+    "bounds": {
+      "w": 320,
+      "h": 220,
+      "radius": 32,
+      "margin": 16
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 30.772,
+        "y": 50.709,
+        "w": 14.255999999999997,
+        "h": 14.849999999999998,
+        "radius": 2.772,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.554,
+        "y": 53.679,
+        "w": 10.691999999999998,
+        "h": 5.544,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.96,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 45,
+        "w": 234.3,
+        "h": 28.049999999999997,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 20,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 28,
+        "y": 76.35,
+        "w": 264,
+        "h": 66,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 53,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 28.791999999999998,
+        "y": 159.378,
+        "w": 18.215999999999998,
+        "h": 18.215999999999998,
+        "radius": 9.107999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 31.96,
+        "y": 162.546,
+        "w": 11.879999999999997,
+        "h": 11.879999999999997,
+        "radius": 5.939999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 35.128,
+        "y": 165.714,
+        "w": 5.544,
+        "h": 5.544,
+        "radius": 2.772,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 36.711999999999996,
+        "y": 167.298,
+        "w": 2.3759999999999994,
+        "h": 2.3759999999999994,
+        "radius": 1.1879999999999997,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 29.584,
+        "y": 155.814,
+        "w": 16.631999999999998,
+        "h": 14.651999999999997,
+        "radius": 1.7819999999999996,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.564,
+        "y": 160.17,
+        "w": 12.671999999999999,
+        "h": 8.315999999999999,
+        "radius": 0.39599999999999996,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 33.742,
+        "y": 162.348,
+        "w": 3.563999999999999,
+        "h": 3.563999999999999,
+        "radius": 0.39599999999999996,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 148.95,
+        "w": 234.3,
+        "h": 24.75,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 17,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "320px / Return · synthetic prediction",
+    "bounds": {
+      "w": 320,
+      "h": 220,
+      "radius": 32,
+      "margin": 16
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 30.772,
+        "y": 50.709,
+        "w": 14.255999999999997,
+        "h": 14.849999999999998,
+        "radius": 2.772,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.554,
+        "y": 53.679,
+        "w": 10.691999999999998,
+        "h": 5.544,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.96,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 45,
+        "w": 234.3,
+        "h": 28.049999999999997,
+        "text": "440 · Jerusalem",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 20,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 28,
+        "y": 76.35,
+        "w": 264,
+        "h": 66,
+        "text": "4 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 53,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 28.791999999999998,
+        "y": 159.378,
+        "w": 18.215999999999998,
+        "h": 18.215999999999998,
+        "radius": 9.107999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 31.96,
+        "y": 162.546,
+        "w": 11.879999999999997,
+        "h": 11.879999999999997,
+        "radius": 5.939999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "ARC",
+        "x": 35.128,
+        "y": 165.714,
+        "w": 5.544,
+        "h": 5.544,
+        "radius": 2.772,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 36.711999999999996,
+        "y": 167.298,
+        "w": 2.3759999999999994,
+        "h": 2.3759999999999994,
+        "radius": 1.1879999999999997,
+        "color": 8060062,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 29.584,
+        "y": 155.814,
+        "w": 16.631999999999998,
+        "h": 14.651999999999997,
+        "radius": 1.7819999999999996,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.564,
+        "y": 160.17,
+        "w": 12.671999999999999,
+        "h": 8.315999999999999,
+        "radius": 0.39599999999999996,
+        "color": 1383977,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 33.742,
+        "y": 162.348,
+        "w": 3.563999999999999,
+        "h": 3.563999999999999,
+        "radius": 0.39599999999999996,
+        "color": 16764784,
+        "visible": false
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 148.95,
+        "w": 234.3,
+        "h": 24.75,
+        "text": "Live",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 17,
+        "color": 8060062,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "320px / Scheduled fallback",
+    "bounds": {
+      "w": 320,
+      "h": 220,
+      "radius": 32,
+      "margin": 16
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 30.772,
+        "y": 50.709,
+        "w": 14.255999999999997,
+        "h": 14.849999999999998,
+        "radius": 2.772,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.554,
+        "y": 53.679,
+        "w": 10.691999999999998,
+        "h": 5.544,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.96,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 45,
+        "w": 234.3,
+        "h": 28.049999999999997,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 20,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 28,
+        "y": 76.35,
+        "w": 264,
+        "h": 66,
+        "text": "12 min",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 53,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 28.791999999999998,
+        "y": 159.378,
+        "w": 18.215999999999998,
+        "h": 18.215999999999998,
+        "radius": 9.107999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 31.96,
+        "y": 162.546,
+        "w": 11.879999999999997,
+        "h": 11.879999999999997,
+        "radius": 5.939999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 35.128,
+        "y": 165.714,
+        "w": 5.544,
+        "h": 5.544,
+        "radius": 2.772,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 36.711999999999996,
+        "y": 167.298,
+        "w": 2.3759999999999994,
+        "h": 2.3759999999999994,
+        "radius": 1.1879999999999997,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 29.584,
+        "y": 155.814,
+        "w": 16.631999999999998,
+        "h": 14.651999999999997,
+        "radius": 1.7819999999999996,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.564,
+        "y": 160.17,
+        "w": 12.671999999999999,
+        "h": 8.315999999999999,
+        "radius": 0.39599999999999996,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 33.742,
+        "y": 162.348,
+        "w": 3.563999999999999,
+        "h": 3.563999999999999,
+        "radius": 0.39599999999999996,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 148.95,
+        "w": 234.3,
+        "h": 24.75,
+        "text": "Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 17,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  },
+  {
+    "title": "320px / Tomorrow / scheduled",
+    "bounds": {
+      "w": 320,
+      "h": 220,
+      "radius": 32,
+      "margin": 16
+    },
+    "commands": [
+      {
+        "type": "BUTTON",
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 220,
+        "radius": 32,
+        "text": "",
+        "normal_color": 1383977,
+        "press_color": 593171
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 30.772,
+        "y": 50.709,
+        "w": 14.255999999999997,
+        "h": 14.849999999999998,
+        "radius": 2.772,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.554,
+        "y": 53.679,
+        "w": 10.691999999999998,
+        "h": 5.544,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 61.797,
+        "w": 1.9799999999999998,
+        "h": 1.5839999999999999,
+        "radius": 0.7919999999999999,
+        "color": 1383977
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.96,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 64.371,
+        "w": 2.9699999999999993,
+        "h": 3.3659999999999997,
+        "radius": 0.7919999999999999,
+        "color": 16185852
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 45,
+        "w": 234.3,
+        "h": 28.049999999999997,
+        "text": "440 · Meitar",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 20,
+        "color": 16185852,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "TEXT",
+        "x": 28,
+        "y": 76.35,
+        "w": 264,
+        "h": 66,
+        "text": "06:18",
+        "font": "fonts/MeitarBold.ttf",
+        "text_size": 53,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      },
+      {
+        "type": "ARC",
+        "x": 28.791999999999998,
+        "y": 159.378,
+        "w": 18.215999999999998,
+        "h": 18.215999999999998,
+        "radius": 9.107999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 31.96,
+        "y": 162.546,
+        "w": 11.879999999999997,
+        "h": 11.879999999999997,
+        "radius": 5.939999999999999,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "ARC",
+        "x": 35.128,
+        "y": 165.714,
+        "w": 5.544,
+        "h": 5.544,
+        "radius": 2.772,
+        "start_angle": 225,
+        "end_angle": 315,
+        "line_width": 2,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 36.711999999999996,
+        "y": 167.298,
+        "w": 2.3759999999999994,
+        "h": 2.3759999999999994,
+        "radius": 1.1879999999999997,
+        "color": 8060062,
+        "visible": false
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 29.584,
+        "y": 155.814,
+        "w": 16.631999999999998,
+        "h": 14.651999999999997,
+        "radius": 1.7819999999999996,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 31.564,
+        "y": 160.17,
+        "w": 12.671999999999999,
+        "h": 8.315999999999999,
+        "radius": 0.39599999999999996,
+        "color": 1383977,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 32.95,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 40.87,
+        "y": 153.24,
+        "w": 1.9799999999999998,
+        "h": 4.949999999999999,
+        "radius": 0.7919999999999999,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "FILL_RECT",
+        "x": 33.742,
+        "y": 162.348,
+        "w": 3.563999999999999,
+        "h": 3.563999999999999,
+        "radius": 0.39599999999999996,
+        "color": 16764784,
+        "visible": true
+      },
+      {
+        "type": "TEXT",
+        "x": 57.7,
+        "y": 148.95,
+        "w": 234.3,
+        "h": 24.75,
+        "text": "Tomorrow · Scheduled",
+        "font": "fonts/MeitarSans.ttf",
+        "text_size": 17,
+        "color": 16764784,
+        "align_h": "LEFT",
+        "align_v": "CENTER_V",
+        "text_style": "WRAP"
+      }
+    ]
+  }
+]

@@ -1,20 +1,40 @@
 # Meitar Bus
 
-A small Zepp OS app for Amazfit T-Rex 3. It checks line **440** at **14100, Metar Junction**, before noon and **222, Teddy Stadium / Beitar**, from noon. The switch time is editable in Zepp. Selection works every day using Israel time.
+A small Zepp OS app for Amazfit T-Rex 3, tracking line **440** at your boarding stop.
 
-The phone queries the public Ministry journey-planner API directly. **No API key, relay server, GPS, scheduled background work, telemetry or additional runtime SDK** beyond Zepp's messaging library. Only opening/resuming the app or tapping Refresh makes a request, at most once per 30 seconds for the current journey. A visible countdown redraws locally every 15 seconds. It expires after two minutes and reports its check age.
+| Israel time  | Boarding location   | Arrival being checked |
+| ------------ | ------------------- | --------------------- |
+| Before 10:00 | Meitar, stop 14100  | Today                 |
+| 10:00?18:00  | Jerusalem, stop 222 | Today                 |
+| From 18:00   | Meitar, stop 14100  | Tomorrow              |
 
-Only provider entries explicitly marked live are shown. No prediction is different from no bus. A stopped/late feed or phone connection produces an actionable state. Demo mode is opt-in and clearly labelled; it uses no internet.
+Both switch times are editable in Zepp. Selection applies every day, with Israel
+DST and date rollover handled locally. Stop codes stay out of the watch UI.
 
-Version 0.2.1 uses plum, cream and peach with a single bundled DM Sans subset.
-The watch shows the boarding location, a large countdown, a short freshness caption
-and Refresh. Stop codes stay in the data layer. The font adds less than 20 KB
-and never downloads over the network. [Design preview](artifacts/design-preview-0.2.1.png)
-and [all 11 states](artifacts/watch-states-0.2.1.png) use synthetic predictions.
+**Green = live ETA. Amber = scheduled arrival.** The phone first checks the public
+Ministry live-arrivals API. If live data is missing or unavailable, it uses the
+returned schedule or the official daily timetable. Tomorrow uses the daily
+calendar directly. No timetable or arrival is fabricated when the provider has
+none. Source, boarding town and tomorrow context are explicit on both surfaces.
+
+Requests happen only when opening/resuming the app or tapping Refresh. The phone
+has a 30-second request cooldown and caches compact daily timetables for 30 minutes.
+Live predictions expire after two minutes; an actual supplied timetable time can
+replace an expired live prediction. Scheduled cache lasts up to 24 hours and never
+beyond the selected service date or passed arrival. No GPS, background polling,
+server, API key, telemetry, remote fonts or map is needed.
+
+Version 0.3.0 has a dark, bold UI with green live ETAs and amber schedules. Native
+bus, broadcast, calendar and refresh icons replace repeated explanatory text. The
+220px shortcut card uses a single column and conservative side insets to prevent
+right-edge clipping. Two bundled DM Sans weights total about 40 KB.
+[Design preview](artifacts/design-icons-preview-0.3.0.png),
+[14 watch states](artifacts/watch-icons-states-0.3.0.png), and
+[12 card layouts](artifacts/card-icons-states-0.3.0.png) use synthetic examples.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.2.1.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.3.0.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 
@@ -53,31 +73,30 @@ npm run check:provider
 npm run build
 ```
 
-`check:provider` performs two actual network requests; unit tests never use the internet. The build writes `dist/`. Dependencies are pinned to the latest published versions checked on 2026-10-19, with a lockfile. Zeus brings its own development dependencies; the watch package only includes the app and the messaging code it needs.
+`check:provider` checks today's two directions and tomorrow's morning schedule (up to five on-demand HTTP requests); unit tests never use the internet. The build writes `dist/`. Dependencies are pinned to the latest published versions checked on 2026-10-19, with a lockfile. Zeus brings its own development dependencies; the watch package only includes the app and the messaging code it needs.
 
 Read [INSTALL.md](INSTALL.md) for simulator and watch installation. [Provider validation](docs/PROVIDERS.md) records the observed responses and the remaining route verification. [Validation notes](docs/VALIDATION.md) distinguish automated, desktop-layout and hardware checks.
 
 ## Small code map
 
-| Location                             | Responsibility                                     |
-| ------------------------------------ | -------------------------------------------------- |
-| `shared/config.js`, `shared/time.js` | Fixed journeys, switch time, Israel dates/DST      |
-| `shared/model.js`                    | Countdown, freshness and display states            |
-| `app-side/provider.js`               | One direct MOT request; validate live predictions  |
-| `app-side/service.js`                | Throttling, shared requests and cache              |
-| `page/controller.js`                 | Refresh, timeout, pause and late responses         |
-| `page/view.js`, `shared/theme.js`    | Native watch widgets and design tokens             |
-| `app-widget/index.js`                | Optional cached shortcut card                      |
-| `setting/index.js`                   | Switch time and explicit demo toggle               |
-| `tests/`                             | Deterministic behavior, transport and layout tests |
+| Location                                             | Responsibility                                     |
+| ---------------------------------------------------- | -------------------------------------------------- |
+| `shared/config.js`, `shared/time.js`                 | Fixed journeys, switch time, Israel dates/DST      |
+| `shared/model.js`                                    | Countdown, freshness and display states            |
+| `app-side/provider.js`                               | Live MOT arrivals, daily timetable and validation  |
+| `app-side/service.js`                                | Throttling, shared requests and cache              |
+| `page/controller.js`                                 | Refresh, timeout, pause and late responses         |
+| `page/view.js`, `shared/theme.js`, `shared/icons.js` | Native widgets, design tokens and shared icons     |
+| `app-widget/index.js`                                | Optional cached shortcut card                      |
+| `setting/index.js`                                   | Switch time and explicit demo toggle               |
+| `tests/`                                             | Deterministic behavior, transport and layout tests |
 
 The app includes an AppWidget for the vertical Shortcut Cards list, separate from
 full-screen SecondaryWidgets. To add it, swipe right from the watch face, scroll
 to the bottom of the card list, open its settings, and add Meitar Bus. Its presence
 still needs confirmation on the paired watch. The card shows the boarding location
-(Meitar in the morning, Jerusalem from the switch time), cached countdown and
-freshness. Local updates run only while focused and stop on pause. Results expire
-after two minutes. Tap the card to open the app and fetch a fresh prediction.
+(Meitar before 10:00, Jerusalem until 18:00, then Meitar for tomorrow), cached countdown and
+freshness. Local updates run only while focused and stop on pause. Live results expire after two minutes; actual timetable fallback remains labelled Scheduled. Tap the card to open the app and fetch a fresh prediction.
 
 Zepp's [card guide](https://docs.zepp.com/docs/guides/framework/device/secondary-widget/)
 requires the phone Bluetooth bridge to be initialized from an app page. The card

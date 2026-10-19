@@ -10,6 +10,7 @@ target.mkdir(parents=True, exist_ok=True)
 characters = ''.join(chr(code) for code in range(32, 127)) + '\u00b7\u2014\u2026\u2192'
 for source, output, family, axes in [
     ('dm-sans', 'MeitarSans', 'Meitar Sans', {'opsz': 22, 'wght': 500}),
+    ('dm-sans', 'MeitarBold', 'Meitar Bold', {'opsz': 48, 'wght': 700}),
 ]:
     font = instantiateVariableFont(TTFont(root / f'.tooling/fonts/{source}.ttf'), axes, inplace=True)
     options = Options()

@@ -1,13 +1,11 @@
 {
-  "background": 1840676,
-  "primary": 15776416,
-  "text": 16774633,
-  "muted": 12497098,
-  "warning": 15779715,
-  "surface": 3418175,
-  "panel": 16050396,
-  "ink": 3155001,
-  "panelMuted": 7364208,
-  "success": 12244672,
-  "pressed": 14394252
+  "background": 593171,
+  "surface": 1383977,
+  "primary": 8060062,
+  "success": 8060062,
+  "text": 16185852,
+  "muted": 10793667,
+  "warning": 16764784,
+  "ink": 528907,
+  "pressed": 5295734
 }

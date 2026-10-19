@@ -4,12 +4,17 @@ AppSettingsPage({
       Text({ paragraph: true }, 'Meitar Bus · line 440'),
       Text(
         { paragraph: true },
-        'Morning: 14100 · Metar Junction → Jerusalem. Return: 222 · Teddy Stadium / Beitar → Meitar. Runs every day; switches using Israel time.',
+        'Board in Meitar before 10:00, Jerusalem from 10:00, and Meitar for tomorrow from 18:00. Uses Israel time every day.',
       ),
       TextInput({
         label: 'Switch to return journey (HH:MM)',
         settingsKey: 'switchTime',
-        placeholder: '12:00',
+        placeholder: '10:00',
+      }),
+      TextInput({
+        label: 'Prepare for tomorrow from (HH:MM)',
+        settingsKey: 'eveningTime',
+        placeholder: '18:00',
       }),
       Toggle({ label: 'Demo mode · sample arrivals', settingsKey: 'demo' }),
       Text(

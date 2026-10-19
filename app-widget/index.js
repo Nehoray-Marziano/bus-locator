@@ -9,9 +9,9 @@ let controller
 // This optional card reads cache only. Firmware availability needs device QA.
 AppWidget({
   build() {
-    const render = buildCardView(ui, ui.getAppWidgetSize(), () =>
-      push({ url: 'page/index' }),
-    )
+    const bounds = { ...ui.getAppWidgetSize(), h: 220 }
+    ui.setAppWidgetSize({ h: bounds.h })
+    const render = buildCardView(ui, bounds, () => push({ url: 'page/index' }))
     const store = new LocalStorage()
     controller = createCardController({
       readCache: () => store.getItem('commute'),

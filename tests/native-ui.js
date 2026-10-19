@@ -17,6 +17,7 @@ export function nativeUI() {
       COLOR: 'color',
       TEXT_SIZE: 'text_size',
       MORE: 'more',
+      VISIBLE: 'visible',
     },
     createWidget(type, options) {
       const command = { type, ...options }

@@ -1,6 +1,5 @@
 import { readConfig } from '../shared/config.js'
 import { activeTrip, REQUEST_GAP_MS, validateArrival } from '../shared/model.js'
-import { israelTime } from '../shared/time.js'
 import { withDeadline } from '../shared/deadline.js'
 
 // Request only on opening or tapping. No intervals, alarms, or scheduled jobs.
@@ -19,7 +18,7 @@ export function createCommuteService({
     const time = now()
     const trip = activeTrip(config, time)
     if (!trip) return { config, snapshot: null }
-    const date = israelTime(time).date
+    const date = trip.serviceDate
     const key = `${config.demo}|${trip.id}|${date}`
     if (key !== currentKey) {
       currentKey = key
@@ -36,7 +35,10 @@ export function createCommuteService({
         tripId: trip.id,
         date,
         checkedAt: time,
-        arrivalAt: time + 12 * 60000,
+        arrivalAt: trip.dayOffset
+          ? Date.parse(`${date}T04:15:00Z`)
+          : time + 12 * 60000,
+        source: trip.dayOffset ? 'scheduled' : 'live',
         lineLabel: 'Sample bus',
         stopName: 'Sample stop',
         demo: true,
@@ -46,7 +48,7 @@ export function createCommuteService({
     inFlight = (async () => {
       try {
         const data = await withDeadline(fetchArrival(trip), 9000)
-        const snapshot = validateArrival(data, trip.id, now())
+        const snapshot = validateArrival(data, trip.id, now(), trip.serviceDate)
         if (currentKey === key) cached = snapshot
         return { config, snapshot }
       } catch {

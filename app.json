@@ -4,40 +4,68 @@
     "appId": 1100888,
     "appName": "Meitar Bus",
     "appType": "app",
-    "version": { "code": 3, "name": "0.2.1" },
+    "version": {
+      "code": 4,
+      "name": "0.3.0"
+    },
     "icon": "icon.png",
     "vender": "Personal commute",
-    "description": "Your Meitar–Jerusalem bus, at a glance."
+    "description": "Your Meitar\u2013Jerusalem bus, at a glance."
   },
   "permissions": ["device:os.local_storage"],
   "runtime": {
-    "apiVersion": { "minVersion": "4.0", "target": "4.0", "compatible": "4.0" }
+    "apiVersion": {
+      "minVersion": "4.0",
+      "target": "4.0",
+      "compatible": "4.0"
+    }
   },
   "targets": {
     "trex3": {
       "module": {
-        "page": { "pages": ["page/index"] },
-        "app-side": { "path": "app-side/index" },
-        "setting": { "path": "setting/index" },
+        "page": {
+          "pages": ["page/index"]
+        },
+        "app-side": {
+          "path": "app-side/index"
+        },
+        "setting": {
+          "path": "setting/index"
+        },
         "app-widget": {
           "widgets": [
             {
               "path": "app-widget/index",
               "icon": "icon.png",
               "name": "Meitar Bus",
-              "runtime": { "type": "js" }
+              "runtime": {
+                "type": "js"
+              }
             }
           ]
         }
       },
       "platforms": [
-        { "name": "Amazfit T-Rex 3", "deviceSource": 8716544 },
-        { "name": "Amazfit T-Rex 3", "deviceSource": 8716545 },
-        { "name": "Amazfit T-Rex 3", "deviceSource": 8716547 }
+        {
+          "name": "Amazfit T-Rex 3",
+          "deviceSource": 8716544
+        },
+        {
+          "name": "Amazfit T-Rex 3",
+          "deviceSource": 8716545
+        },
+        {
+          "name": "Amazfit T-Rex 3",
+          "deviceSource": 8716547
+        }
       ],
       "designWidth": 480
     }
   },
-  "i18n": { "en-US": { "appName": "Meitar Bus" } },
+  "i18n": {
+    "en-US": {
+      "appName": "Meitar Bus"
+    }
+  },
   "defaultLanguage": "en-US"
 }

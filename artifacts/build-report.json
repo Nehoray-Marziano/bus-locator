@@ -1,7 +1,7 @@
 {
-  "package": "dist/Meitar-Bus-0.2.1.zab",
-  "bytes": 106979,
-  "sha256": "ea47844b81c840a9e9b26a7289f361e303249b0c56fd802478c6e70d5c6762da",
+  "package": "dist/Meitar-Bus-0.3.0.zab",
+  "bytes": 140954,
+  "sha256": "87ee665b51c8975f7eb73bdbc254e8ca93773f21ef6522a4d1e34de4bc216058",
   "platforms": [
     {
       "deviceSource": 8716544
@@ -26,6 +26,8 @@
     "assets/fonts/",
     "assets/fonts/MeitarSans.ttf",
     "assets/fonts/MeitarSans-OFL.txt",
+    "assets/fonts/MeitarBold.ttf",
+    "assets/fonts/MeitarBold-OFL.txt",
     "app-widget/",
     "app-widget/index.bin",
     "setting.js",

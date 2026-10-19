@@ -54,6 +54,28 @@ const scenes = [
     },
   ],
   ['Explicit demo mode', viewModel({ ...sample, demo: true }, config, now)],
+  [
+    'Scheduled fallback',
+    viewModel({ ...sample, source: 'scheduled' }, config, now),
+  ],
+  [
+    'Tomorrow / scheduled',
+    viewModel(
+      {
+        ...sample,
+        date: '2026-10-20',
+        source: 'scheduled',
+        checkedAt: now + 10 * 3600000,
+        arrivalAt: Date.parse('2026-10-20T03:18:00Z'),
+      },
+      config,
+      now + 10 * 3600000,
+    ),
+  ],
+  [
+    'Offline cached ETA',
+    { ...viewModel(sample, config, now), status: 'PHONE UNREACHABLE' },
+  ],
 ]
 const output = scenes.map(([title, model]) => {
   const ui = nativeUI()
@@ -63,12 +85,30 @@ const output = scenes.map(([title, model]) => {
 mkdirSync('artifacts', { recursive: true })
 writeFileSync('artifacts/watch-layouts.json', JSON.stringify(output, null, 2))
 const card = nativeUI()
-buildCardView(card, { w: 440, h: 200, radius: 30 }, () => {})(scenes[0][1])
+buildCardView(card, { w: 440, h: 220, radius: 36, margin: 20 }, () => {})(
+  scenes[0][1],
+)
 writeFileSync(
   'artifacts/card-layout.json',
   JSON.stringify(card.commands, null, 2),
 )
 writeFileSync('artifacts/preview-colors.json', JSON.stringify(colors, null, 2))
+const cards = []
+for (const bounds of [
+  { w: 480, h: 220, radius: 48, margin: 24 },
+  { w: 400, h: 220, radius: 32, margin: 20 },
+  { w: 320, h: 220, radius: 32, margin: 16 },
+])
+  for (const index of [0, 1, 11, 12]) {
+    const ui = nativeUI()
+    buildCardView(ui, bounds, () => {})(scenes[index][1])
+    cards.push({
+      title: `${bounds.w}px / ${scenes[index][0]}`,
+      bounds,
+      commands: ui.commands,
+    })
+  }
+writeFileSync('artifacts/card-scenes.json', JSON.stringify(cards, null, 2))
 console.log(
   `Generated ${output.length} native watch states and a shortcut card (synthetic data).`,
 )

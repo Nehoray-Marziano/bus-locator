@@ -1,27 +1,59 @@
 # Meitar Bus behavior contract
 
-The watch interface shows boarding location, countdown, one freshness/recovery caption
-and Refresh. Stop codes belong to configuration/provider logic and never appear
-in the watch or card. Full stop names and the duplicate arrival clock are omitted. The heading is Meitar in the morning and Jerusalem from the configured switch time, identifying where the user boards.
-`shared/presentation.js` owns concise labels; native views consume that vocabulary.
+The user boards line 440 at Meitar Junction (14100) in the morning and Teddy
+Stadium / Beitar (222) on return. The heading identifies the boarding town, not
+the destination. Station IDs are backend metadata and never appear in watch UI.
 
-Business evidence: the user's commute brief and follow-up specify public line 440, morning stop 14100 (Metar Junction), return stop 222 (Teddy Stadium / Beitar), and time-of-day selection every day. No location permission is needed. Visual intent and runtime token ownership are in DESIGN.md.
+The user's explicit defaults are Meitar before 10:00, Jerusalem 10:00–18:00,
+and tomorrow's Meitar from 18:00. Both times are editable, with evening required
+to follow the return switch. Rules apply daily using Israel time, including DST.
+Evening's target service date is tomorrow; after midnight it is today, preserving
+the same morning schedule. Opposite-direction/date cache must never leak through.
 
-The noon switch is a configurable initial assumption, not a claimed departure time. The settings value defaults to 12:00 Israel time. Before that time select 14100; at and after it select 222. Midnight switches back to the morning direction. There is no weekday filtering.
+| Capability                        | Canonical owner                                   | Source of truth                                     | Allowed variants                  | Verification                                    |
+| --------------------------------- | ------------------------------------------------- | --------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Journey and service date          | shared/config.js; shared/model.js; shared/time.js | User's 10:00/18:00 instructions                     | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
+| Arrival freshness and source      | shared/model.js                                   | User's scheduled-fallback requirement               | live / scheduled / demo / empty   | tests/schedule.test.js                          |
+| Shared UI vocabulary              | shared/presentation.js                            | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |
+| Refresh and page lifecycle        | page/controller.js                                | No background network work                          | active / paused                   | tests/controller.test.js                        |
+| Shortcut card focus and countdown | app-widget/controller.js                          | Zepp card lifecycle                                 | build / focused / paused          | tests/card.test.js                              |
+| Card clipping-safe geometry       | app-widget/view.js                                | User's observed right-edge clipping                 | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
+| Settings inputs and scrolling     | Zepp TextInput/Toggle                             | Platform native UI                                  | two clock fields / demo           | tests/model.test.js; device validation          |
+| Phone request and timetable cache | app-side/service.js; app-side/provider.js         | On-demand data constraint                           | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
 
-| Capability                          | Canonical owner                  | Source of truth                      | Allowed variants         | Verification              |
-| ----------------------------------- | -------------------------------- | ------------------------------------ | ------------------------ | ------------------------- |
-| Watch and card display states       | shared/model.js                  | User brief; freshness rules          | full app / cache card    | tests/model.test.js       |
-| Refresh, busy state, timeout, pause | page/controller.js               | User battery/data constraint         | active / paused          | tests/controller.test.js  |
-| Configuration and clock field       | shared/config.js; Zepp TextInput | User follow-up; Zepp settings API    | platform field           | tests/model.test.js       |
-| Settings controls and scrolling     | Zepp platform components         | Official Zepp settings UI            | platform native          | Device validation pending |
-| Phone request cache                 | app-side/service.js              | On-demand data constraint            | per direction and date   | tests/service.test.js     |
-| Shortcut card focus and countdown   | app-widget/controller.js         | Zepp card lifecycle; freshness rules | build / focused / paused | tests/card.test.js        |
+Green Live ETA requires a fresh, explicitly live provider entry. Strict false
+entries are usable schedules, labelled amber Scheduled. Missing/failed current
+feed falls back to the official daily timetable; tomorrow goes directly to that
+calendar. Unknown flags, canceled entries and wrong stop/route data are rejected.
+The app does not invent a departure when neither source has one.
 
-The provider's query `startTime` records when the result was checked. It does not expose the last vehicle report time, and the displayed age measures time since the query was checked. Results expire after 120 seconds. Only strict `isRealTime: true` entries qualify. A passed ETA stays Due for at most 30 seconds, then asks for refresh. Empty predictions mean no usable live prediction, not cancellation or proof that the bus has passed. Schedules are excluded from live results.
+Live predictions expire after 120 seconds. An actual stored future scheduled
+time may replace an expired live prediction, switching its label and color.
+Scheduled observations last up to 24 hours, limited by the selected service date
+and arrival passing by more than 30 seconds. Both source labels show truthful
+meaning; query check age does not claim to be the vehicle's last report age.
+The compact UI omits the age line; freshness remains enforced by the shared model.
+Both surfaces show a bus icon with one route/town heading. Fresh Live has broadcast
+waves and a dot; Scheduled has a calendar. Text accompanies both source icons.
+Nearby arrivals use minutes. An hour or more uses a clock; tomorrow is explicit.
+Demo remains labelled and never uses green Live ETA.
 
-Opening/resuming the full app and explicitly tapping Refresh are the only request triggers. Local redraw happens every 15 seconds only while the page is active. There is no alarm, background watch service, GPS, telemetry, map or automatic network retry. The phone throttles to one HTTP request every 30 seconds for the current direction and date, with a temporary nine-second deadline. Late responses after a pause, timeout or newer generation cannot redraw the page.
+Only opening/resuming the full app or tapping Refresh requests phone data. The
+phone shares concurrent requests and throttles checks to 30 seconds per journey
+and service date. Its daily timetable cache retains one date per direction for
+30 minutes, without resetting original check age on reuse. A missing live result
+can require a second request. Per-source 3.5/4.5-second guards fit inside the
+phone's nine-second deadline and watch's 12-second response guard. Late page
+responses cannot redraw after pause, timeout or a newer generation.
 
-The AppWidget shortcut card reads cache on build/resume, updates locally every 15 seconds while focused, and opens the app on tap. It clears its timer on pause/destroy and cannot initiate a phone fetch. Empty cache still selects the correct boarding location from defaults. Its availability must be tested on the user's firmware. Zepp lists T-Rex 3 SecondaryWidget support as NO; no SecondaryWidget is registered. The optional shortcut card is a distinct AppWidget surface and is not claimed as tested.
+Both surfaces redraw locally every 15 seconds only while active/focused. The card
+reads cache on build/resume, with no storage reads on timer ticks. All its content
+fits a conservative column; height is 220px and native margin/radius are respected.
+Timers clear on pause/destroy. Tap opens the app for a fresh phone check. Zepp's
+documented card Bluetooth limitation still applies; no full-screen SecondaryWidget,
+background service, GPS, alarms, polling, keep-awake, maps or telemetry are added.
 
-The provider is the public MOT journey-planner calendar API. It accepts the configured stop code and route descriptor, with no key or relay. See docs/PROVIDERS.md for primary source checks, observed responses and limitations. Public API access was checked locally; Bluetooth, Zepp phone fetch and firmware rendering still require device validation.
+Provider evidence and the remaining numeric-ID maintenance limitation are in
+docs/PROVIDERS.md. Actual line 440 daily calendars in both directions were checked.
+The user has run the previous app/card in the simulator; this revision's new card
+geometry, native fonts and live Bluetooth flow still require simulator/watch QA.

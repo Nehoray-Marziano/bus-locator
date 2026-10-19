@@ -1,4 +1,5 @@
 import { viewModel } from '../shared/model.js'
+import { readConfig } from '../shared/config.js'
 
 export function createController({
   request,
@@ -9,7 +10,7 @@ export function createController({
   setTimer = setTimeout,
   clearTimer = clearTimeout,
 }) {
-  let value = readCache() || { config: null, snapshot: null }
+  let value = readCache() || { config: readConfig(() => null), snapshot: null }
   let busy = false
   let active = false
   let generation = 0

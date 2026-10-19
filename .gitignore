@@ -3,6 +3,7 @@ node_modules.failed/
 .tooling/
 /dist/*
 !/dist/Meitar-Bus-0.2.1.zab
+!/dist/Meitar-Bus-0.3.0.zab
 coverage/
 .wrangler/
 .dev.vars
@@ -10,3 +11,4 @@ coverage/
 !.env.example
 artifacts/*.png
 !artifacts/*-0.2.1.png
+!artifacts/*-icons-*-0.3.0.png

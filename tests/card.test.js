@@ -90,12 +90,12 @@ test('first-install or unreadable cache still selects the boarding location', ()
   }
 })
 
-test('noon switches the card boarding label and clears the opposite trip ETA', () => {
+test('10:00 switches the card boarding label and clears the opposite trip ETA', () => {
   const state = setup()
-  state.setTime(Date.parse('2026-10-19T08:59:59Z'))
+  state.setTime(Date.parse('2026-10-19T06:59:59Z'))
   state.controller.resume()
   assert.equal(state.screens.at(-1).boarding, 'Meitar')
-  state.setTime(Date.parse('2026-10-19T09:00:00Z'))
+  state.setTime(Date.parse('2026-10-19T07:00:00Z'))
   state.tick()
   assert.equal(state.screens.at(-1).boarding, 'Jerusalem')
   assert.equal(state.screens.at(-1).status, 'NO UPDATE')
