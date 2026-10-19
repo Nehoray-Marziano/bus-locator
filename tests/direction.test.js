@@ -251,7 +251,7 @@ test('legacy cache migrates into two bounded slots without persisting a directio
   assert.deepEqual(Object.keys(demo.snapshots), ['morning'])
 })
 
-test('both surfaces expose separate Swap/Auto and open/refresh buttons with stable touch targets', () => {
+test('both surfaces expose separate Reverse/Reset and open/refresh buttons with stable touch targets', () => {
   for (const surface of ['app', 'card']) {
     const ui = nativeUI()
     let opens = 0
@@ -272,7 +272,7 @@ test('both surfaces expose separate Swap/Auto and open/refresh buttons with stab
     update(viewModel(prediction(), config, NOW))
     const count = ui.commands.length
     const control = ui.commands.find(
-      (item) => item.type === 'BUTTON' && item.text === 'Swap',
+      (item) => item.type === 'BUTTON' && item.text === 'Reverse',
     )
     assert.ok(control.w >= 48 && control.h >= 48)
     control.click_func()
@@ -281,7 +281,7 @@ test('both surfaces expose separate Swap/Auto and open/refresh buttons with stab
     update(
       viewModel(prediction({ tripId: 'return' }), config, NOW, false, 'return'),
     )
-    assert.equal(control.text, 'Auto')
+    assert.equal(control.text, 'Reset')
     control.click_func()
     assert.equal(swaps, 2)
     assert.equal(ui.commands.length, count)

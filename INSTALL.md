@@ -50,4 +50,4 @@ Account sign-in, QR scanning, physical watch behavior and the final live 440 com
 
 ## Temporary direction switching
 
-Tap Swap beside the boarding town in the app or shortcut card. Refresh stays on that direction. Tap Auto to restore the time rule, or leave the view: the next session is automatic. After 18:00 both directions check tomorrow. The card uses cached data; tap its body to open the selected direction in the app for a phone check. Verify that tapping Swap does not also open the app, that the selected direction reaches the app, and that returning to either view resets it.
+Tap Reverse beside the boarding town in the app or shortcut card. Refresh stays on that direction. Tap Reset to restore the time rule, or leave the view: the next session is automatic. After 18:00 both directions check tomorrow. The card uses cached data; tap its body to open the selected direction in the app for a phone check. Verify that tapping Reverse does not also open the app, that the selected direction reaches the app, and that returning to either view resets it.

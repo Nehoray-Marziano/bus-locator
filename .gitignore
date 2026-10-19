@@ -15,3 +15,5 @@ artifacts/*.png
 
 !/dist/Meitar-Bus-0.4.0.zab
 !artifacts/*-icons-*-0.4.0.png
+!/dist/Meitar-Bus-0.5.0.zab
+!artifacts/*-icons-*-0.5.0.png

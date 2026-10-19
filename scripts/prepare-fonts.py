@@ -9,8 +9,8 @@ target = root / 'assets/trex3/fonts'
 target.mkdir(parents=True, exist_ok=True)
 characters = ''.join(chr(code) for code in range(32, 127)) + '\u00b7\u2014\u2026\u2192'
 for source, output, family, axes in [
-    ('dm-sans', 'MeitarSans', 'Meitar Sans', {'opsz': 22, 'wght': 500}),
-    ('dm-sans', 'MeitarBold', 'Meitar Bold', {'opsz': 48, 'wght': 700}),
+    ('nunito', 'MeitarSans', 'Meitar Sans', {'wght': 600}),
+    ('fredoka', 'MeitarBold', 'Meitar Bold', {'wdth': 100, 'wght': 600}),
 ]:
     font = instantiateVariableFont(TTFont(root / f'.tooling/fonts/{source}.ttf'), axes, inplace=True)
     options = Options()
@@ -23,5 +23,6 @@ for source, output, family, axes in [
         font['name'].setName(value, name_id, 3, 1, 0x409)
         font['name'].setName(value, name_id, 1, 0, 0)
     font.save(target / f'{output}.ttf')
-    (target / f'{output}-OFL.txt').write_bytes((root / f'.tooling/fonts/{source}-license.txt').read_bytes())
+    license_text = (root / f'.tooling/fonts/{source}-license.txt').read_text(encoding='utf-8')
+    (target / f'{output}-OFL.txt').write_text('\n'.join(line.rstrip() for line in license_text.splitlines()) + '\n', encoding='utf-8')
     print(output, (target / f'{output}.ttf').stat().st_size, 'bytes')

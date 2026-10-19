@@ -28,8 +28,9 @@ export function drawIcon(ui, name, x, y, size, color, background) {
     parts.push(part)
   }
   if (name === 'bus') {
-    rect(0.14, 0.08, 0.72, 0.75, 0.14)
-    rect(0.23, 0.23, 0.54, 0.28, 0.04, true)
+    rect(0.14, 0.08, 0.72, 0.75, 0.2)
+    rect(0.23, 0.23, 0.22, 0.28, 0.06, true)
+    rect(0.55, 0.23, 0.22, 0.28, 0.06, true)
     rect(0.25, 0.64, 0.1, 0.08, 0.04, true)
     rect(0.65, 0.64, 0.1, 0.08, 0.04, true)
     rect(0.2, 0.77, 0.15, 0.17, 0.04)
@@ -38,7 +39,7 @@ export function drawIcon(ui, name, x, y, size, color, background) {
     for (const radius of [0.46, 0.3, 0.14]) arc(radius, 225, 315)
     rect(0.44, 0.76, 0.12, 0.12, 0.06)
   } else if (name === 'calendar') {
-    rect(0.08, 0.18, 0.84, 0.74, 0.09)
+    rect(0.08, 0.18, 0.84, 0.74, 0.16)
     rect(0.18, 0.4, 0.64, 0.42, 0.02, true)
     rect(0.25, 0.05, 0.1, 0.25, 0.04)
     rect(0.65, 0.05, 0.1, 0.25, 0.04)

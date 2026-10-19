@@ -1,20 +1,20 @@
 # Validation record
 
-Implementation checks: 2026-10-19, version 0.4.0.
+Implementation checks: 2026-10-19, version 0.5.0.
 
-- 81 deterministic Node tests cover journey/service-date selection, Israel DST,
+- 82 deterministic Node tests cover journey/service-date selection, Israel DST,
   the 10:00/18:00 boundaries, midnight/year rollover, live/scheduled flags,
   canceled and mismatched entries, scheduled fallback, cache ages, errors,
   throttling, timeouts, pause/resume and late responses.
 - UI checks cover contrast on actual surfaces, round-screen shapes, font assets,
-  hidden station IDs, data source labels and geometry reuse. Green Live ETA is
+  hidden station IDs, data source labels and geometry reuse. Mint arrival panels and green source waves are
   excluded for schedules, demos, expired data and phone-timeout overrides.
   Native broadcast/calendar visibility is checked on both surfaces. Repeated
   boarding, clock and check-age labels were removed from the compact layout.
 - Ten direction-switch tests cover session reset, card-to-app selection, quick swaps, stale responses, bounded cache migration, per-direction cooldowns and synchronous failure recovery.
 - TypeScript and syntax checks cover all 19 application modules.
 - 16 watch states and 18 cards render from native widget commands and the actual
-  bundled DM Sans weights. Card cases include widths 320/400/480, margins, rounded
+  bundled Fredoka/Nunito fonts. Card cases include widths 320/400/480, margins, rounded
   corners, Jerusalem and tomorrow labels. Text bounds pass. These desktop renders
   approximate native metrics; they are not new simulator screenshots.
 - The strict design project audit and DESIGN.md lint run separately. Native
@@ -37,13 +37,13 @@ phone cache. Battery and wire traffic have not been profiled on hardware.
 
 The user confirmed version 0.2.1 running in their simulator and reported card
 clipping. This revision addresses that geometry and expands desktop coverage;
-actual simulator/native rendering, separate Swap/card-body hit targets, router handoff and physical-watch acceptance remain pending.
+actual simulator/native rendering, separate Reverse/card-body hit targets, router handoff and physical-watch acceptance remain pending.
 The shortcut card still reads cache and opens the app for a fresh phone query.
 
 Development dependencies retain the previously reported Zeus upstream audit
 findings (45, including two critical); the production-only audit had zero.
 No dependency overrides or security remediation are claimed by this UI/data change.
 
-Installable output: dist/Meitar-Bus-0.4.0.zab. Personal-computer and simulator
+Installable output: dist/Meitar-Bus-0.5.0.zab. Personal-computer and simulator
 instructions are in INSTALL.md. Documentation and automated tests cannot establish
 physical Bluetooth behavior or an observed live 440 arrival.

@@ -30,6 +30,8 @@ test('all text colors meet AA contrast on their actual surfaces', () => {
     ['warning', 'surface'],
     ['ink', 'primary'],
     ['ink', 'pressed'],
+    ['ink', 'success'],
+    ['ink', 'warning'],
   ]) {
     const levels = [
       luminance(colors[foreground]),
@@ -67,7 +69,7 @@ test('native refresh button calls refresh and is at least 48px high', () => {
   assert.equal(calls, 1)
 })
 
-test('watch and shortcut card label the boarding town, not the destination', () => {
+test('both surfaces show the boarding town before its destination', () => {
   const config = readConfig(() => null)
   for (const [time, boarding, opposite] of [
     [NOW, 'Meitar', 'Jerusalem'],
@@ -76,12 +78,16 @@ test('watch and shortcut card label the boarding town, not the destination', () 
     const model = viewModel(null, config, time)
     const watch = nativeUI()
     buildWatchView(watch, () => {})(model)
-    assert.ok(watch.commands.some((item) => item.text === `440 · ${boarding}`))
-    assert.ok(!watch.commands.some((item) => item.text === opposite))
+    const origin = watch.commands.find((item) => item.text === boarding)
+    const destination = watch.commands.find(
+      (item) => item.text === `to ${opposite}`,
+    )
+    assert.ok(origin && destination && origin.y < destination.y)
     const card = nativeUI()
     buildCardView(card, { w: 440, h: 200, radius: 30 }, () => {})(model)
-    assert.ok(card.commands.some((item) => item.text === `440 · ${boarding}`))
-    assert.ok(!card.commands.some((item) => item.text?.includes(opposite)))
+    assert.ok(
+      card.commands.some((item) => item.text === `${boarding} to ${opposite}`),
+    )
   }
 })
 test('native shapes stay within the round display, including rounded edges', () => {
@@ -133,13 +139,13 @@ test('empty state clears countdown; watch never displays backend station codes',
   const update = buildWatchView(ui, () => {})
   const config = readConfig(() => null)
   update(viewModel(prediction(), config, NOW))
+  const countdown = ui.commands.find(
+    (item) => item.type === 'TEXT' && item.text === '10',
+  )
   let content = ui.commands.map((item) => item.text || '').join(' ')
   assert.doesNotMatch(content, /14100|\b222\b|Metar Junction/)
   update(viewModel(prediction({ kind: 'empty' }), config, NOW))
-  assert.equal(
-    ui.commands.find((item) => item.x === 64 && item.y === 153).text,
-    '',
-  )
+  assert.equal(countdown.text, '')
   content = ui.commands.map((item) => item.text || '').join(' ')
   assert.match(content, /No arrivals/)
   assert.doesNotMatch(content, /14100|\b222\b/)
@@ -190,6 +196,44 @@ test('broadcast waves mark only fresh live data on both surfaces', () => {
       assert.ok(waves.every((item) => item.visible === false))
     }
     assert.ok(calendar.every((item) => item.visible === false))
+  }
+})
+
+test('arrival panels change source color and clear green after live data expires', () => {
+  const config = readConfig(() => null)
+  for (const surface of ['watch', 'card']) {
+    const ui = nativeUI()
+    const update =
+      surface === 'watch'
+        ? buildWatchView(ui, () => {})
+        : buildCardView(
+            ui,
+            { w: 320, h: 220, radius: 32, margin: 16 },
+            () => {},
+          )
+    update(viewModel(prediction(), config, NOW))
+    const panel = ui.commands.find(
+      (item) =>
+        item.type === 'FILL_RECT' &&
+        item.color === colors.success &&
+        item.w > 100,
+    )
+    assert.ok(panel, 'fresh live ETA has a mint panel')
+    const number = ui.commands.find(
+      (item) => item.type === 'TEXT' && item.text === '10',
+    )
+    assert.equal(number.color, colors.ink)
+    update(viewModel(prediction({ source: 'scheduled' }), config, NOW))
+    assert.equal(panel.color, colors.warning)
+    for (const sample of [
+      prediction({ demo: true }),
+      prediction({ checkedAt: NOW - 121000 }),
+      prediction({ kind: 'empty' }),
+      prediction({ kind: 'error' }),
+    ]) {
+      update(viewModel(sample, config, NOW))
+      assert.notEqual(panel.color, colors.success)
+    }
   }
 })
 

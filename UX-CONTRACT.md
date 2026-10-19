@@ -1,8 +1,7 @@
 # Meitar Bus behavior contract
 
 The user boards line 440 at Meitar Junction (14100) in the morning and Teddy
-Stadium / Beitar (222) on return. The heading identifies the boarding town, not
-the destination. Station IDs are backend metadata and never appear in watch UI.
+Stadium / Beitar (222) on return. The route shows the boarding town first and destination second. Station IDs are backend metadata and never appear in watch UI.
 
 The user's explicit defaults are Meitar before 10:00, Jerusalem 10:00–18:00,
 and tomorrow's Meitar from 18:00. Both times are editable, with evening required
@@ -10,8 +9,8 @@ to follow the return switch. Rules apply daily using Israel time, including DST.
 Evening's target service date is tomorrow; after midnight it is today, preserving
 the same morning schedule. Opposite-direction/date cache must never leak through.
 
-The user also requested a temporary direction switch on both surfaces. Swap picks
-the opposite boarding town for the current view; Auto restores the clock choice.
+The user also requested a temporary direction switch on both surfaces. Reverse picks
+the opposite boarding town for the current view; Reset restores the clock choice.
 Refresh preserves that temporary selection. Pause/destroy clears it, and no
 direction preference is saved. Both directions retain the automatic service date
 (tomorrow after 18:00). A card opening the app passes its choice in router params
@@ -21,7 +20,7 @@ direction shows no borrowed ETA and can be checked by opening the app.
 | Capability                        | Canonical owner                                               | Source of truth                                     | Allowed variants                  | Verification                                    |
 | --------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
 | Journey and service date          | shared/config.js; shared/model.js; shared/time.js             | User's 10:00/18:00 instructions                     | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
-| Temporary direction switch        | shared/model.js; shared/direction-button.js; view controllers | User's temporary-switch request                     | app / card; Swap / Auto           | tests/direction.test.js                         |
+| Temporary direction switch        | shared/model.js; shared/direction-button.js; view controllers | User's temporary-switch request                     | app / card; Reverse / Reset       | tests/direction.test.js                         |
 | Bounded watch cache               | shared/cache.js                                               | Cache both directions without persisting selection  | legacy / two observations         | tests/direction.test.js                         |
 | Arrival freshness and source      | shared/model.js                                               | User's scheduled-fallback requirement               | live / scheduled / demo / empty   | tests/schedule.test.js                          |
 | Shared UI vocabulary              | shared/presentation.js                                        | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |

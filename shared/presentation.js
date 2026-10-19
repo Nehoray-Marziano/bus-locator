@@ -27,6 +27,12 @@ export function presentation(model) {
     hasArrival,
     live,
     scheduled,
+    showClock,
+    fill: live ? 'success' : scheduled ? 'warning' : 'surface',
+    ink: live || scheduled ? 'ink' : 'text',
+    journey: model.destination
+      ? `${model.boarding} to ${model.destination}`
+      : model.boarding,
     status: hasArrival
       ? demo
         ? 'Demo'

@@ -4,8 +4,10 @@ import { drawIcon } from '../shared/icons.js'
 import { buildDirectionButton } from '../shared/direction-button.js'
 
 export function buildWatchView(ui, refresh, switchDirection = () => {}) {
-  const { createWidget, widget, align, text_style, prop } = ui
+  const { widget, prop, align } = ui
   const labels = {}
+  const rect = (x, y, w, h, radius, color) =>
+    ui.createWidget(widget.FILL_RECT, { x, y, w, h, radius, color })
   const text = (
     name,
     x,
@@ -17,43 +19,29 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
     font = fonts.body,
     horizontal = align.CENTER_H,
   ) => {
-    labels[name] = createWidget(widget.TEXT, {
+    labels[name] = ui.createWidget(widget.TEXT, {
       x,
       y,
       w,
       h,
       text: '',
       text_size: size,
-      color,
       font,
+      color,
       align_h: horizontal,
       align_v: align.CENTER_V,
-      text_style: text_style.WRAP,
+      text_style: ui.text_style.WRAP,
     })
   }
-  createWidget(widget.FILL_RECT, {
-    x: 0,
-    y: 0,
-    w: 480,
-    h: 480,
-    radius: 240,
-    color: colors.background,
-  })
-  drawIcon(ui, 'bus', 82, 85, 28, colors.text, colors.background)
-  text('journey', 116, 76, 238, 44, 26, colors.text, fonts.bold, align.LEFT)
-  const updateDirection = buildDirectionButton(
-    ui,
-    { x: 360, y: 76, w: 56, h: 48 },
-    switchDirection,
-  )
-  text('number', 64, 153, 352, 142, sizes.countdown, colors.success, fonts.bold)
-  text('unit', 64, 293, 352, 30, 22, colors.muted)
-  text('headline', 70, 168, 340, 126, 32, colors.text, fonts.bold)
+  rect(0, 0, 480, 480, 240, colors.background)
+  rect(88, 54, 104, 40, 16, colors.primary)
+  drawIcon(ui, 'bus', 96, 60, 28, colors.ink, colors.primary)
+  text('line', 126, 54, 62, 40, 24, colors.ink, fonts.bold)
   const live = drawIcon(
     ui,
     'live',
-    164,
-    346,
+    244,
+    60,
     24,
     colors.success,
     colors.background,
@@ -61,20 +49,50 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const calendar = drawIcon(
     ui,
     'calendar',
-    164,
-    346,
+    244,
+    60,
     24,
     colors.warning,
     colors.background,
   )
-  text('status', 202, 339, 196, 38, 23, colors.success, fonts.body, align.LEFT)
-  text('recovery', 64, 338, 352, 42, 20, colors.muted)
-  const bounds = { x: 135, y: 410, w: 210, h: 48 }
-  const button = createWidget(widget.BUTTON, {
+  text('status', 282, 54, 116, 40, 20, colors.success, fonts.body, align.LEFT)
+
+  const bubble = rect(72, 114, 336, 174, 44, colors.surface)
+  text('number', 88, 116, 304, 130, sizes.countdown, colors.ink, fonts.bold)
+  text('unit', 88, 246, 304, 30, 22, colors.ink)
+  text('headline', 92, 137, 296, 96, 30, colors.text, fonts.bold)
+  text('recovery', 88, 243, 304, 34, 17, colors.muted)
+
+  rect(76, 310, 328, 82, 24, colors.surface)
+  // Two fixed stops show direction only; this is not a vehicle-progress bar.
+  rect(91, 332, 2, 30, 1, colors.muted)
+  rect(86, 322, 12, 12, 6, colors.primary)
+  rect(86, 360, 12, 12, 6, colors.muted)
+  rect(89, 363, 6, 6, 3, colors.surface)
+  text('boarding', 112, 311, 176, 38, 26, colors.text, fonts.bold, align.LEFT)
+  text(
+    'destination',
+    112,
+    349,
+    176,
+    30,
+    20,
+    colors.muted,
+    fonts.body,
+    align.LEFT,
+  )
+  const updateDirection = buildDirectionButton(
+    ui,
+    { x: 300, y: 327, w: 92, h: 48 },
+    switchDirection,
+  )
+
+  const bounds = { x: 156, y: 414, w: 168, h: 48 }
+  const button = ui.createWidget(widget.BUTTON, {
     ...bounds,
     radius: sizes.radius,
-    text_size: sizes.button,
-    font: fonts.bold,
+    text_size: 22,
+    font: fonts.body,
     normal_color: colors.primary,
     press_color: colors.pressed,
     color: colors.ink,
@@ -84,8 +102,8 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const refreshIcon = drawIcon(
     ui,
     'refresh',
-    159,
-    423,
+    172,
+    427,
     22,
     colors.ink,
     colors.primary,
@@ -94,21 +112,24 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
     const display = presentation(model)
     updateDirection(model)
     const values = {
-      journey: `440 · ${model.boarding}`,
+      line: '440',
+      status: display.hasArrival ? display.status : '',
       number: display.hasArrival ? display.value : '',
       unit: display.hasArrival ? display.unit : '',
       headline: display.headline,
-      status: display.hasArrival ? display.status : '',
       recovery: display.hasArrival ? '' : display.detail,
+      boarding: model.boarding,
+      destination: model.destination ? `to ${model.destination}` : '',
     }
     for (const name of Object.keys(labels))
       labels[name].setProperty(prop.TEXT, values[name] || '')
+    bubble.setProperty(prop.COLOR, colors[display.fill])
     labels.number.setProperty(prop.TEXT_SIZE, display.valueSize)
-    labels.number.setProperty(prop.COLOR, colors[display.tone])
+    for (const name of ['number', 'unit'])
+      labels[name].setProperty(prop.COLOR, colors[display.ink])
     labels.status.setProperty(prop.COLOR, colors[display.tone])
     live.setVisible(display.live)
     calendar.setVisible(display.scheduled)
-    // Keep the refresh arrow clear of the longer busy label.
     refreshIcon.setVisible(model.action === 'Refresh')
     button.setProperty(prop.MORE, { ...bounds, text: model.action })
   }

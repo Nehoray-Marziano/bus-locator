@@ -1,14 +1,14 @@
 // Canonical native UI tokens; mirrored and checked in DESIGN.md.
 export const colors = {
-  background: 0x090d13,
-  surface: 0x151e29,
-  primary: 0x7afc9e,
-  success: 0x7afc9e,
-  text: 0xf6f9fc,
-  muted: 0xa4b2c3,
-  warning: 0xffcf70,
-  ink: 0x08120b,
-  pressed: 0x50ce76,
+  background: 0x161326,
+  surface: 0x29233d,
+  primary: 0xb9a7ff,
+  success: 0x78ffc6,
+  text: 0xfff8f1,
+  muted: 0xc0b6d3,
+  warning: 0xffc18e,
+  ink: 0x161326,
+  pressed: 0x9b87ee,
 }
 export const fonts = {
   body: 'fonts/MeitarSans.ttf',
@@ -19,5 +19,5 @@ export const sizes = {
   title: 40,
   caption: 20,
   button: 24,
-  radius: 14,
+  radius: 24,
 }
