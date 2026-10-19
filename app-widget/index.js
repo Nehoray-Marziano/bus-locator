@@ -1,0 +1,31 @@
+import * as ui from '@zos/ui'
+import { push } from '@zos/router'
+import { LocalStorage } from '@zos/storage'
+import { createCardController } from './controller.js'
+import { buildCardView } from './view.js'
+
+let controller
+
+// This optional card reads cache only. Firmware availability needs device QA.
+AppWidget({
+  build() {
+    const render = buildCardView(ui, ui.getAppWidgetSize(), () =>
+      push({ url: 'page/index' }),
+    )
+    const store = new LocalStorage()
+    controller = createCardController({
+      readCache: () => store.getItem('commute'),
+      render,
+    })
+  },
+  onResume() {
+    controller?.resume()
+  },
+  onPause() {
+    controller?.pause()
+  },
+  onDestroy() {
+    controller?.pause()
+    controller = null
+  },
+})

@@ -1,0 +1,10 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["page", "app-widget", "setting", "shared"],
+  "locale": "en-US",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": [],
+  "requiredCommands": ["unit"],
+  "commands": { "unit": "npm test" },
+  "evidence": { "failurePaths": "tests/controller.test.js" }
+}

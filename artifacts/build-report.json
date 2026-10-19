@@ -1,0 +1,35 @@
+{
+  "package": "dist/Meitar-Bus-0.2.0.zab",
+  "bytes": 105326,
+  "sha256": "f967626af0b43bea429bc310685b4e866c09df6621040a5c37f0d6a8886c0be3",
+  "platforms": [
+    {
+      "deviceSource": 8716544
+    },
+    {
+      "deviceSource": 8716545
+    },
+    {
+      "deviceSource": 8716547
+    }
+  ],
+  "runtimeEntries": [
+    "app.json",
+    "app.bin",
+    "page/",
+    "page/index.bin",
+    "assets/",
+    "assets/icon.png",
+    "assets/raw/",
+    "assets/raw/locale/",
+    "assets/raw/locale/TID.btxt",
+    "assets/fonts/",
+    "assets/fonts/MeitarSans.ttf",
+    "assets/fonts/MeitarSans-OFL.txt",
+    "app-widget/",
+    "app-widget/index.bin",
+    "setting.js",
+    "app.json",
+    "app-side.js"
+  ]
+}

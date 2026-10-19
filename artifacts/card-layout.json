@@ -1,0 +1,78 @@
+[
+  {
+    "type": "BUTTON",
+    "x": 0,
+    "y": 0,
+    "w": 440,
+    "h": 200,
+    "radius": 30,
+    "text": "",
+    "normal_color": 1840676,
+    "press_color": 3418175
+  },
+  {
+    "type": "TEXT",
+    "x": 24,
+    "y": 15,
+    "w": 392,
+    "h": 36,
+    "text": "440  /  Meitar",
+    "font": "fonts/MeitarSans.ttf",
+    "text_size": 27,
+    "color": 15776416,
+    "align_h": "LEFT",
+    "align_v": "CENTER_V",
+    "text_style": "WRAP"
+  },
+  {
+    "type": "TEXT",
+    "x": 24,
+    "y": 57,
+    "w": 210,
+    "h": 93,
+    "text": "12",
+    "font": "fonts/MeitarSans.ttf",
+    "text_size": 82,
+    "color": 16774633,
+    "align_h": "LEFT",
+    "align_v": "CENTER_V",
+    "text_style": "WRAP"
+  },
+  {
+    "type": "TEXT",
+    "x": 254,
+    "y": 67,
+    "w": 162,
+    "h": 62,
+    "text": "min",
+    "font": "fonts/MeitarSans.ttf",
+    "text_size": 23,
+    "color": 16774633,
+    "align_h": "LEFT",
+    "align_v": "CENTER_V",
+    "text_style": "WRAP"
+  },
+  {
+    "type": "FILL_RECT",
+    "x": 24,
+    "y": 165,
+    "w": 6,
+    "h": 6,
+    "radius": 3,
+    "color": 12244672
+  },
+  {
+    "type": "TEXT",
+    "x": 41,
+    "y": 154,
+    "w": 375,
+    "h": 28,
+    "text": "Live · 10s ago",
+    "font": "fonts/MeitarSans.ttf",
+    "text_size": 20,
+    "color": 12497098,
+    "align_h": "LEFT",
+    "align_v": "CENTER_V",
+    "text_style": "WRAP"
+  }
+]
