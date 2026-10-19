@@ -1,8 +1,8 @@
 # Validation record
 
-Implementation checks: 2026-10-19, version 0.5.0.
+Implementation checks: 2026-10-19, version 0.5.1.
 
-- 88 deterministic Node tests cover journey/service-date selection, Israel DST,
+- 91 deterministic Node tests cover journey/service-date selection, Israel DST,
   the 10:00/18:00 boundaries, midnight/year rollover, live/scheduled flags,
   canceled and mismatched entries, scheduled fallback, cache ages, errors,
   throttling, timeouts, pause/resume and late responses.
@@ -21,9 +21,19 @@ Implementation checks: 2026-10-19, version 0.5.0.
   removes its private staging folder. Authenticated QR preview remains a device
   acceptance check.
 - 16 watch states and 18 cards render from native widget commands and the actual
-  bundled Fredoka/Nunito fonts. Card cases include widths 320/400/480, margins, rounded
+  bundled Fredoka/Nunito fonts. Card cases include widths 320/400/432, margins, rounded
   corners, Jerusalem and tomorrow labels. Text bounds pass. These desktop renders
   approximate native metrics; they are not new simulator screenshots.
+- The reported left shift is addressed by translating the card background,
+  content and both hit targets together by the native horizontal margin.
+  Tests check centering and unchanged content width; margins are not deducted
+  twice. The documentation describes card-relative coordinates, while the
+  supplied T-Rex 3 simulator photo shows a screen-origin offset. This correction
+  follows that observed target behavior and still needs a simulator recheck.
+  Refresh-head geometry now meets the clockwise endpoint at 22/32px. The native
+  launcher PNG is RGBA; rendering checks transparent corners and opaque content.
+  The compiled package's palette TGA also retains transparent corners and opaque
+  bus content; Zeus pads its storage width to 128px from the 124px source.
 - The strict design project audit and DESIGN.md lint run separately. Native
   JavaScript bindings explain orphan-token warnings; color drift is tested.
 - Zeus 1.9.3 builds the watch package with ZML 0.0.43 and device types 4.0.0.
@@ -51,6 +61,6 @@ Development dependencies retain the previously reported Zeus upstream audit
 findings (45, including two critical); the production-only audit had zero.
 No dependency overrides or security remediation are claimed by this UI/data change.
 
-Installable output: dist/Meitar-Bus-0.5.0.zab. Personal-computer and simulator
+Installable output: dist/Meitar-Bus-0.5.1.zab. Personal-computer and simulator
 instructions are in INSTALL.md. Documentation and automated tests cannot establish
 physical Bluetooth behavior or an observed live 440 arrival.

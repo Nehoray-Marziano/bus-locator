@@ -116,9 +116,9 @@ writeFileSync(
 writeFileSync('artifacts/preview-colors.json', JSON.stringify(colors, null, 2))
 const cards = []
 for (const bounds of [
-  { w: 480, h: 220, radius: 48, margin: 24 },
-  { w: 400, h: 220, radius: 32, margin: 20 },
-  { w: 320, h: 220, radius: 32, margin: 16 },
+  { w: 432, h: 220, radius: 48, margin: 24 },
+  { w: 400, h: 220, radius: 32, margin: 40 },
+  { w: 320, h: 220, radius: 32, margin: 80 },
 ])
   for (const index of [0, 1, 11, 12, 14, 15]) {
     const ui = nativeUI()

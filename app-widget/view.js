@@ -5,11 +5,13 @@ import { buildDirectionButton } from '../shared/direction-button.js'
 
 export function cardLayout(bounds) {
   const margin = Math.max(0, bounds.margin || 0)
-  const width = Math.min(bounds.w, 480 - 2 * margin)
-  const inset = Math.max(28, Math.ceil((bounds.radius || 0) * 0.65), margin)
+  const width = bounds.w
+  const inset = Math.max(28, Math.ceil((bounds.radius || 0) * 0.65))
   const scale = Math.min(1, (width - 2 * inset) / 320, (bounds.h - 32) / 176)
   return {
-    left: Math.round((width - 320 * scale) / 2),
+    // T-Rex 3's native card drawing starts at the screen's left edge. The
+    // reported width already excludes the system margin; apply it only once.
+    left: margin + Math.round((width - 320 * scale) / 2),
     top: Math.round((bounds.h - 176 * scale) / 2),
     scale,
     width: 320 * scale,
@@ -19,7 +21,7 @@ export function cardLayout(bounds) {
 export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
   const { widget, prop, align } = ui
   ui.createWidget(widget.BUTTON, {
-    x: 0,
+    x: Math.max(0, bounds.margin || 0),
     y: 0,
     w: bounds.w,
     h: bounds.h,

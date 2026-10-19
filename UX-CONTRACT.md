@@ -26,7 +26,7 @@ direction shows no borrowed ETA and can be checked by opening the app.
 | Shared UI vocabulary              | shared/presentation.js                                        | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |
 | Refresh and page lifecycle        | page/controller.js                                            | No background network work                          | active / paused                   | tests/controller.test.js                        |
 | Shortcut card focus and countdown | app-widget/controller.js                                      | Zepp card lifecycle                                 | build / focused / paused          | tests/card.test.js                              |
-| Card clipping-safe geometry       | app-widget/view.js                                            | User's observed right-edge clipping                 | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
+| Card clipping-safe geometry       | app-widget/view.js                                            | User's observed card clipping and left shift        | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
 | Settings inputs and scrolling     | Zepp TextInput/Toggle                                         | Platform native UI                                  | two clock fields / demo           | tests/model.test.js; device validation          |
 | Phone request and timetable cache | app-side/service.js; app-side/provider.js                     | On-demand data constraint                           | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
 
@@ -58,6 +58,10 @@ responses cannot redraw after pause, timeout or a newer generation.
 Both surfaces redraw locally every 15 seconds only while active/focused. The card
 reads cache on build/resume, with no storage reads on swaps or timer ticks. All its content
 fits a conservative column; height is 220px and native margin/radius are respected.
+On the reported T-Rex 3 simulator, the native horizontal origin includes the
+system margin. Apply that offset once to the whole card, including its hit targets;
+the reported card width is not reduced again. The launcher icon uses transparency,
+and the refresh head joins its arc without changing the action's target or label.
 Timers clear on pause/destroy. Tap opens the app for a fresh phone check. Zepp's
 documented card Bluetooth limitation still applies; no full-screen SecondaryWidget,
 background service, GPS, alarms, polling, keep-awake, maps or telemetry are added.

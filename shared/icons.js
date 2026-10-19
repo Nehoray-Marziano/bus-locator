@@ -45,9 +45,11 @@ export function drawIcon(ui, name, x, y, size, color, background) {
     rect(0.65, 0.05, 0.1, 0.25, 0.04)
     rect(0.29, 0.51, 0.18, 0.18, 0.02)
   } else if (name === 'refresh') {
-    arc(0.36, 45, 315)
-    rect(0.48, 0.08, 0.35, 0.1)
-    rect(0.73, 0.08, 0.1, 0.35)
+    arc(0.34, 45, 315)
+    // The 315-degree endpoint is (0.74, 0.26). Both rounded arms meet
+    // there, pointing along the clockwise tangent rather than above the arc.
+    rect(0.5, 0.21, 0.29, 0.1, 0.05)
+    rect(0.69, 0.02, 0.1, 0.29, 0.05)
   }
   return {
     setVisible(visible) {

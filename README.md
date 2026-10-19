@@ -24,19 +24,21 @@ replace an expired live prediction. Scheduled cache lasts up to 24 hours and nev
 beyond the selected service date or passed arrival. No GPS, background polling,
 server, API key, telemetry, remote fonts or map is needed.
 
-Version 0.5.0 uses rounded mint live-arrival panels, peach schedules, lilac controls and expressive rounded lettering. Native
+Version 0.5.1 uses rounded mint live-arrival panels, peach schedules, lilac controls and expressive rounded lettering. Native
 bus, broadcast, calendar and refresh icons replace repeated explanatory text. The
-220px shortcut card uses a single column and conservative side insets to prevent
-right-edge clipping. Two bundled Fredoka/Nunito fonts total about 40 KB.
-[Design preview](artifacts/design-icons-preview-0.5.0.png),
-[16 watch states](artifacts/watch-icons-states-0.5.0.png), and
-[18 card layouts](artifacts/card-icons-states-0.5.0.png) use synthetic examples.
+220px shortcut card applies the system horizontal margin once to its background,
+content and buttons, correcting the observed left shift. The launcher icon has
+a transparent background and the refresh arrowhead joins its arc.
+Two bundled Fredoka/Nunito fonts total about 40 KB.
+[Design preview](artifacts/design-icons-preview-0.5.1.png),
+[16 watch states](artifacts/watch-icons-states-0.5.1.png), and
+[18 card layouts](artifacts/card-icons-states-0.5.1.png) use synthetic examples.
 
 **Temporary direction switch:** tap **Reverse** beside the boarding town in either view. The button becomes **Reset** to restore the clock choice immediately. Refresh keeps your temporary choice; leaving the view clears it. After 18:00 either direction checks tomorrow. The card switches cached views; tap its body to open the selected direction in the app for a fresh ETA. Neither view saves a direction preference.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.5.0.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.5.1.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 

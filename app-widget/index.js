@@ -9,8 +9,8 @@ let controller
 // This optional card reads cache only. Firmware availability needs device QA.
 AppWidget({
   build() {
+    ui.setAppWidgetSize({ h: 220 })
     const bounds = { ...ui.getAppWidgetSize(), h: 220 }
-    ui.setAppWidgetSize({ h: bounds.h })
     const render = buildCardView(
       ui,
       bounds,

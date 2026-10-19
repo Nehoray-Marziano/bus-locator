@@ -86,7 +86,10 @@ No extra station ID, check-age row or repeated arrival clock appears.
 The 220px shortcut card shares the line badge and source heading, a compact
 arrival panel beside Reverse/Reset, and one full route line below. Both towns
 are shown in travel order. At least 28px horizontal insets respect the system
-margin and rounded edges; content is at most 320px wide. Controls keep at least
+margin and rounded edges; content is at most 320px wide. The T-Rex 3 simulator
+requires the reported horizontal margin as the native drawing origin. Apply it
+once to the background, content and hit targets; the reported width already
+excludes that margin. Controls keep at least
 48px touch height. Actual type metrics are checked at card widths 320/400/480.
 Native widgets are allocated once and updated in place.
 
@@ -96,6 +99,9 @@ Flat color panels provide grouping. The main arrival has a 44px radius; the
 card arrival has a 28px scaled radius. There are no shadows, blur or motion.
 The rounded bus icon has paired windows, lights and wheels. Broadcast, calendar
 and refresh pictograms are static native shapes from shared/icons.js.
+The refresh head meets the clockwise arc endpoint. The launcher bus is rendered
+from the source geometry in scripts/render-preview.py onto transparent RGBA,
+with no rectangular background baked into the asset.
 
 ## Shapes
 

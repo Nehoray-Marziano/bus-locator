@@ -99,7 +99,7 @@ pen.text((60, 80), 'Your next journey, at a glance.', font=font('fonts/MeitarSan
 for index, scene_index in enumerate([0, 14, 15]):
     hero.paste(images[scene_index], (40 + index * 520, 150), mask)
 hero.save(artifacts / f'design-icons-preview-{version}.png')
-card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 440, 220, False)
+card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 480, 220, False)
 card.save(artifacts / f'card-icons-preview-{version}.png')
 cards = json.loads((artifacts / 'card-scenes.json').read_text(encoding='utf-8'))
 card_sheet = Image.new('RGB', (4 * 500, math.ceil(len(cards) / 4) * 280), canvas)
@@ -107,7 +107,7 @@ card_pen = ImageDraw.Draw(card_sheet)
 for index, scene in enumerate(cards):
     bounds = scene['bounds']
     try:
-        card = render(scene['commands'], bounds['w'], bounds['h'], False)
+        card = render(scene['commands'], bounds['w'] + 2 * bounds['margin'], bounds['h'], False)
     except ValueError as error:
         raise ValueError(f"{scene['title']}: {error}") from error
     x, y = index % 4 * 500 + 10, index // 4 * 280 + 10
@@ -116,7 +116,7 @@ for index, scene in enumerate(cards):
 card_sheet.save(artifacts / f'card-icons-states-{version}.png')
 
 # Original vector-like icon, rendered with the same runtime palette.
-icon = Image.new('RGB', (248, 248), color(tokens['background']))
+icon = Image.new('RGBA', (248, 248), (0, 0, 0, 0))
 pen = ImageDraw.Draw(icon)
 pen.rounded_rectangle((60, 40, 188, 196), 32, fill=color(tokens['primary']))
 pen.rounded_rectangle((72, 94, 176, 144), 12, fill=color(tokens['ink']))
@@ -125,5 +125,9 @@ pen.rounded_rectangle((158, 185, 176, 211), 6, fill=color(tokens['primary']))
 pen.ellipse((77, 162, 95, 180), fill=color(tokens['ink']))
 pen.ellipse((153, 162, 171, 180), fill=color(tokens['ink']))
 pen.text((124, 67), '440', font=font('fonts/MeitarSans.ttf', 19), anchor='mm', fill=color(tokens['ink']))
-icon.resize((124, 124), Image.Resampling.LANCZOS).save(root / 'assets/trex3/icon.png')
+icon = icon.resize((124, 124), Image.Resampling.LANCZOS)
+assert icon.mode == 'RGBA'
+assert all(icon.getpixel(point)[3] == 0 for point in [(0, 0), (123, 0), (0, 123), (123, 123)])
+assert icon.getpixel((62, 62))[3] == 255
+icon.save(root / 'assets/trex3/icon.png')
 print(f'Rendered {len(scenes)} watch states and {len(cards)} cards with bundled fonts; text bounds passed.')

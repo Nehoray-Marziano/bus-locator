@@ -5,6 +5,7 @@ import { colors, fonts } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
 import { buildCardView, cardLayout } from '../app-widget/view.js'
 import { buildWatchView } from '../page/view.js'
+import { drawIcon } from '../shared/icons.js'
 import { viewModel } from '../shared/model.js'
 import { readConfig } from '../shared/config.js'
 import { nativeUI } from './native-ui.js'
@@ -241,8 +242,9 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
   for (const bounds of [
     { w: 440, h: 200, radius: 30 },
     { w: 400, h: 160, radius: 24 },
-    { w: 480, h: 220, radius: 48, margin: 24 },
-    { w: 320, h: 220, radius: 32, margin: 16 },
+    { w: 432, h: 220, radius: 48, margin: 24 },
+    { w: 400, h: 220, radius: 32, margin: 40 },
+    { w: 320, h: 220, radius: 32, margin: 80 },
   ]) {
     const ui = nativeUI()
     let calls = 0
@@ -256,14 +258,16 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
     )
     for (const item of ui.commands) {
       assert.ok(
-        item.x >= 0 &&
+        item.x >= (bounds.margin || 0) &&
           item.y >= 0 &&
-          item.x + item.w <= bounds.w &&
+          item.x + item.w <= bounds.w + (bounds.margin || 0) &&
           item.y + item.h <= bounds.h,
       )
       if (item.type === 'TEXT') {
-        const available = Math.min(bounds.w, 480 - 2 * (bounds.margin || 0))
-        assert.ok(item.x >= 28 && item.x + item.w <= available - 28)
+        const origin = bounds.margin || 0
+        assert.ok(
+          item.x >= origin + 28 && item.x + item.w <= origin + bounds.w - 28,
+        )
       }
     }
     ui.commands[0].click_func()
@@ -277,6 +281,54 @@ test('shortcut card fits different surfaces and opens the app on tap', () => {
     )
     assert.ok(ui.commands.some((item) => item.text === 'Tap to check'))
   }
+})
+
+test('system margin translates the entire card once without shrinking its content', () => {
+  const bounds = { w: 400, h: 220, radius: 32 }
+  const local = nativeUI()
+  const native = nativeUI()
+  buildCardView(local, bounds, () => {})
+  buildCardView(native, { ...bounds, margin: 40 }, () => {})
+  assert.equal(native.commands[0].x, 40)
+  assert.equal(native.commands[0].x + native.commands[0].w, 440)
+  const layout = cardLayout({ ...bounds, margin: 40 })
+  assert.equal(layout.left + layout.width / 2, 240)
+  for (const [index, item] of native.commands.entries()) {
+    assert.ok(Math.abs(item.x - local.commands[index].x - 40) < 0.000001)
+    assert.equal(item.w, local.commands[index].w)
+    assert.equal(item.h, local.commands[index].h)
+  }
+})
+
+test('refresh arrowhead joins the arc at its clockwise endpoint at native sizes', () => {
+  for (const size of [22, 32]) {
+    const ui = nativeUI()
+    const icon = drawIcon(ui, 'refresh', 0, 0, size, colors.ink, colors.primary)
+    const [arc, ...arms] = ui.commands
+    const angle = (arc.end_angle * Math.PI) / 180
+    const endpoint = {
+      x: arc.x + arc.w / 2 + arc.radius * Math.cos(angle),
+      y: arc.y + arc.h / 2 + arc.radius * Math.sin(angle),
+    }
+    for (const arm of arms) {
+      assert.ok(endpoint.x >= arm.x && endpoint.x <= arm.x + arm.w)
+      assert.ok(endpoint.y >= arm.y && endpoint.y <= arm.y + arm.h)
+    }
+    icon.setVisible(false)
+    assert.ok(ui.commands.every((item) => item.visible === false))
+  }
+})
+
+test('launcher icon retains an alpha channel at the native asset size', () => {
+  const png = readFileSync(new URL('../assets/trex3/icon.png', import.meta.url))
+  assert.equal(png.subarray(1, 4).toString(), 'PNG')
+  assert.equal(png.readUInt32BE(16), 124)
+  assert.equal(png.readUInt32BE(20), 124)
+  assert.equal(
+    png[25],
+    6,
+    'RGBA PNG required; RGB bakes in a square background',
+  )
 })
 test('state changes reserve the same geometry and do not allocate more widgets', () => {
   const ui = nativeUI()
