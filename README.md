@@ -2,14 +2,17 @@
 
 A small Zepp OS app for Amazfit T-Rex 3, tracking line **440** at your boarding stop.
 
-| Israel time  | Boarding location   | Arrival being checked |
-| ------------ | ------------------- | --------------------- |
-| Before 10:00 | Meitar, stop 14100  | Today                 |
-| 10:00?18:00  | Jerusalem, stop 222 | Today                 |
-| From 18:00   | Meitar, stop 14100  | Tomorrow              |
+| Israel time  | Boarding location   | Search starts |
+| ------------ | ------------------- | ------------- |
+| Before 10:00 | Meitar, stop 14100  | Today         |
+| 10:00–18:00  | Jerusalem, stop 222 | Today         |
+| From 18:00   | Meitar, stop 14100  | Tomorrow      |
 
 Both switch times are editable in Zepp. Selection applies every day, with Israel
 DST and date rollover handled locally. Stop codes stay out of the watch UI.
+If that day's buses have finished, the lookup continues through the next seven
+days and shows the first available bus. Both views label Tomorrow or the actual
+weekday/date, including days without service in between.
 
 **Green Live label = live ETA. Amber Scheduled label = timetable.** The phone first checks the public
 Ministry live-arrivals API. If live data is missing or unavailable, it uses the
@@ -24,7 +27,7 @@ swapping direction there, or tapping Refresh while the screen is on. The phone
 has a 30-second request cooldown and caches compact daily timetables for 30 minutes.
 Live predictions expire after two minutes; an actual supplied timetable time can
 replace an expired live prediction. Scheduled cache lasts up to 24 hours and never
-beyond the selected service date or passed arrival. No GPS, background polling,
+beyond a passed arrival. No GPS, background polling,
 server, API key, telemetry, remote fonts or map is needed.
 
 Version 0.5.2 handles screen on/off events directly: countdown timers and request
@@ -33,6 +36,13 @@ and short sleeps refresh without requiring a page rebuild. The card reloads its
 cached countdown on focus and on wrist wake while focused. It cannot fetch a
 new live ETA itself; tap its body to open the app. Battery consumption and manual
 Back/wrist-wake behavior still require physical-watch verification.
+
+Version 0.7.2 removes the selected-date-only timetable restriction and the
+36-hour scheduled-arrival cutoff. Future service dates pass phone validation and
+remain visible in the app and card. The first available bus wins even if a later
+bus has live data. [Future-service examples](artifacts/next-service-preview-0.7.2.png)
+use synthetic timetables. Lookup remains on demand, with cached calendars and
+the same 30-second request cooldown; there is no background polling.
 
 Version 0.7.1 clears the refresh arrow's canvas during Checking… so it cannot
 overlap the centered label, then redraws the arrow when Refresh returns.
@@ -55,11 +65,12 @@ result with the same freshness checks. Green means live and amber means estimate
 
 **Temporary direction switch (app only):** tap Reverse beside the boarding town.
 Reset restores the clock choice; leaving the view clears the temporary choice.
-The card always follows the clock. After 18:00 both directions check tomorrow.
+The card always follows the clock. After 18:00 both directions start their
+search with tomorrow, continuing to later service dates when needed.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.7.1.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.7.2.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 
@@ -98,7 +109,11 @@ npm run check:provider
 npm run build
 ```
 
-`check:provider` checks today's two directions and tomorrow's morning schedule (up to five on-demand HTTP requests); unit tests never use the internet. The build writes `dist/`. Dependencies are pinned to the latest published versions checked on 2026-10-19, with a lockfile. Zeus brings its own development dependencies; the watch package only includes the app and the messaging code it needs.
+`check:provider` checks today's two directions, tomorrow's morning schedule and
+the phone-to-watch validation/presentation for both directions. It makes explicit
+on-demand HTTP requests, sharing cached calendars; the exact count and arrival
+dates are recorded in artifacts/provider-probe.json. Unit tests never use the
+internet. The build writes `dist/`. Dependencies are pinned to the latest published versions checked on 2026-10-19, with a lockfile. Zeus brings its own development dependencies; the watch package only includes the app and the messaging code it needs.
 
 Read [INSTALL.md](INSTALL.md) for simulator and watch installation. [Provider validation](docs/PROVIDERS.md) records the observed responses and the remaining route verification. [Validation notes](docs/VALIDATION.md) distinguish automated, desktop-layout and hardware checks.
 

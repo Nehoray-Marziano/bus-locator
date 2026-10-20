@@ -131,7 +131,18 @@ Source icons retain their recognizable shapes; decoration never implies data.
 Live predictions expire after two minutes. An actual supplied future timetable
 can replace an expired live ETA, switching to an amber Scheduled label. A schedule
 is never invented from a stale live estimate. Scheduled cache lasts up to 24 hours
-and never beyond its service date or passed arrival. Demo is always labelled.
+and never beyond its passed arrival. Demo is always labelled.
+
+The next available bus is shown even when the selected day's service has ended.
+app-side/provider.js checks later daily calendars through seven days ahead,
+stopping at the first future departure. Empty calendars are cached too, for 30
+minutes per direction/date, with an eight-second total search budget. A failed
+calendar is an unavailable result, not evidence of no service. The earliest
+valid feed entry wins regardless of live/scheduled source. shared/model.js
+validates the actual arrival date and permits future scheduled cache for the
+same direction; live freshness remains two minutes. shared/time.js owns Today,
+Tomorrow and later weekday/date labels, used by shared/presentation.js on both
+surfaces. Future dates always use the arrival clock and explicit day label.
 
 Automatic selection is Meitar before 10:00, Jerusalem until 18:00, and tomorrow's
 Meitar from 18:00. Settings remain editable. Shared Israel-time conversion handles
@@ -139,7 +150,8 @@ DST and date rollovers. Backend stop IDs never appear in either view.
 
 shared/direction-button.js owns Reverse/Reset in the app only. Refresh preserves
 the temporary choice; pause/destroy clears it. No direction preference is saved.
-The automatic Today/Tomorrow context remains in effect. The card always follows
+The automatic rule supplies the first search date; later service days are allowed.
+The card always follows
 the clock and opens the app without an override. shared/cache.js retains
 one observation per direction; missing cache never borrows the opposite ETA.
 

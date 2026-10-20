@@ -98,6 +98,35 @@ const scenes = [
       'return',
     ),
   ],
+  [
+    'Next bus / tomorrow after last return',
+    viewModel(
+      {
+        ...sample,
+        tripId: 'return',
+        date: '2026-10-20',
+        source: 'scheduled',
+        checkedAt: now + 8 * 3600000,
+        arrivalAt: Date.parse('2026-10-20T12:00:00Z'),
+      },
+      config,
+      now + 8 * 3600000,
+    ),
+  ],
+  [
+    'Next service / skips Saturday',
+    viewModel(
+      {
+        ...sample,
+        date: '2026-10-25',
+        source: 'scheduled',
+        checkedAt: Date.parse('2026-10-23T05:00:00Z'),
+        arrivalAt: Date.parse('2026-10-25T04:18:00Z'),
+      },
+      config,
+      Date.parse('2026-10-23T05:00:00Z'),
+    ),
+  ],
 ]
 const output = scenes.map(([title, model]) => {
   const ui = nativeUI()
@@ -140,7 +169,11 @@ for (const bounds of [
   { w: 400, h: 264, radius: 32, margin: 40 },
   { w: 320, h: 264, radius: 32, margin: 80 },
 ])
-  for (const index of Array.from({ length: 14 }, (_, index) => index)) {
+  for (const index of [
+    ...Array.from({ length: 14 }, (_, index) => index),
+    16,
+    17,
+  ]) {
     const ui = nativeUI()
     buildCardView(ui, bounds, () => {})(scenes[index][1])
     cards.push({

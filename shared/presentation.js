@@ -1,9 +1,14 @@
 import { sizes } from './theme.js'
+import { SCHEDULE_LOOKAHEAD_DAYS } from './model.js'
 
 const states = {
   CHECKING: ['Checking', 'Checking arrivals', ''],
   'NO UPDATE': ['Ready', 'Check your bus', 'Tap Refresh'],
-  'NO PREDICTION': ['No arrivals', 'No arrivals found', 'Try Refresh later'],
+  'NO PREDICTION': [
+    'No arrivals',
+    'No arrivals found',
+    `No trips in the next ${SCHEDULE_LOOKAHEAD_DAYS} days`,
+  ],
   'DEMO · NO PREDICTION': ['Demo', 'No sample arrival', 'Demo mode'],
   'OLD UPDATE': ['Expired', 'Update needed', 'Tap Refresh'],
   'UPDATE NEEDED': ['Refresh', 'Check the next bus', 'Tap Refresh'],
@@ -22,7 +27,11 @@ export function presentation(model) {
   const demo = model.status.startsWith('DEMO')
   const live = hasArrival && !demo && model.status === 'LIVE PREDICTION'
   const scheduled = hasArrival && model.source === 'scheduled'
-  const showClock = hasArrival && (model.tomorrow || Number(model.number) >= 60)
+  const showClock =
+    hasArrival &&
+    (model.tomorrow ||
+      (model.dayLabel && model.dayLabel !== 'Today') ||
+      Number(model.number) >= 60)
   const [emptyStatus, headline, recovery] =
     states[model.status] || states['NO UPDATE']
   const shortTown = (town) =>
@@ -64,9 +73,7 @@ export function presentation(model) {
         ? sizes.compactCountdown
         : sizes.countdown,
     unit: showClock
-      ? model.tomorrow
-        ? 'Tomorrow'
-        : 'Today'
+      ? model.dayLabel || (model.tomorrow ? 'Tomorrow' : 'Today')
       : model.number === 'Due'
         ? 'Arriving now'
         : 'min',

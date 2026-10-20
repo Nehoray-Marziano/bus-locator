@@ -2,6 +2,8 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { readConfig } from '../shared/config.js'
 import { addDays, israelTime, clock } from '../shared/time.js'
+import { activeTrip, validateArrival, viewModel } from '../shared/model.js'
+import { createCommuteService } from '../app-side/service.js'
 import { createArrivalProvider } from '../app-side/provider.js'
 
 const today = israelTime(Date.now()).date
@@ -28,6 +30,7 @@ for (const trip of [
       tripId: trip.id,
       stopCode: trip.stopCode,
       date: trip.serviceDate,
+      arrivalDate: result.arrivalAt ? israelTime(result.arrivalAt).date : null,
       status: 'passed',
       kind: result.kind,
       source: result.source,
@@ -39,6 +42,54 @@ for (const trip of [
       tripId: trip.id,
       stopCode: trip.stopCode,
       date: trip.serviceDate,
+      status: 'failed',
+      message: error.message,
+    })
+  }
+}
+// Also exercise the real phone validation and watch presentation. Normalizing
+// an HTTP response alone misses the old same-date filter in the watch model.
+const service = createCommuteService({
+  getSetting: () => null,
+  fetchArrival: provider,
+})
+for (const direction of ['morning', 'return']) {
+  const start = Date.now()
+  try {
+    const selected = activeTrip(config, start, direction)
+    const response = await service(direction)
+    const model = viewModel(
+      response.snapshot,
+      response.config,
+      Date.now(),
+      false,
+      direction,
+    )
+    if (response.snapshot?.kind !== 'arrival' || !model.unit)
+      throw new Error(`No visible ETA: ${model.status}`)
+    // Keep the standalone validator in the integration path too.
+    validateArrival(
+      response.snapshot,
+      direction,
+      Date.now(),
+      selected.serviceDate,
+    )
+    results.push({
+      tripId: direction,
+      stage: 'phone-to-watch',
+      date: selected.serviceDate,
+      arrivalDate: response.snapshot.date,
+      status: 'passed',
+      kind: response.snapshot.kind,
+      source: response.snapshot.source,
+      arrival: model.eta,
+      dayLabel: model.dayLabel,
+      durationMs: Date.now() - start,
+    })
+  } catch (error) {
+    results.push({
+      tripId: direction,
+      stage: 'phone-to-watch',
       status: 'failed',
       message: error.message,
     })

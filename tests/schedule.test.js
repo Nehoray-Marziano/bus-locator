@@ -207,12 +207,12 @@ test('tomorrow is one timetable request with correct date/boarding stop and no l
   assert.equal(calls, 1)
 })
 
-test('expired/cross-date scheduled times cannot be accepted as a valid arrival', () => {
+test('expired, passed and beyond-search-range scheduled times are rejected', () => {
   for (const changes of [
     { source: 'unknown' },
     { source: 'scheduled', checkedAt: NOW - 86400001 },
-    { source: 'scheduled', arrivalAt: NOW + 37 * 3600000 },
-    { source: 'scheduled', arrivalAt: tomorrow },
+    { source: 'scheduled', arrivalAt: NOW + 9 * 86400000 },
+    { source: 'scheduled', arrivalAt: NOW - 60000 },
   ])
     assert.throws(() => validateArrival(prediction(changes), trip.id, NOW))
 })

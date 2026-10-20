@@ -1,5 +1,31 @@
 # Validation record
 
+Version 0.7.2 next-service fix (2026-10-20): reproduced the exhausted-day lookup
+returning empty despite the following day's published departures. The provider
+now searches daily calendars through seven days ahead, choosing the first
+future departure and caching empty dates as well as timetable rows. It selects
+the earliest feed entry, without preferring a later live bus over an earlier
+scheduled one. The phone/watch contract stores the actual arrival date, removes
+the 36-hour schedule cutoff and allows that future date through cache matching.
+Both views use Tomorrow or a later weekday/date beside the arrival clock.
+
+Six new regressions cover exhausted today through the actual provider/service/
+controller/cache and both views, skipping empty days across the Israel DST
+change, midnight and cache age/direction checks, a later-date network failure,
+a fully empty search horizon with cached results, and the shared request budget.
+The existing tests keep live expiry, invalid times, route/stop identity and
+background-request guards. All 104 deterministic tests pass. Native-command
+renders cover 18 watch and 48 card states, including future-day clocks at 320px
+card width. Type/syntax, formatting and strict design checks run separately.
+
+The real integration probe now covers phone validation and watch presentation,
+which the old HTTP-only probe missed. At 2026-10-20T14:15Z, nine explicit requests
+found 2026-10-21 06:18 from Meitar and 07:08 from Jerusalem, both scheduled;
+both produced visible Tomorrow models. Direct weekend calendar checks found
+empty Saturday arrays in both directions and valid Friday/Sunday schedules.
+No live ETA or physical-watch acceptance is claimed by these checks.
+Package: dist/Meitar-Bus-0.7.2.zab.
+
 Version 0.7.1 busy-button fix (2026-10-20): the watch showed the C in Checking…
 overlapping the refresh arrow even though the widget was marked hidden. The
 refresh canvas now clears its drawing when hidden and redraws exactly one

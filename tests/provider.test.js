@@ -47,7 +47,7 @@ test('normalizes a live arrival and source query timestamp without GPS', () => {
   assert.equal(result.checkedAt, NOW)
   assert.equal('routeLocation' in result, false)
 })
-test('selects the earliest valid live prediction rather than the first schedule', () => {
+test('selects the next bus even when a later bus has a live prediction', () => {
   const result = normalizeArrivals(
     response([
       { arrivalTime: '2026-10-19T08:01:00', isRealTime: false },
@@ -57,7 +57,8 @@ test('selects the earliest valid live prediction rather than the first schedule'
     trip,
     NOW,
   )
-  assert.equal(result.arrivalAt, NOW + 5 * 60000)
+  assert.equal(result.arrivalAt, NOW + 60000)
+  assert.equal(result.source, 'scheduled')
 })
 for (const flag of ['false', 'true', 1, null, undefined]) {
   test(`does not claim live data for isRealTime=${String(flag)}`, () => {

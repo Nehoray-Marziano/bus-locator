@@ -10,7 +10,8 @@ key, relay, location request or provider SDK is used.
 The fixed pairs are `14100` / `10440-2-#` and `222` / `10440-1-#`.
 Strict `isRealTime: true` means live; strict false means scheduled. Other values,
 canceled entries, invalid dates, old query timestamps and mismatched stops are
-rejected. Live entries are preferred. `staticArrivalTime`, when present and in
+rejected. The earliest valid arrival wins, including when it is scheduled and a
+later bus has a live prediction. `staticArrivalTime`, when present and in
 the future, is retained as an honest fallback after live data expires.
 
 `startTime` is query time, not the vehicle's last report. The app uses it for
@@ -41,14 +42,28 @@ ID and route descriptor before accepting a time. If MOT changes numeric IDs,
 those configured IDs need revalidation; wrong-route data is rejected.
 
 A missing/failed current feed triggers timetable fallback. Tomorrow skips the
-live query. Timetable arrays are cached on the phone for 30 minutes, bounded to
-one date per direction, and filtered against the current time on reuse. No
+live query. When a date has no remaining departures, the next date is queried,
+through seven calendar days ahead. Timetable arrays, including empty days, are
+cached on the phone for 30 minutes, bounded to eight dates per direction, and
+filtered against the current time on reuse. No
 continuous downloads occur. Returned scheduled observations retain their original
 check timestamp and remain visibly scheduled for up to 24 hours before expiry.
-The combined request path has deadlines inside the phone's nine-second guard.
+The combined request path has one eight-second budget inside the phone's
+nine-second guard. No additional date request starts once that budget expires.
+Calendar failures propagate as unavailable; an empty live feed cannot turn an
+unknown future timetable into a false no-arrivals result.
 
-Run `npm run check:provider` for three explicit lookups: today's two directions
-and tomorrow's morning, with at most five HTTP calls. The resulting source,
+Scheduled observations store the actual departure date. Phone validation and
+watch/cache matching accept later service days for the same direction through
+the search horizon, replacing the old exact-date match and 36-hour cutoff.
+Both surfaces show Today, Tomorrow or a weekday/date. Old observations, passed
+departures, wrong stops/routes and the opposite direction remain invalid.
+
+Run `npm run check:provider` for today's two directions and tomorrow's morning,
+plus phone-service/watch-model checks for both directions. The 2026-10-20 probe
+used nine HTTP calls and found tomorrow's 06:18 Meitar departure and 07:08
+Jerusalem departure, both scheduled. These are dated observations, not promises
+or hardcoded departures. The resulting source, actual arrival date,
 clock time and request count are in artifacts/provider-probe.json. Unit tests
 use synthetic fixtures. Public endpoints have no SLA and may change. No fresh
 time is fabricated when both sources fail or no service is returned.

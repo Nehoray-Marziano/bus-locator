@@ -59,6 +59,10 @@ storage sharing and tap behavior below still need checking after installing.
 - During the morning trip, confirm **14100** and compare live line 440 prediction against the phone.
 - During the return trip, confirm **222** and verify `10440-1-#` returns the correct journey. The daily timetable now validates this mapping. Compare the live prediction during service as well.
 - Check that the screen explicitly labels demo, no prediction, expired data and disconnection.
+- For 0.7.2, open after the selected direction's last bus: the next service day
+  must show a scheduled clock with Tomorrow, or the actual weekday/date. Repeat
+  before a day without service, and confirm the date survives opening the card
+  and crossing midnight. Compare against the current official timetable.
 - For 0.7.0, compare the enlarged card against artifacts/card-icons-preview-0.7.0.png.
   It should be 264px tall with MTR/JLM labels and no Reverse/Reset button. Check
   all labels at normal wrist distance and outdoors, including Due and tomorrow.
@@ -84,5 +88,6 @@ Account sign-in, QR scanning, physical watch behavior and the final live 440 com
 
 Tap Reverse beside the boarding town in the app. Refresh stays on that direction.
 Tap Reset to restore the time rule, or leave the app: the next session is automatic.
-After 18:00 both directions check tomorrow. The card always follows the clock and
+After 18:00 both directions start searching tomorrow and continue to later dates
+when there is no service. The card always follows the clock and
 has no direction button. Tap anywhere on it to open the app for a fresh phone check.

@@ -1,7 +1,8 @@
-import { addDays, clock, israelTime } from './time.js'
+import { addDays, clock, israelTime, serviceDayLabel } from './time.js'
 
 export const FRESH_MS = 120000
 export const SCHEDULE_MAX_AGE_MS = 24 * 3600000
+export const SCHEDULE_LOOKAHEAD_DAYS = 7
 export const REQUEST_GAP_MS = 30000
 
 export function activeTrip(config, now, direction = null) {
@@ -42,13 +43,15 @@ export function viewModel(
   direction = null,
 ) {
   const trip = activeTrip(config, now, direction)
-  const tomorrow = Boolean(trip && trip.serviceDate !== israelTime(now).date)
+  const today = israelTime(now).date
+  const tomorrow = Boolean(trip && trip.serviceDate === addDays(today, 1))
   const base = {
     direction: trip?.id || null,
     manual: Boolean(normalizeDirection(direction)),
     boarding: trip?.from || 'Your stop',
     destination: trip?.to || '',
     tomorrow,
+    dayLabel: trip ? serviceDayLabel(trip.serviceDate, now) : '',
     eta: '',
     checked: '',
     source: '',
@@ -66,10 +69,20 @@ export function viewModel(
       status: 'SETUP',
       detail: config?.error || 'Open app settings in Zepp.',
     }
+  const futureSchedule =
+    snapshot?.kind === 'arrival' &&
+    snapshot.source === 'scheduled' &&
+    Number.isFinite(snapshot.arrivalAt) &&
+    snapshot.date === israelTime(snapshot.arrivalAt).date &&
+    snapshot.date >= trip.serviceDate &&
+    snapshot.date <= addDays(today, SCHEDULE_LOOKAHEAD_DAYS)
   if (
     !snapshot ||
     snapshot.tripId !== trip.id ||
-    snapshot.date !== trip.serviceDate
+    (snapshot.date !== trip.serviceDate && !futureSchedule) ||
+    (snapshot.kind === 'arrival' &&
+      (!Number.isFinite(snapshot.arrivalAt) ||
+        snapshot.date !== israelTime(snapshot.arrivalAt).date))
   )
     return {
       ...base,
@@ -124,6 +137,8 @@ export function viewModel(
     }
   return {
     ...base,
+    tomorrow: israelTime(arrivalAt).date === addDays(today, 1),
+    dayLabel: serviceDayLabel(israelTime(arrivalAt).date, now),
     number: remaining <= 0 ? 'Due' : String(Math.ceil(remaining / 60000)),
     unit: remaining <= 0 ? 'at your stop' : 'min to your stop',
     source,
@@ -162,14 +177,17 @@ export function validateArrival(
     throw new Error('Invalid or expired prediction')
   if (!['arrival', 'empty'].includes(data.kind))
     throw new Error('Invalid prediction type')
-  const validTime = (time, hours) =>
+  const validTime = (time, scheduled) =>
     Number.isFinite(time) &&
     time >= now - 30000 &&
-    time <= now + hours * 3600000 &&
-    israelTime(time).date === serviceDate
+    (scheduled
+      ? israelTime(time).date >= serviceDate &&
+        israelTime(time).date <=
+          addDays(israelTime(now).date, SCHEDULE_LOOKAHEAD_DAYS)
+      : time <= now + 6 * 3600000 && israelTime(time).date === serviceDate)
   if (
     data.kind === 'arrival' &&
-    (!validTime(data.arrivalAt, source === 'live' ? 6 : 36) ||
+    (!validTime(data.arrivalAt, source === 'scheduled') ||
       typeof data.stopName !== 'string' ||
       typeof data.lineLabel !== 'string')
   )
@@ -177,11 +195,16 @@ export function validateArrival(
   return {
     kind: data.kind,
     tripId,
-    date: serviceDate,
+    date:
+      data.kind === 'arrival' ? israelTime(data.arrivalAt).date : serviceDate,
     source,
     checkedAt: data.checkedAt,
     arrivalAt: data.arrivalAt,
-    scheduledAt: validTime(data.scheduledAt, 36) ? data.scheduledAt : undefined,
+    scheduledAt:
+      validTime(data.scheduledAt, true) &&
+      israelTime(data.scheduledAt).date === israelTime(data.arrivalAt).date
+        ? data.scheduledAt
+        : undefined,
     stopName: data.stopName?.slice(0, 48),
     lineLabel: data.lineLabel?.slice(0, 16),
   }

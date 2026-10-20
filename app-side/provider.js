@@ -1,5 +1,5 @@
-import { FRESH_MS } from '../shared/model.js'
-import { israelTime, parseIsraelTimestamp } from '../shared/time.js'
+import { FRESH_MS, SCHEDULE_LOOKAHEAD_DAYS } from '../shared/model.js'
+import { addDays, israelTime, parseIsraelTimestamp } from '../shared/time.js'
 import { withDeadline } from '../shared/deadline.js'
 
 export const MOT_BASE = 'https://api.bus.gov.il/prod/mot-scheduler-prod/api/en'
@@ -79,8 +79,7 @@ export function normalizeArrivals(body, trip, receivedAt) {
       ]
     })
     .sort((a, b) => a.arrivalAt - b.arrivalAt)
-  const chosen =
-    candidates.find((item) => item.source === 'live') || candidates[0]
+  const chosen = candidates[0]
   return chosen
     ? arrival(
         trip,
@@ -126,11 +125,18 @@ export function createArrivalProvider({ fetchJson, now = Date.now }) {
   return async (trip) => {
     const time = now()
     const date = trip.serviceDate || israelTime(time).date
-    let current
+    // Keep the whole on-demand search inside the phone/watch request deadlines.
+    // Empty dates are cached too; no periodic or background lookup is added.
+    const deadline = time + 8000
+    const request = (url, maxWait) => {
+      const remaining = deadline - now()
+      if (remaining <= 0) throw new Error('Request timed out')
+      return withDeadline(fetchJson(url), Math.min(maxWait, remaining))
+    }
     if (date === israelTime(time).date) {
       try {
-        current = normalizeArrivals(
-          await withDeadline(fetchJson(arrivalUrl(trip)), 3500),
+        const current = normalizeArrivals(
+          await request(arrivalUrl(trip), 3500),
           trip,
           now(),
         )
@@ -139,36 +145,35 @@ export function createArrivalProvider({ fetchJson, now = Date.now }) {
         /* Try the timetable when the live service is unreachable. */
       }
     }
-    try {
-      let cached = schedules[trip.id]
+    const lastDate = addDays(israelTime(time).date, SCHEDULE_LOOKAHEAD_DAYS)
+    const days = (schedules[trip.id] ||= {})
+    for (const saved of Object.keys(days))
       if (
-        !cached ||
-        cached.date !== date ||
-        now() - cached.checkedAt >= SCHEDULE_CACHE_MS
-      ) {
-        const body = await withDeadline(
-          fetchJson(scheduleUrl(trip, date)),
-          4500,
-        )
+        saved < date ||
+        saved > lastDate ||
+        now() - days[saved].checkedAt >= SCHEDULE_CACHE_MS ||
+        days[saved].checkedAt > now()
+      )
+        delete days[saved]
+    for (let day = date; day <= lastDate; day = addDays(day, 1)) {
+      let cached = days[day]
+      if (!cached || now() - cached.checkedAt >= SCHEDULE_CACHE_MS) {
+        const body = await request(scheduleUrl(trip, day), 4500)
         cached = {
-          date,
           checkedAt: now(),
-          times: normalizeSchedule(body, trip, date, now()),
+          times: normalizeSchedule(body, trip, day, now()),
         }
-        schedules[trip.id] = cached
+        days[day] = cached
       }
       const next = cached.times.find((value) => value >= now() - 30000)
-      return next === undefined
-        ? {
-            kind: 'empty',
-            tripId: trip.id,
-            source: 'scheduled',
-            checkedAt: cached.checkedAt,
-          }
-        : arrival(trip, cached.checkedAt, next, 'scheduled', next)
-    } catch (error) {
-      if (current) return current
-      throw error
+      if (next !== undefined)
+        return arrival(trip, cached.checkedAt, next, 'scheduled', next)
+    }
+    return {
+      kind: 'empty',
+      tripId: trip.id,
+      source: 'scheduled',
+      checkedAt: time,
     }
   }
 }

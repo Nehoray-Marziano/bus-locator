@@ -143,6 +143,16 @@ for index, scene in enumerate(cards):
     card_pen.text((x + 10, y + bounds['h'] + 10), scene['title'], font=caption, fill=color(tokens['muted']))
 card_sheet.save(artifacts / f'card-icons-states-{version}.png')
 
+next_service = Image.new('RGB', (1080, 930), canvas)
+next_pen = ImageDraw.Draw(next_service)
+for x, title, watch_index, card_index in [(30, 'Tomorrow / synthetic timetable', 16, 14), (570, 'Next service day / synthetic timetable', 17, 15)]:
+    next_pen.text((x + 12, 24), title, font=caption, fill=color(tokens['text']))
+    next_service.paste(images[watch_index], (x, 80), mask)
+    next_card = cards[card_index]
+    bounds = next_card['bounds']
+    next_service.paste(render(next_card['commands'], 480, bounds['h'], False), (x, 610))
+next_service.save(artifacts / f'next-service-preview-{version}.png')
+
 # Check actual-size raster connectivity, rather than only overlapping widget
 # bounding boxes. A separated arrowhead must fail even if its boxes intersect.
 icon_sheet = Image.new('RGB', (600, 310), canvas)

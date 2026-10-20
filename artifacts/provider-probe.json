@@ -1,36 +1,63 @@
 {
-  "checkedAt": "2026-10-19T19:05:03.521Z",
-  "requests": 5,
+  "checkedAt": "2026-10-20T14:15:00.501Z",
+  "requests": 9,
   "results": [
     {
       "tripId": "morning",
       "stopCode": "14100",
-      "date": "2026-10-19",
-      "status": "passed",
-      "kind": "empty",
-      "source": "scheduled",
-      "arrival": null,
-      "durationMs": 1042
-    },
-    {
-      "tripId": "return",
-      "stopCode": "222",
-      "date": "2026-10-19",
-      "status": "passed",
-      "kind": "empty",
-      "source": "scheduled",
-      "arrival": null,
-      "durationMs": 386
-    },
-    {
-      "tripId": "morning",
-      "stopCode": "14100",
       "date": "2026-10-20",
+      "arrivalDate": "2026-10-21",
       "status": "passed",
       "kind": "arrival",
       "source": "scheduled",
       "arrival": "06:18",
-      "durationMs": 139
+      "durationMs": 1272
+    },
+    {
+      "tripId": "return",
+      "stopCode": "222",
+      "date": "2026-10-20",
+      "arrivalDate": "2026-10-21",
+      "status": "passed",
+      "kind": "arrival",
+      "source": "scheduled",
+      "arrival": "07:08",
+      "durationMs": 1177
+    },
+    {
+      "tripId": "morning",
+      "stopCode": "14100",
+      "date": "2026-10-21",
+      "arrivalDate": "2026-10-21",
+      "status": "passed",
+      "kind": "arrival",
+      "source": "scheduled",
+      "arrival": "06:18",
+      "durationMs": 0
+    },
+    {
+      "tripId": "morning",
+      "stage": "phone-to-watch",
+      "date": "2026-10-20",
+      "arrivalDate": "2026-10-21",
+      "status": "passed",
+      "kind": "arrival",
+      "source": "scheduled",
+      "arrival": "06:18",
+      "dayLabel": "Tomorrow",
+      "durationMs": 751
+    },
+    {
+      "tripId": "return",
+      "stage": "phone-to-watch",
+      "date": "2026-10-20",
+      "arrivalDate": "2026-10-21",
+      "status": "passed",
+      "kind": "arrival",
+      "source": "scheduled",
+      "arrival": "07:08",
+      "dayLabel": "Tomorrow",
+      "durationMs": 297
     }
   ]
 }

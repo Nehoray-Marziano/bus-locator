@@ -36,6 +36,16 @@ export function addDays(date, days) {
     .slice(0, 10)
 }
 
+export function serviceDayLabel(date, now) {
+  const today = israelTime(now).date
+  if (date === today) return 'Today'
+  if (date === addDays(today, 1)) return 'Tomorrow'
+  const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+    new Date(`${date}T12:00:00Z`).getUTCDay()
+  ]
+  return `${weekday} ${Number(date.slice(8, 10))}/${Number(date.slice(5, 7))}`
+}
+
 // The public MOT API emits Israel-local ISO strings without an offset. Resolve
 // both possible offsets and round-trip them so DST gaps cannot be invented.
 export function parseIsraelTimestamp(value, reference) {
