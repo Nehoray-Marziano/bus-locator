@@ -17,20 +17,22 @@ direction preference is saved. Both directions retain the automatic service date
 for that page session only. The card itself remains cache-only; an uncached
 direction shows no borrowed ETA and can be checked by opening the app.
 
-| Capability                        | Canonical owner                                               | Source of truth                                     | Allowed variants                  | Verification                                    |
-| --------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
-| Journey and service date          | shared/config.js; shared/model.js; shared/time.js             | User's 10:00/18:00 instructions                     | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
-| Temporary direction switch        | shared/model.js; shared/direction-button.js; view controllers | User's temporary-switch request                     | app / card; Reverse / Reset       | tests/direction.test.js                         |
-| Bounded watch cache               | shared/cache.js                                               | Cache both directions without persisting selection  | legacy / two observations         | tests/direction.test.js                         |
-| Arrival freshness and source      | shared/model.js                                               | User's scheduled-fallback requirement               | live / scheduled / demo / empty   | tests/schedule.test.js                          |
-| Shared UI vocabulary              | shared/presentation.js                                        | User's modern, clear green-ETA direction; DESIGN.md | full watch / card                 | tests/design.test.js                            |
-| Refresh and page lifecycle        | page/controller.js                                            | No background network work                          | active / paused                   | tests/controller.test.js                        |
-| Shortcut card focus and countdown | app-widget/controller.js                                      | Zepp card lifecycle                                 | build / focused / paused          | tests/card.test.js                              |
-| Card clipping-safe geometry       | app-widget/view.js                                            | User's observed card clipping and left shift        | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
-| Settings inputs and scrolling     | Zepp TextInput/Toggle                                         | Platform native UI                                  | two clock fields / demo           | tests/model.test.js; device validation          |
-| Phone request and timetable cache | app-side/service.js; app-side/provider.js                     | On-demand data constraint                           | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
+| Capability                        | Canonical owner                                               | Source of truth                                    | Allowed variants                  | Verification                                    |
+| --------------------------------- | ------------------------------------------------------------- | -------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Journey and service date          | shared/config.js; shared/model.js; shared/time.js             | User's 10:00/18:00 instructions                    | morning / return / tomorrow       | tests/model.test.js; tests/schedule.test.js     |
+| Temporary direction switch        | shared/model.js; shared/direction-button.js; view controllers | User's temporary-switch request                    | app / card; Reverse / Reset       | tests/direction.test.js                         |
+| Bounded watch cache               | shared/cache.js                                               | Cache both directions without persisting selection | legacy / two observations         | tests/direction.test.js                         |
+| Arrival freshness and source      | shared/model.js                                               | User's scheduled-fallback requirement              | live / scheduled / demo / empty   | tests/schedule.test.js                          |
+| Shared UI vocabulary              | shared/presentation.js; shared/theme.js                       | User's 2026-10-20 palette/size redesign; DESIGN.md | full watch / card                 | tests/design.test.js                            |
+| Refresh and page lifecycle        | page/controller.js                                            | No background network work                         | active / paused                   | tests/controller.test.js                        |
+| Shortcut card focus and countdown | app-widget/controller.js                                      | Zepp card lifecycle                                | build / focused / paused          | tests/card.test.js                              |
+| Card clipping-safe geometry       | app-widget/view.js                                            | User's observed card clipping and left shift       | margins / radii / narrow cards    | tests/design.test.js; scripts/render-preview.py |
+| Settings inputs and scrolling     | Zepp TextInput/Toggle                                         | Platform native UI                                 | two clock fields / demo           | tests/model.test.js; device validation          |
+| Phone request and timetable cache | app-side/service.js; app-side/provider.js                     | On-demand data constraint                          | shared request / cached timetable | tests/service.test.js; tests/schedule.test.js   |
 
-Green Live ETA requires a fresh, explicitly live provider entry. Strict false
+Green Live labels and ETA numerals require a fresh, explicitly live provider
+entry. Scheduled ETA numerals and labels are amber. Demo/empty states use neutral
+white; disconnected cached live values are muted. Strict false
 entries are usable schedules, labelled amber Scheduled. Missing/failed current
 feed falls back to the official daily timetable; tomorrow goes directly to that
 calendar. Unknown flags, canceled entries and wrong stop/route data are rejected.

@@ -45,11 +45,30 @@ export function drawIcon(ui, name, x, y, size, color, background) {
     rect(0.65, 0.05, 0.1, 0.25, 0.04)
     rect(0.29, 0.51, 0.18, 0.18, 0.02)
   } else if (name === 'refresh') {
-    arc(0.34, 45, 315)
-    // The 315-degree endpoint is (0.74, 0.26). Both rounded arms meet
-    // there, pointing along the clockwise tangent rather than above the arc.
-    rect(0.5, 0.21, 0.29, 0.1, 0.05)
-    rect(0.69, 0.02, 0.1, 0.29, 0.05)
+    // One closed silhouette keeps the shaft and triangular head connected even
+    // after native pixel rounding. Separate rounded bars leave a broken joint.
+    const canvas = ui.createWidget(ui.widget.CANVAS, { x, y, w: size, h: size })
+    canvas.setEnable(false)
+    parts.push(canvas)
+    const points = []
+    const halfStroke = Math.max(2, Math.round(size / 10)) / (2 * size)
+    const point = (radius, angle) => ({
+      x: (0.5 + radius * Math.cos((angle * Math.PI) / 180)) * size,
+      y: (0.5 + radius * Math.sin((angle * Math.PI) / 180)) * size,
+    })
+    for (let angle = 45; angle <= 315; angle += 5)
+      points.push(point(0.34 + halfStroke, angle))
+    const end = point(0.34, 315)
+    const diagonal = Math.SQRT1_2 * size
+    points.push(
+      { x: end.x + 0.18 * diagonal, y: end.y - 0.18 * diagonal },
+      { x: end.x + 0.16 * diagonal, y: end.y + 0.16 * diagonal },
+      { x: end.x - 0.18 * diagonal, y: end.y + 0.18 * diagonal },
+    )
+    for (let angle = 315; angle >= 45; angle -= 5)
+      points.push(point(0.34 - halfStroke, angle))
+    points.push(points[0])
+    canvas.drawPoly({ data_array: points, color })
   }
   return {
     setVisible(visible) {

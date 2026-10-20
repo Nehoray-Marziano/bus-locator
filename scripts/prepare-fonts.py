@@ -9,8 +9,8 @@ target = root / 'assets/trex3/fonts'
 target.mkdir(parents=True, exist_ok=True)
 characters = ''.join(chr(code) for code in range(32, 127)) + '\u00b7\u2014\u2026\u2192'
 for source, output, family, axes in [
-    ('nunito', 'MeitarSans', 'Meitar Sans', {'wght': 600}),
-    ('fredoka', 'MeitarBold', 'Meitar Bold', {'wdth': 100, 'wght': 600}),
+    ('dm-sans', 'MeitarSans', 'Meitar Sans', {'opsz': 24, 'wght': 500}),
+    ('space-grotesk', 'MeitarBold', 'Meitar Bold', {'wght': 700}),
 ]:
     font = instantiateVariableFont(TTFont(root / f'.tooling/fonts/{source}.ttf'), axes, inplace=True)
     options = Options()

@@ -28,6 +28,11 @@ def render(commands, width=480, height=480, round_screen=True):
             continue
         x, y, w, h = (item[k] * SCALE for k in ['x', 'y', 'w', 'h'])
         fill = color(item.get('color', 0))
+        if item['type'] == 'CANVAS':
+            for polygon in item.get('polygons', []):
+                points = [(x + point['x'] * SCALE, y + point['y'] * SCALE) for point in polygon['data_array']]
+                pen.polygon(points, fill=color(polygon['color']))
+            continue
         if item['type'] == 'ARC':
             pen.arc((x, y, x + w, y + h), item['start_angle'], item['end_angle'], fill=fill, width=round(item.get('line_width', 1) * SCALE))
             continue
@@ -75,7 +80,7 @@ def render(commands, width=480, height=480, round_screen=True):
 
 
 caption = font('fonts/MeitarSans.ttf', 10)
-canvas = tuple(round(((tokens['background'] >> shift) & 255) * 0.55) for shift in (16, 8, 0))
+canvas = tuple(round(((tokens['surface'] >> shift) & 255) * 0.55) for shift in (16, 8, 0))
 sheet = Image.new('RGB', (4 * 520, math.ceil(len(scenes) / 4) * 555), canvas)
 pen = ImageDraw.Draw(sheet)
 images = []
@@ -101,6 +106,21 @@ for index, scene_index in enumerate([0, 14, 15]):
 hero.save(artifacts / f'design-icons-preview-{version}.png')
 card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 480, 220, False)
 card.save(artifacts / f'card-icons-preview-{version}.png')
+before_path = artifacts / 'design-icons-preview-0.5.1.png'
+before_card_path = artifacts / 'card-icons-preview-0.5.1.png'
+if before_path.exists() and before_card_path.exists():
+    comparison = Image.new('RGB', (1080, 870), canvas)
+    comparison_pen = ImageDraw.Draw(comparison)
+    before = Image.open(before_path).crop((40, 150, 520, 630))
+    before_card = Image.open(before_card_path)
+    for x, label, watch, shortcut in [
+        (30, 'Previous', before, before_card),
+        (570, 'Sporty', images[0], card),
+    ]:
+        comparison_pen.text((x + 22, 26), label, font=font('fonts/MeitarSans.ttf', 14), fill=color(tokens['text']))
+        comparison.paste(watch, (x, 90), mask)
+        comparison.paste(shortcut, (x, 610))
+    comparison.save(artifacts / f'ui-before-after-{version}.png')
 cards = json.loads((artifacts / 'card-scenes.json').read_text(encoding='utf-8'))
 card_sheet = Image.new('RGB', (4 * 500, math.ceil(len(cards) / 4) * 280), canvas)
 card_pen = ImageDraw.Draw(card_sheet)
@@ -114,6 +134,30 @@ for index, scene in enumerate(cards):
     card_sheet.paste(card, (x, y))
     card_pen.text((x + 10, y + 230), scene['title'], font=caption, fill=color(tokens['muted']))
 card_sheet.save(artifacts / f'card-icons-states-{version}.png')
+
+# Check actual-size raster connectivity, rather than only overlapping widget
+# bounding boxes. A separated arrowhead must fail even if its boxes intersect.
+icon_sheet = Image.new('RGB', (600, 310), canvas)
+icon_pen = ImageDraw.Draw(icon_sheet)
+for index, sample in enumerate(json.loads((artifacts / 'refresh-icons.json').read_text(encoding='utf-8'))):
+    size = sample['size']
+    tile = render([{'type': 'FILL_RECT', 'x': 0, 'y': 0, 'w': size, 'h': size, 'color': tokens['primary']}, *sample['commands']], size, size, False)
+    remaining = {(x, y) for y in range(size) for x in range(size) if max(tile.getpixel((x, y))) < 100}
+    components = 0
+    while remaining:
+        components += 1
+        stack = [remaining.pop()]
+        while stack:
+            px, py = stack.pop()
+            neighbors = {(px + dx, py + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1]} & remaining
+            remaining.difference_update(neighbors)
+            stack.extend(neighbors)
+    assert components == 1, f'Refresh icon has {components} disconnected parts at {size}px'
+    left = index * 300 + 30
+    icon_pen.text((left, 18), f'{size}px / enlarged', font=font('fonts/MeitarSans.ttf', 10), fill=color(tokens['text']))
+    icon_sheet.paste(tile.resize((176, 176), Image.Resampling.NEAREST), (left, 72))
+    icon_sheet.paste(tile, (left + 208, 140))
+icon_sheet.save(artifacts / f'refresh-icon-preview-{version}.png')
 
 # Original vector-like icon, rendered with the same runtime palette.
 icon = Image.new('RGBA', (248, 248), (0, 0, 0, 0))

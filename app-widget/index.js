@@ -1,13 +1,14 @@
 import * as ui from '@zos/ui'
 import { push } from '@zos/router'
 import { LocalStorage } from '@zos/storage'
+import { Screen } from '@zos/sensor'
+import { bindScreenVisibility } from '../shared/visibility.js'
 import { createCardController } from './controller.js'
 import { buildCardView } from './view.js'
 
-let controller
-
 // This optional card reads cache only. Firmware availability needs device QA.
-AppWidget({
+const card = {
+  state: { controller: null, visibility: null, focused: false },
   build() {
     ui.setAppWidgetSize({ h: 220 })
     const bounds = { ...ui.getAppWidgetSize(), h: 220 }
@@ -17,24 +18,37 @@ AppWidget({
       () =>
         push({
           url: 'page/index',
-          params: JSON.stringify({ direction: controller?.getDirection() }),
+          params: JSON.stringify({
+            direction: this.state.controller?.getDirection(),
+          }),
         }),
-      () => controller?.switchDirection(),
+      () => this.state.controller?.switchDirection(),
     )
     const store = new LocalStorage()
-    controller = createCardController({
+    this.state.controller = createCardController({
       readCache: () => store.getItem('commute'),
       render,
     })
+    this.state.visibility = bindScreenVisibility({
+      screen: new Screen(),
+      focused: this.state.focused,
+      onResume: () => this.state.controller.resume(),
+      onPause: () => this.state.controller.pause(),
+    })
   },
   onResume() {
-    controller?.resume()
+    this.state.focused = true
+    this.state.visibility?.setFocused(true)
   },
   onPause() {
-    controller?.pause()
+    this.state.focused = false
+    this.state.visibility?.setFocused(false)
   },
   onDestroy() {
-    controller?.pause()
-    controller = null
+    this.state.visibility?.destroy()
+    this.state.controller?.pause()
+    this.state.controller = null
   },
-})
+}
+
+AppWidget(card)

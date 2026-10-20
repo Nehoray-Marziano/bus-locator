@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { colors, fonts } from '../shared/theme.js'
+import { colors, fonts, sizes } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
 import { buildCardView, cardLayout } from '../app-widget/view.js'
 import { buildWatchView } from '../page/view.js'
@@ -30,7 +30,10 @@ test('all text colors meet AA contrast on their actual surfaces', () => {
     ['success', 'surface'],
     ['warning', 'surface'],
     ['ink', 'primary'],
-    ['ink', 'pressed'],
+    ['ink', 'primaryPressed'],
+    ['text', 'pressed'],
+    ['primary', 'control'],
+    ['primary', 'pressed'],
     ['ink', 'success'],
     ['ink', 'warning'],
   ]) {
@@ -127,7 +130,7 @@ test('long waits use a readable clock time; demo stays explicit', () => {
     NOW,
   )
   assert.equal(presentation(long).value, long.eta)
-  assert.equal(presentation(long).valueSize, 82)
+  assert.equal(presentation(long).valueSize, sizes.clock)
   assert.match(long.eta, /^\d{2}:\d{2}$/)
   assert.equal(
     presentation(viewModel(prediction({ demo: true }), config, NOW)).status,
@@ -200,7 +203,7 @@ test('broadcast waves mark only fresh live data on both surfaces', () => {
   }
 })
 
-test('arrival panels change source color and clear green after live data expires', () => {
+test('ETA colors distinguish live and scheduled data and clear on stale/demo states', () => {
   const config = readConfig(() => null)
   for (const surface of ['watch', 'card']) {
     const ui = nativeUI()
@@ -213,19 +216,18 @@ test('arrival panels change source color and clear green after live data expires
             () => {},
           )
     update(viewModel(prediction(), config, NOW))
-    const panel = ui.commands.find(
-      (item) =>
-        item.type === 'FILL_RECT' &&
-        item.color === colors.success &&
-        item.w > 100,
-    )
-    assert.ok(panel, 'fresh live ETA has a mint panel')
     const number = ui.commands.find(
       (item) => item.type === 'TEXT' && item.text === '10',
     )
-    assert.equal(number.color, colors.ink)
+    assert.equal(number.color, colors.success)
+    const source = ui.commands.find(
+      (item) => item.type === 'TEXT' && item.text === 'Live',
+    )
+    assert.equal(source.color, colors.success)
     update(viewModel(prediction({ source: 'scheduled' }), config, NOW))
-    assert.equal(panel.color, colors.warning)
+    assert.equal(number.color, colors.warning)
+    assert.equal(source.text, 'Scheduled')
+    assert.equal(source.color, colors.warning)
     for (const sample of [
       prediction({ demo: true }),
       prediction({ checkedAt: NOW - 121000 }),
@@ -233,8 +235,24 @@ test('arrival panels change source color and clear green after live data expires
       prediction({ kind: 'error' }),
     ]) {
       update(viewModel(sample, config, NOW))
-      assert.notEqual(panel.color, colors.success)
+      assert.notEqual(source.text, 'Live')
+      assert.equal(number.color, colors.text)
     }
+    update({
+      ...viewModel(prediction(), config, NOW),
+      status: 'PHONE UNREACHABLE',
+    })
+    assert.equal(number.color, colors.muted)
+    assert.equal(source.text, 'Cached ETA')
+    assert.equal(
+      ui.commands.some(
+        (item) =>
+          item.type === 'FILL_RECT' &&
+          item.w > 100 &&
+          [colors.success, colors.warning].includes(item.color),
+      ),
+      false,
+    )
   }
 })
 
@@ -300,23 +318,36 @@ test('system margin translates the entire card once without shrinking its conten
   }
 })
 
-test('refresh arrowhead joins the arc at its clockwise endpoint at native sizes', () => {
+test('refresh silhouette is a single closed fill at native sizes and hides while checking', () => {
   for (const size of [22, 32]) {
     const ui = nativeUI()
     const icon = drawIcon(ui, 'refresh', 0, 0, size, colors.ink, colors.primary)
-    const [arc, ...arms] = ui.commands
-    const angle = (arc.end_angle * Math.PI) / 180
-    const endpoint = {
-      x: arc.x + arc.w / 2 + arc.radius * Math.cos(angle),
-      y: arc.y + arc.h / 2 + arc.radius * Math.sin(angle),
-    }
-    for (const arm of arms) {
-      assert.ok(endpoint.x >= arm.x && endpoint.x <= arm.x + arm.w)
-      assert.ok(endpoint.y >= arm.y && endpoint.y <= arm.y + arm.h)
-    }
+    assert.equal(ui.commands.length, 1)
+    const [shape] = ui.commands
+    assert.equal(shape.enabled, false, 'the icon lets taps reach Refresh')
+    assert.equal(shape.polygons.length, 1)
+    const points = shape.polygons[0].data_array
+    assert.deepEqual(points[0], points.at(-1))
+    assert.ok(
+      points.every(({ x, y }) => x >= 0 && y >= 0 && x <= size && y <= size),
+    )
     icon.setVisible(false)
     assert.ok(ui.commands.every((item) => item.visible === false))
   }
+  const ui = nativeUI()
+  const update = buildWatchView(ui, () => {})
+  const model = viewModel(
+    prediction(),
+    readConfig(() => null),
+    NOW,
+  )
+  update(model)
+  const icon = ui.commands.find((item) => item.type === 'CANVAS')
+  assert.equal(icon.visible, true)
+  update({ ...model, action: 'Checking…' })
+  assert.equal(icon.visible, false)
+  update(model)
+  assert.equal(icon.visible, true)
 })
 
 test('launcher icon retains an alpha channel at the native asset size', () => {

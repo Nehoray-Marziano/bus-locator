@@ -1,5 +1,68 @@
 # Validation record
 
+Version 0.6.2 refresh icon fix (2026-10-20): replaced the separate arc and two
+rounded arrowhead bars with one closed, filled silhouette on a native Canvas.
+The head follows the clockwise tangent and shares the shaft's polygon, so native
+rounding cannot open a joint between separate widgets. The Canvas disables its
+own touch handling so Refresh still receives taps; it hides during checking.
+The existing icon regression now covers closure, bounds, hit passthrough and
+visibility. Native-command raster checks assert one connected ink component at
+22px and 32px; artifacts/refresh-icon-preview-0.6.2.png shows both actual sizes
+and enlarged pixels. All 16 watch and 48 card renders still pass text bounds.
+Package: dist/Meitar-Bus-0.6.2.zab. Native Canvas antialiasing remains a watch check.
+
+Version 0.6.1 ETA refinement (2026-10-20): ETA numerals now use green for fresh
+Live and amber for Scheduled in both views. Demo/empty numerals remain white;
+disconnected cached live values use muted gray. Shared presentation owns this
+mapping and the source-color regression exercises live, scheduled, demo, expired,
+empty, error and disconnected transitions on both surfaces.
+
+Card nearby arrivals increase from 60px to 92px (53%) and clock times from 48px
+to 64px (33%) before card scaling. The arrival region grows and the unit moves
+down, preserving header, direction target and route. All 16 watch states and
+48 card renders pass text-bound checks with actual fonts, including Due and
+tomorrow clocks. They remain desktop approximations; hardware font metrics
+still need confirmation. Package: dist/Meitar-Bus-0.6.1.zab.
+
+Version 0.6.0 UI redesign (2026-10-20): both surfaces now use black/graphite,
+bold white arrival figures and orange actions, following the user's Sporty choice. Green/amber live/scheduled
+meaning is confined to labelled source icons/text. Arrival panels, colored route
+badges and the route container are removed. Nearby arrivals shrink from 120px to
+112px; long clocks from 82px to 76px. Space Grotesk 700 and DM Sans 500 replace
+Fredoka/Nunito, with both OFL licenses preserved. Static Latin subsets total
+38,368 bytes. The same token owner feeds both surfaces and DESIGN.md drift tests.
+
+The source-label regression checks now verify neutral numerals across all states,
+truthful labelled source colors, and removal of large green/amber panels. Existing
+tests still verify contrast, round-display geometry, card margin translation,
+48px targets, direction handoff and widget reuse. The renderer checks 16 watch
+states and all 16 states at each of three card widths (48 cards), including Due,
+loading, empty, settings, offline, cached, tomorrow and manual direction states.
+Its expanded matrix caught and fixed a wrapping Cached ETA label. These are
+native-command approximations using the actual fonts, not simulator screenshots.
+
+The strict project audit has no findings. DESIGN.md lint has zero errors and
+orphan-token warnings caused by native bindings, covered by runtime tests.
+The before/after artifact compares the previous 0.5.1 design with this pass using
+the same synthetic arrival. New package: dist/Meitar-Bus-0.6.0.zab. Native font
+metrics, sunlight legibility and physical touch use remain watch acceptance
+checks. No lifecycle or networking changes are introduced by this visual pass.
+
+Version 0.5.2 lifecycle checks (2026-10-20): the real page/card entry points run
+against fake native screen, storage and timer APIs. Five regression tests cover
+opening/waking, duplicate screen events, short sleeps, sleeping page rebuilds,
+sleep destruction without disabling relaunch, destruction cleanup, queued
+callbacks, cache reload on card focus/wake, and an unfocused/asleep card staying
+idle. Ordinary Pages use the Screen sensor rather than unsupported page
+onResume/onPause callbacks. No timer initiates networking. Phone cooldowns are
+unchanged. All 96 tests, TypeScript, source syntax and formatting checks pass.
+The card remains cache-only under Zepp's documented BLE restriction.
+
+The new package is dist/Meitar-Bus-0.5.2.zab. Physical Back-button exit, both
+short/long wrist-wake paths, AOD behavior and measured battery consumption remain
+hardware acceptance checks, listed in INSTALL.md. This change enables wake
+relaunch and preserves normal display sleep; it does not keep the display lit.
+
 Implementation checks: 2026-10-19, version 0.5.1.
 
 - 91 deterministic Node tests cover journey/service-date selection, Israel DST,

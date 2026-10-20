@@ -1,3 +1,5 @@
+import { sizes } from './theme.js'
+
 const states = {
   CHECKING: ['Checking', 'Checking arrivals', ''],
   'NO UPDATE': ['Ready', 'Check your bus', 'Tap Refresh'],
@@ -28,8 +30,14 @@ export function presentation(model) {
     live,
     scheduled,
     showClock,
-    fill: live ? 'success' : scheduled ? 'warning' : 'surface',
-    ink: live || scheduled ? 'ink' : 'text',
+    etaTone:
+      !hasArrival || demo
+        ? 'text'
+        : live
+          ? 'success'
+          : scheduled
+            ? 'warning'
+            : 'muted',
     journey: model.destination
       ? `${model.boarding} to ${model.destination}`
       : model.boarding,
@@ -48,7 +56,11 @@ export function presentation(model) {
         ? 'warning'
         : 'muted',
     value: hasArrival ? (showClock ? model.eta : model.number) : '—',
-    valueSize: showClock ? 82 : model.number.length > 2 ? 96 : 120,
+    valueSize: showClock
+      ? sizes.clock
+      : model.number.length > 2
+        ? sizes.compactCountdown
+        : sizes.countdown,
     unit: showClock
       ? model.tomorrow
         ? 'Tomorrow'

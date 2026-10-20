@@ -5,6 +5,7 @@ import { readConfig } from '../shared/config.js'
 import { nativeUI } from '../tests/native-ui.js'
 import { colors } from '../shared/theme.js'
 import { buildCardView } from '../app-widget/view.js'
+import { drawIcon } from '../shared/icons.js'
 
 const now = Date.parse('2026-10-19T05:00:00Z')
 const config = readConfig(() => null)
@@ -120,7 +121,7 @@ for (const bounds of [
   { w: 400, h: 220, radius: 32, margin: 40 },
   { w: 320, h: 220, radius: 32, margin: 80 },
 ])
-  for (const index of [0, 1, 11, 12, 14, 15]) {
+  for (const index of scenes.keys()) {
     const ui = nativeUI()
     buildCardView(ui, bounds, () => {})(scenes[index][1])
     cards.push({
@@ -130,6 +131,18 @@ for (const bounds of [
     })
   }
 writeFileSync('artifacts/card-scenes.json', JSON.stringify(cards, null, 2))
+writeFileSync(
+  'artifacts/refresh-icons.json',
+  JSON.stringify(
+    [22, 32].map((size) => {
+      const ui = nativeUI()
+      drawIcon(ui, 'refresh', 0, 0, size, colors.ink, colors.primary)
+      return { size, commands: ui.commands }
+    }),
+    null,
+    2,
+  ),
+)
 console.log(
   `Generated ${output.length} native watch states and a shortcut card (synthetic data).`,
 )

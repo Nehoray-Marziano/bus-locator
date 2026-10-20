@@ -8,8 +8,8 @@ export function buildDirectionButton(ui, bounds, switchDirection) {
     text: 'Reverse',
     text_size: 18,
     font: fonts.body,
-    color: colors.ink,
-    normal_color: colors.primary,
+    color: colors.primary,
+    normal_color: colors.control,
     press_color: colors.pressed,
     click_func: switchDirection,
   })

@@ -1,4 +1,4 @@
-import { colors, fonts } from '../shared/theme.js'
+import { colors, fonts, sizes } from '../shared/theme.js'
 import { presentation } from '../shared/presentation.js'
 import { drawIcon } from '../shared/icons.js'
 import { buildDirectionButton } from '../shared/direction-button.js'
@@ -48,30 +48,28 @@ export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
       align_v: align.CENTER_V,
       text_style: ui.text_style.WRAP,
     })
-  rect(left, top, 88 * scale, 34 * scale, 14 * scale, colors.primary)
   drawIcon(
     ui,
     'bus',
-    left + 7 * scale,
+    left,
     top + 5 * scale,
     24 * scale,
-    colors.ink,
     colors.primary,
+    colors.surface,
   )
   const line = text(
-    left + 35 * scale,
+    left + 34 * scale,
     top,
     50 * scale,
     34 * scale,
-    24,
+    26,
     fonts.bold,
   )
   line.setProperty(prop.TEXT, '440')
-  line.setProperty(prop.COLOR, colors.ink)
   const live = drawIcon(
     ui,
     'live',
-    left + width - 144 * scale,
+    left + width - 166 * scale,
     top + 5 * scale,
     24 * scale,
     colors.success,
@@ -80,57 +78,49 @@ export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
   const calendar = drawIcon(
     ui,
     'calendar',
-    left + width - 144 * scale,
+    left + width - 166 * scale,
     top + 5 * scale,
     24 * scale,
     colors.warning,
     colors.surface,
   )
   const status = text(
-    left + width - 110 * scale,
+    left + width - 132 * scale,
     top,
-    110 * scale,
+    132 * scale,
     34 * scale,
     20,
   )
 
   const valueWidth = width - 96
-  const bubble = rect(
+  const value = text(
     left,
-    top + 44 * scale,
+    top + 30 * scale,
     valueWidth,
     96 * scale,
-    28 * scale,
-    colors.surface,
-  )
-  const value = text(
-    left + 8 * scale,
-    top + 45 * scale,
-    valueWidth - 16 * scale,
-    68 * scale,
-    64,
+    sizes.cardCountdown,
     fonts.bold,
-    align.CENTER_H,
+    align.LEFT,
   )
   const unit = text(
-    left + 8 * scale,
-    top + 111 * scale,
-    valueWidth - 16 * scale,
-    26 * scale,
+    left,
+    top + 122 * scale,
+    valueWidth,
+    24 * scale,
     20,
     fonts.body,
-    align.CENTER_H,
+    align.LEFT,
   )
   const updateDirection = buildDirectionButton(
     ui,
     { x: left + width - 84, y: top + 68 * scale, w: 84, h: 48 },
     switchDirection,
   )
+  rect(left, top + 146 * scale, width, 1, 0, colors.divider)
   const route = text(left, top + 148 * scale, width, 28 * scale, 22)
   return (model) => {
     const display = presentation(model)
     updateDirection(model)
-    bubble.setProperty(prop.COLOR, colors[display.fill])
     status.setProperty(prop.TEXT, display.hasArrival ? display.status : '')
     status.setProperty(prop.COLOR, colors[display.tone])
     value.setProperty(
@@ -140,10 +130,14 @@ export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
     value.setProperty(
       prop.TEXT_SIZE,
       Math.round(
-        (display.hasArrival ? (display.showClock ? 48 : 64) : 24) * scale,
+        (display.hasArrival
+          ? display.showClock
+            ? sizes.cardClock
+            : sizes.cardCountdown
+          : 24) * scale,
       ),
     )
-    value.setProperty(prop.COLOR, colors[display.ink])
+    value.setProperty(prop.COLOR, colors[display.etaTone])
     unit.setProperty(
       prop.TEXT,
       display.hasArrival ? display.unit : 'Tap to check',
@@ -152,7 +146,7 @@ export function buildCardView(ui, bounds, open, switchDirection = () => {}) {
       prop.TEXT_SIZE,
       Math.round((display.hasArrival ? 20 : 16) * scale),
     )
-    unit.setProperty(prop.COLOR, colors[display.ink])
+    unit.setProperty(prop.COLOR, colors.muted)
     route.setProperty(prop.TEXT, display.journey)
     live.setVisible(display.live)
     calendar.setVisible(display.scheduled)

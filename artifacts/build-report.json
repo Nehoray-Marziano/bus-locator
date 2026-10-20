@@ -1,7 +1,7 @@
 {
-  "package": "dist/Meitar-Bus-0.5.1.zab",
-  "bytes": 147841,
-  "sha256": "a137a27e9c29aafbff5be2f70596479fd982131416d437070b4d1080278523c2",
+  "package": "dist/Meitar-Bus-0.6.2.zab",
+  "bytes": 142821,
+  "sha256": "cf5945849ac7746ee32953be35101b392dcac0fc2cec6573a57c27dd700aac13",
   "platforms": [
     {
       "deviceSource": 8716544

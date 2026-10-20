@@ -9,6 +9,7 @@ export function nativeUI() {
       FILL_RECT: 'FILL_RECT',
       BUTTON: 'BUTTON',
       ARC: 'ARC',
+      CANVAS: 'CANVAS',
     },
     align: { CENTER_H: 'CENTER_H', CENTER_V: 'CENTER_V', LEFT: 'LEFT' },
     text_style: { WRAP: 'WRAP' },
@@ -23,6 +24,13 @@ export function nativeUI() {
       const command = { type, ...options }
       commands.push(command)
       return {
+        setEnable(value) {
+          command.enabled = value
+        },
+        drawPoly(options) {
+          command.polygons ||= []
+          command.polygons.push(options)
+        },
         setProperty(name, value) {
           if (name === 'more') Object.assign(command, value)
           else command[name] = value

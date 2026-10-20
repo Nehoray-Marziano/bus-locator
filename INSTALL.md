@@ -58,6 +58,20 @@ app. Adding this card on the actual firmware remains a device acceptance check.
 - During the morning trip, confirm **14100** and compare live line 440 prediction against the phone.
 - During the return trip, confirm **222** and verify `10440-1-#` returns the correct journey. The daily timetable now validates this mapping. Compare the live prediction during service as well.
 - Check that the screen explicitly labels demo, no prediction, expired data and disconnection.
+- For 0.6.1, compare the green Live/amber Scheduled ETA, enlarged card numerals,
+  orange actions and unboxed layout against artifacts/card-icons-preview-0.6.1.png. Check Due,
+  tomorrow's clock and both towns at normal wrist distance and outdoors. Confirm
+  that the card's Reverse button remains distinct from the card body and that
+  native font metrics match the desktop previews without clipping.
+- Open the app, lower your wrist for a short sleep (under ten seconds), then
+  raise it: the app should remain visible and refresh once. Repeat after a longer
+  sleep (over ten seconds) to exercise Zepp's automatic destroy/relaunch path.
+- Press Back to leave the app, let the screen sleep, and raise your wrist:
+  Meitar Bus must stay closed. Check both wrist raise and button wake, with your
+  usual always-on-display setting. These firmware behaviors need watch testing.
+- Focus the card, sleep and wake without scrolling away: its cached countdown
+  should update immediately. Opening the list or focusing a different card must
+  not start its timer or a phone request. A fresh live ETA needs a card-body tap.
 - Close the app, wait, and verify that no app-created watch service or alarm is running. Foreground redraw must stop when paused. Use device battery profiling for measured consumption; no battery drain percentage is claimed.
 - If firmware offers Meitar Bus in shortcut-card settings, add it and verify cached content and tap-to-open. Otherwise launch the full app, or assign it to a programmable watch shortcut if your firmware supports one.
 

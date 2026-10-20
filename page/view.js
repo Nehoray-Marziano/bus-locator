@@ -34,46 +34,44 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
     })
   }
   rect(0, 0, 480, 480, 240, colors.background)
-  rect(88, 54, 104, 40, 16, colors.primary)
-  drawIcon(ui, 'bus', 96, 60, 28, colors.ink, colors.primary)
-  text('line', 126, 54, 62, 40, 24, colors.ink, fonts.bold)
+  drawIcon(ui, 'bus', 100, 57, 26, colors.primary, colors.background)
+  text('line', 138, 51, 66, 40, 28, colors.text, fonts.bold, align.LEFT)
   const live = drawIcon(
     ui,
     'live',
-    244,
+    250,
     60,
-    24,
+    22,
     colors.success,
     colors.background,
   )
   const calendar = drawIcon(
     ui,
     'calendar',
-    244,
+    250,
     60,
-    24,
+    22,
     colors.warning,
     colors.background,
   )
-  text('status', 282, 54, 116, 40, 20, colors.success, fonts.body, align.LEFT)
+  text('status', 283, 51, 116, 40, 20, colors.success, fonts.body, align.LEFT)
 
-  const bubble = rect(72, 114, 336, 174, 44, colors.surface)
-  text('number', 88, 116, 304, 130, sizes.countdown, colors.ink, fonts.bold)
-  text('unit', 88, 246, 304, 30, 22, colors.ink)
-  text('headline', 92, 137, 296, 96, 30, colors.text, fonts.bold)
-  text('recovery', 88, 243, 304, 34, 17, colors.muted)
+  text('number', 80, 102, 320, 138, sizes.countdown, colors.text, fonts.bold)
+  text('unit', 88, 232, 304, 34, 24, colors.muted)
+  text('headline', 88, 125, 304, 90, 30, colors.text, fonts.bold)
+  text('recovery', 88, 224, 304, 48, 20, colors.muted)
 
-  rect(76, 310, 328, 82, 24, colors.surface)
+  rect(88, 286, 304, 1, 0, colors.divider)
   // Two fixed stops show direction only; this is not a vehicle-progress bar.
-  rect(91, 332, 2, 30, 1, colors.muted)
-  rect(86, 322, 12, 12, 6, colors.primary)
-  rect(86, 360, 12, 12, 6, colors.muted)
-  rect(89, 363, 6, 6, 3, colors.surface)
-  text('boarding', 112, 311, 176, 38, 26, colors.text, fonts.bold, align.LEFT)
+  rect(91, 324, 2, 30, 1, colors.divider)
+  rect(87, 316, 10, 10, 5, colors.primary)
+  rect(87, 351, 10, 10, 5, colors.muted)
+  rect(90, 354, 4, 4, 2, colors.background)
+  text('boarding', 112, 301, 176, 38, 26, colors.text, fonts.bold, align.LEFT)
   text(
     'destination',
     112,
-    349,
+    339,
     176,
     30,
     20,
@@ -83,18 +81,18 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   )
   const updateDirection = buildDirectionButton(
     ui,
-    { x: 300, y: 327, w: 92, h: 48 },
+    { x: 300, y: 314, w: 92, h: 48 },
     switchDirection,
   )
 
-  const bounds = { x: 156, y: 414, w: 168, h: 48 }
+  const bounds = { x: 156, y: 398, w: 168, h: 52 }
   const button = ui.createWidget(widget.BUTTON, {
     ...bounds,
     radius: sizes.radius,
     text_size: 22,
     font: fonts.body,
     normal_color: colors.primary,
-    press_color: colors.pressed,
+    press_color: colors.primaryPressed,
     color: colors.ink,
     text: 'Refresh',
     click_func: refresh,
@@ -102,8 +100,8 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const refreshIcon = drawIcon(
     ui,
     'refresh',
-    172,
-    427,
+    174,
+    413,
     22,
     colors.ink,
     colors.primary,
@@ -123,10 +121,8 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
     }
     for (const name of Object.keys(labels))
       labels[name].setProperty(prop.TEXT, values[name] || '')
-    bubble.setProperty(prop.COLOR, colors[display.fill])
     labels.number.setProperty(prop.TEXT_SIZE, display.valueSize)
-    for (const name of ['number', 'unit'])
-      labels[name].setProperty(prop.COLOR, colors[display.ink])
+    labels.number.setProperty(prop.COLOR, colors[display.etaTone])
     labels.status.setProperty(prop.COLOR, colors[display.tone])
     live.setVisible(display.live)
     calendar.setVisible(display.scheduled)

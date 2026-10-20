@@ -1,29 +1,32 @@
----
+﻿---
 version: alpha
 name: Meitar Bus
-description: A playful pocket transit display with mint arrivals and rounded lettering.
+description: A sporty transit display with source-colored arrivals and orange actions.
 colors:
-  background: '#161326'
-  surface: '#29233d'
-  primary: '#b9a7ff'
-  success: '#78ffc6'
-  text: '#fff8f1'
-  muted: '#c0b6d3'
-  warning: '#ffc18e'
-  ink: '#161326'
-  pressed: '#9b87ee'
+  background: '#000000'
+  surface: '#14181e'
+  control: '#232c38'
+  primary: '#ff9b42'
+  primaryPressed: '#e8812a'
+  success: '#62dca8'
+  text: '#f5f7fa'
+  muted: '#9aa5b5'
+  warning: '#e4bd76'
+  ink: '#000000'
+  pressed: '#4a2a12'
+  divider: '#2a333f'
 typography:
   display:
-    fontFamily: 'Meitar Bold (Fredoka subset, 600)'
-    fontSize: '120px'
+    fontFamily: 'Meitar Bold (Space Grotesk subset, 700)'
+    fontSize: '112px'
   body:
-    fontFamily: 'Meitar Sans (Nunito subset, 600)'
+    fontFamily: 'Meitar Sans (DM Sans subset, 500)'
     fontSize: '22px'
   utility:
-    fontFamily: 'Meitar Sans (Nunito subset, 600)'
+    fontFamily: 'Meitar Sans (DM Sans subset, 500)'
     fontSize: '18px'
 rounded:
-  DEFAULT: '24px'
+  DEFAULT: '16px'
 spacing:
   safe-inset: '64px'
 components:
@@ -37,111 +40,114 @@ components:
 
 ## Overview
 
-The user selected Playful modern: rounded shapes, expressive icons and bright
-accents, after finding the previous design bland and confusing. The reference
-is a friendly pocket transit display: a bus-line badge, one arrival panel, and
-an origin-to-destination route. Color and typography supply energy without
-animation. The commuter should immediately read when and where to board.
-English labels use Israel time; station codes stay in backend metadata.
+The user selected Sporty on 2026-10-20: dark background, bold ETA and orange
+accents. This pass combines a sports-watch instrument with a transit departure
+display: bold source-colored arrival, compact route identification and clear direction.
+It is a native watch tool for a commuter reading while walking. No large colored
+arrival containers, candy colors or bubbly lettering. Orange stop markers
+connecting the two towns form the visual signature; they show
+travel direction, never vehicle progress. English labels use Israel time.
+Station codes stay in backend metadata.
 
-`shared/theme.js` owns runtime tokens, mirrored here and tested for drift.
-`shared/presentation.js` owns source labels, arrival colors, units and route
-wording. Both native views consume these owners. Component bindings are native
-JavaScript, so DESIGN.md orphan-token warnings are covered by runtime token
-and contrast tests.
+`shared/theme.js` owns runtime tokens (Model B), mirrored here and tested for
+drift. Its colors, fonts and sizes feed both native view modules and
+`shared/direction-button.js` directly. `shared/presentation.js` consumes the same
+type sizes and owns source labels, semantic tones, units and route wording.
+Native JavaScript bindings explain DESIGN.md orphan-token warnings; runtime
+tests verify actual ownership, contrast, geometry and source states.
 
 ## Colors
 
-Inky violet canvas, lilac controls and route badges, bright mint live panels,
-and warm peach scheduled panels. Arrival numerals use dark ink inside colored
-panels. Green broadcast waves and a dot accompany Live; an amber calendar
-accompanies Scheduled. Demo, cached and unavailable data use neutral surfaces.
-Color always has a source label. Lilac is the control color, independent of
-prediction freshness. Text and pressed-state combinations meet AA contrast.
+True black watch canvas and graphite card surface. Arrival numerals, source label
+and icon use green for Live and amber for Scheduled on both surfaces. Demo and
+empty states use white numerals; disconnected cached live values use muted gray.
+Orange identifies the bus, boarding marker and actions. Source labels and icons
+remain visible alongside color. Stale/demo data cannot claim green Live.
+Reverse/Reset has a distinct graphite fill, including on the card, with a dark
+orange pressed state. Refresh is the single solid orange action and darkens on
+press. Dividers separate information without surrounding every group.
+Text and pressed-state combinations meet AA contrast. No gradients or glow.
 
 ## Typography
 
-Fredoka 600 gives arrival numerals and boarding towns a rounded, expressive
-shape. Nunito 600 keeps actions and supporting labels readable. The two static,
-renamed Latin subsets total 41,360 bytes, including a right-sized glyph set;
-licenses are bundled separately. Fonts are never downloaded at runtime.
+Space Grotesk 700 gives numerals a bold, compact silhouette. DM Sans 500 keeps
+actions and supporting labels quiet and readable. The two static, renamed Latin
+subsets total 38,368 bytes; licenses are bundled separately. Fonts are never
+downloaded at runtime. The Latin glyph set includes all English UI punctuation.
 
-Nearby arrivals use 120px numerals; waits of an hour or more use an 82px clock.
-Tomorrow is explicit. Body labels are 20-22px; Reverse/Reset uses 18px. The
-boarding town uses 26px. Card text scales within its safe content column.
+Nearby arrivals use 112px numerals, reduced from 120px; three-character arrivals
+use 88px and waits of an hour or more use a 76px clock. Tomorrow is explicit.
+The unit uses 24px; body labels 20-22px; Reverse/Reset 18px; boarding town 26px.
+Cards use 92px nearby arrivals (up from 60px) and 64px clocks (up from 48px)
+before safe-column scaling. Their taller arrival region preserves room for the
+unit, route and separate Reverse/Reset target.
 
-Sources: [Fredoka](https://github.com/google/fonts/tree/main/ofl/fredoka) and
-[Nunito](https://github.com/google/fonts/tree/main/ofl/nunito), with their OFL
-licenses preserved in assets. Assets use renamed families after subsetting.
+Sources: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and
+[DM Sans](https://github.com/googlefonts/dm-fonts), with their OFL licenses in
+assets. Assets use renamed families after subsetting.
 
 ## Layout
 
-The 480x480 watch has three distinct groups: route 440 and source at the top;
-a rounded arrival panel; and a compact route panel above Refresh. The boarding
-town comes first, followed by "to" and the destination. Two fixed stop markers
-connect those labels. This is a direction diagram, never vehicle progress.
-Reverse sits beside the route it changes; Reset restores the automatic choice.
-No extra station ID, check-age row or repeated arrival clock appears.
+The 480x480 watch has three groups: route 440 and source at the top; an unboxed
+arrival figure; and the route above Refresh. Boarding town comes first, followed
+by "to" and the destination. Reverse sits beside the route it changes; Reset
+restores the automatic choice. Loading and recovery occupy the arrival region
+without moving the route or controls. No repeated arrival clock or check-age row.
 
-The 220px shortcut card shares the line badge and source heading, a compact
-arrival panel beside Reverse/Reset, and one full route line below. Both towns
-are shown in travel order. At least 28px horizontal insets respect the system
-margin and rounded edges; content is at most 320px wide. The T-Rex 3 simulator
-requires the reported horizontal margin as the native drawing origin. Apply it
-once to the background, content and hit targets; the reported width already
-excludes that margin. Controls keep at least
-48px touch height. Actual type metrics are checked at card widths 320/400/480.
-Native widgets are allocated once and updated in place.
+The 220px shortcut card shares the bus/line and source heading, a left-aligned
+arrival beside Reverse/Reset, and one full route line below. Both towns are shown
+in travel order. At least 28px horizontal insets respect the system margin and
+rounded edges; content is at most 320px wide. T-Rex 3's observed native origin
+includes the reported horizontal margin: apply it once to background, content
+and hit targets. Reported width already excludes that margin. Controls keep
+at least 48px touch height. Native widgets update in place without allocation.
 
 ## Elevation & Depth
 
-Flat color panels provide grouping. The main arrival has a 44px radius; the
-card arrival has a 28px scaled radius. There are no shadows, blur or motion.
-The rounded bus icon has paired windows, lights and wheels. Broadcast, calendar
-and refresh pictograms are static native shapes from shared/icons.js.
-The refresh head meets the clockwise arc endpoint. The launcher bus is rendered
-from the source geometry in scripts/render-preview.py onto transparent RGBA,
-with no rectangular background baked into the asset.
+Space and a quiet divider provide grouping. There are no arrival panels,
+shadows, blur or motion. Buttons have a 16px radius. The rounded bus icon has
+paired windows, lights and wheels. Broadcast, calendar and refresh pictograms
+are static native shapes from shared/icons.js. Refresh uses one closed polygon
+for its curve and triangular head on a native Canvas, avoiding separate rounded
+bar joints. The canvas passes taps through to Refresh and hides while checking.
+The launcher PNG is rendered from source geometry onto transparent RGBA.
 
 ## Shapes
 
-Pills and rounded panels follow the same friendly geometry. Buttons use a
-24px radius and at least 48px height. Header badges use 14-16px radii. Cards
-retain the system-supplied outer radius. Shape supports grouping and touch
-rather than adding decorative information.
+Compact rounded controls share a 16px radius and at least 48px height. There
+are no filled header badges. Cards retain the system-supplied outer radius.
+Source icons retain their recognizable shapes; decoration never implies data.
 
 ## Components
 
 Live predictions expire after two minutes. An actual supplied future timetable
-can replace an expired live ETA, switching to peach Scheduled. A schedule is
-never invented from a stale live estimate. Scheduled cache lasts up to 24 hours
+can replace an expired live ETA, switching to an amber Scheduled label. A schedule
+is never invented from a stale live estimate. Scheduled cache lasts up to 24 hours
 and never beyond its service date or passed arrival. Demo is always labelled.
 
 Automatic selection is Meitar before 10:00, Jerusalem until 18:00, and tomorrow's
-Meitar from 18:00. Settings remain editable. Shared Israel-time conversion
-handles DST and date rollovers.
+Meitar from 18:00. Settings remain editable. Shared Israel-time conversion handles
+DST and date rollovers. Backend stop IDs never appear in either view.
 
-shared/direction-button.js owns Reverse/Reset on both surfaces. Reverse selects
-the other boarding town for the current view. Reset restores the time rule.
-Refresh preserves the temporary choice; pause/destroy clears it. No direction
-preference is saved. The automatic Today/Tomorrow context remains in effect.
-The card passes a temporary selection through router params when opening the
-app. That app session clears the choice on exit too.
+shared/direction-button.js owns Reverse/Reset on both surfaces. Refresh preserves
+the temporary choice; pause/destroy clears it. No direction preference is saved.
+The automatic Today/Tomorrow context remains in effect. The card passes its
+selection through router params when opening the app. shared/cache.js retains
+one observation per direction; missing cache never borrows the opposite ETA.
 
-shared/cache.js retains one observation per direction and validates freshness
-through the shared model. The card reads cache on build/resume and switches
-cached views without networking. Tap its body to check the selected direction
-in the full app. Missing cache never borrows another direction's ETA.
-
-Local redraws run only while focused and stop on pause. Networking occurs only
-on app opening/resuming, Reverse/Reset there, or Refresh. There is no GPS,
+The card reloads cache on focus and wrist wake and switches cached views without
+networking. Tap its body to check the selected direction in the full app.
+Local redraws run only while focused with the screen on, stopping on pause or
+screen-off. The app reopens on wrist wake until explicit exit. Networking occurs
+only on app opening/waking, Reverse/Reset there, or Refresh. There is no GPS,
 background polling, keep-awake, animation or remote asset request.
 
 ## Do's and Don'ts
 
-- Do keep the arrival panel as the strongest visual group.
-- Do show the boarding town before its destination and label tomorrow.
+- Do keep the arrival figure as the strongest visual group.
+- Do show boarding town before destination and label tomorrow.
 - Do pair source colors with readable labels and recognizable icons.
-- Do reserve separate hit targets for the card body and Reverse/Reset.
-- Don't show backend stop IDs, fake vehicle progress or invented departures.
+- Do keep separate hit targets for card body and Reverse/Reset.
+- Don't restore large mint/peach panels or give all controls equal emphasis.
+- Don't show backend IDs, fake vehicle progress or invented departures.
 - Don't add continuous motion, background requests or runtime font downloads.

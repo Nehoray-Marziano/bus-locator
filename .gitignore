@@ -19,3 +19,11 @@ artifacts/*.png
 !artifacts/*-icons-*-0.5.0.png
 !/dist/Meitar-Bus-0.5.1.zab
 !artifacts/*-icons-*-0.5.1.png
+
+!/dist/Meitar-Bus-0.5.2.zab
+!/dist/Meitar-Bus-0.6.0.zab
+!/dist/Meitar-Bus-0.6.1.zab
+!/dist/Meitar-Bus-0.6.2.zab
+!artifacts/*-0.6.0.png
+!artifacts/*-0.6.1.png
+!artifacts/*-0.6.2.png
