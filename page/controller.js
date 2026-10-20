@@ -11,6 +11,7 @@ export function createController({
   setTimer = setTimeout,
   clearTimer = clearTimeout,
   initialDirection = null,
+  reportRenderError = (_error) => {},
 }) {
   let value = readCache()
   let direction = normalizeDirection(initialDirection)
@@ -18,9 +19,25 @@ export function createController({
   let active = false
   let generation = 0
   let timeout = null
+  let disconnected = false
 
   function draw() {
-    if (active) render(cachedView(value, now(), busy, direction))
+    if (!active) return
+    const model = cachedView(value, now(), busy, direction)
+    try {
+      render(
+        disconnected
+          ? {
+              ...model,
+              status: 'PHONE UNREACHABLE',
+              detail: 'Open Zepp and check Bluetooth.',
+            }
+          : model,
+      )
+    } catch (error) {
+      // A native drawing failure must never prevent a request, timeout or save.
+      reportRenderError(error)
+    }
   }
   function cancel() {
     generation += 1
@@ -31,17 +48,15 @@ export function createController({
   async function refresh() {
     if (!active || busy) return
     busy = true
+    disconnected = false
     const token = ++generation
-    draw()
     timeout = setTimer(() => {
       if (token !== generation) return
       cancel()
-      render({
-        ...cachedView(value, now(), false, direction),
-        status: 'PHONE UNREACHABLE',
-        detail: 'Open Zepp and check Bluetooth.',
-      })
+      disconnected = true
+      draw()
     }, 12000)
+    draw()
     try {
       const response = await request(direction)
       if (!active || token !== generation) return
@@ -52,11 +67,8 @@ export function createController({
       if (!active || token !== generation) return
       // Keep only a matching cached ETA, visibly marked as disconnected.
       cancel()
-      render({
-        ...cachedView(value, now(), false, direction),
-        status: 'PHONE UNREACHABLE',
-        detail: 'Open Zepp and check Bluetooth.',
-      })
+      disconnected = true
+      draw()
     } finally {
       if (active && token === generation) {
         cancel()

@@ -1,5 +1,25 @@
 # Validation record
 
+Version 0.7.3 stuck-Checking fix (2026-10-20): the user clarified the empty card
+showed No saved ETA while the app stayed on Checking arrivals. The refresh-icon
+change called Canvas.clear without the rectangle required by the official
+[Canvas API](https://docs.zepp.com/docs/reference/device-app-api/newAPI/ui/widget/CANVAS/#canvasclear).
+The controller drew its busy state before installing the timeout or requesting
+the phone. A native clear error therefore left Checking text with no request,
+timeout or saved ETA. Requiring the documented argument in the native fake
+reproduces this exact control-flow failure in the actual view/controller path.
+
+The clear now receives local x/y/w/h. All controller renders isolate native UI
+errors and report them through the page logger; fetching, timeout handling and
+saving continue. The timeout is installed before the busy redraw. Disconnection
+state survives countdown redraws until a retry, rather than reverting to Ready.
+Two added regressions check initial/busy drawing failures and actual native-view
+Checking completion through saved ETA and card rendering. Existing timeout
+coverage now checks the error persists after a tick. All 106 tests pass; type/
+syntax, formatting, strict design audit and 18 watch/48 card desktop renders run
+separately. Physical Bluetooth and firmware acceptance still need watch testing.
+Package: dist/Meitar-Bus-0.7.3.zab.
+
 Version 0.7.2 next-service fix (2026-10-20): reproduced the exhausted-day lookup
 returning empty despite the following day's published departures. The provider
 now searches daily calendars through seven days ahead, choosing the first

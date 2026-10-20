@@ -37,6 +37,11 @@ cached countdown on focus and on wrist wake while focused. It cannot fetch a
 new live ETA itself; tap its body to open the app. Battery consumption and manual
 Back/wrist-wake behavior still require physical-watch verification.
 
+Version 0.7.3 fixes a native redraw failure that could leave Checking arrivals
+on screen before a phone request or timeout was started. Canvas clearing now
+supplies its required rectangle. Drawing errors are logged and cannot prevent
+fetching or saving an ETA; connection errors remain visible until a retry.
+
 Version 0.7.2 removes the selected-date-only timetable restriction and the
 36-hour scheduled-arrival cutoff. Future service dates pass phone validation and
 remain visible in the app and card. The first available bus wins even if a later
@@ -70,7 +75,7 @@ search with tomorrow, continuing to later service dates when needed.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.7.2.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.7.3.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 

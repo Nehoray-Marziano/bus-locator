@@ -59,6 +59,10 @@ storage sharing and tap behavior below still need checking after installing.
 - During the morning trip, confirm **14100** and compare live line 440 prediction against the phone.
 - During the return trip, confirm **222** and verify `10440-1-#` returns the correct journey. The daily timetable now validates this mapping. Compare the live prediction during service as well.
 - Check that the screen explicitly labels demo, no prediction, expired data and disconnection.
+- For 0.7.3, open from an empty card: Checking arrivals must finish with an ETA
+  or a connection error, and a successful ETA must appear on the card after Back.
+  With the phone disconnected, keep the screen awake for at least 15 seconds:
+  the error must persist, then Refresh must retry once connectivity is restored.
 - For 0.7.2, open after the selected direction's last bus: the next service day
   must show a scheduled clock with Tomorrow, or the actual weekday/date. Repeat
   before a day without service, and confirm the date survives opening the card

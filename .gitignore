@@ -33,3 +33,4 @@ artifacts/*.png
 !artifacts/refresh-button-preview-0.7.1.png
 !/dist/Meitar-Bus-0.7.2.zab
 !artifacts/next-service-preview-0.7.2.png
+!/dist/Meitar-Bus-0.7.3.zab

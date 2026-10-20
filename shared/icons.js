@@ -76,7 +76,7 @@ export function drawIcon(ui, name, x, y, size, color, background) {
     // Clear the drawing as well as widget visibility so the longer Checking…
     // label has the full button width even if native canvas pixels persist.
     repaint = (visible) => {
-      canvas.clear()
+      canvas.clear({ x: 0, y: 0, w: size, h: size })
       if (visible) canvas.drawPoly({ data_array: points, color })
     }
   }

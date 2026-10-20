@@ -31,7 +31,16 @@ export function nativeUI({ ignoreCanvasVisibility = false } = {}) {
           command.polygons ||= []
           command.polygons.push(options)
         },
-        clear() {
+        clear(bounds) {
+          if (
+            !bounds ||
+            !['x', 'y', 'w', 'h'].every((key) =>
+              Number.isFinite(bounds[key]),
+            ) ||
+            bounds.w <= 0 ||
+            bounds.h <= 0
+          )
+            throw new Error('Canvas.clear requires a rectangle')
           command.polygons = []
         },
         setProperty(name, value) {

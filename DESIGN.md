@@ -118,6 +118,10 @@ bar joints. The canvas passes taps through to Refresh. Checking… uses a center
 label with the arrow's canvas explicitly cleared, as well as hidden, so retained
 native drawing pixels cannot overlap its first letter. Refresh restores one
 silhouette when checking ends; repeated updates do not accumulate drawings.
+Canvas.clear always receives the required local x/y/w/h rectangle. Native UI
+redraw failures are logged separately from fetching/saving, and cannot stop the
+request or its timeout. A connection error persists across local redraw ticks
+until the next request starts; it must not silently change back to Ready.
 The launcher PNG is rendered from source geometry onto transparent RGBA.
 
 ## Shapes

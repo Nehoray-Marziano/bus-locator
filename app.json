@@ -5,8 +5,8 @@
     "appName": "Meitar Bus",
     "appType": "app",
     "version": {
-      "code": 14,
-      "name": "0.7.2"
+      "code": 15,
+      "name": "0.7.3"
     },
     "icon": "icon.png",
     "vender": "Personal commute",

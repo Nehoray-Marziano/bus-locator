@@ -32,6 +32,8 @@ Page(
         request: (direction) =>
           this.request({ method: 'commute.get', params: { direction } }),
         initialDirection: this.initialDirection,
+        reportRenderError: (error) =>
+          this.error(error, 'Could not update bus display'),
         render,
         readCache: cache.read,
         writeCache: cache.write,
