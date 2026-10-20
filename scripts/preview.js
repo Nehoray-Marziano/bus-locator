@@ -105,6 +105,25 @@ const output = scenes.map(([title, model]) => {
   return { title, commands: ui.commands }
 })
 mkdirSync('artifacts', { recursive: true })
+// Exercise the same widget through a busy cycle, including firmware that does
+// not hide a Canvas via VISIBLE. The busy render must have no arrow pixels.
+const refreshUI = nativeUI({ ignoreCanvasVisibility: true })
+const updateRefresh = buildWatchView(refreshUI, () => {})
+writeFileSync(
+  'artifacts/refresh-button-states.json',
+  JSON.stringify(
+    [
+      ['Refresh', false],
+      ['Checking…', true],
+      ['Refresh restored', false],
+    ].map(([title, busy]) => {
+      updateRefresh(viewModel(sample, config, now, busy))
+      return { title, commands: JSON.parse(JSON.stringify(refreshUI.commands)) }
+    }),
+    null,
+    2,
+  ),
+)
 writeFileSync('artifacts/watch-layouts.json', JSON.stringify(output, null, 2))
 const card = nativeUI()
 buildCardView(card, { w: 440, h: 264, radius: 36, margin: 20 }, () => {})(

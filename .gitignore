@@ -29,3 +29,5 @@ artifacts/*.png
 !artifacts/*-0.6.2.png
 !/dist/Meitar-Bus-0.7.0.zab
 !artifacts/*-0.7.0.png
+!/dist/Meitar-Bus-0.7.1.zab
+!artifacts/refresh-button-preview-0.7.1.png

@@ -97,6 +97,14 @@ for index, scene in enumerate(scenes):
     pen.text((x + 10, y + 492), scene['title'], font=caption, fill=color(tokens['muted']))
 sheet.save(artifacts / f'watch-icons-states-{version}.png')
 
+button_sheet = Image.new('RGB', (1200, 190), canvas)
+button_pen = ImageDraw.Draw(button_sheet)
+for index, state in enumerate(json.loads((artifacts / 'refresh-button-states.json').read_text(encoding='utf-8'))):
+    button = render(state['commands']).crop((148, 398, 332, 456))
+    button_sheet.paste(button.resize((368, 116), Image.Resampling.NEAREST), (index * 400 + 16, 52))
+    button_pen.text((index * 400 + 16, 15), state['title'], font=caption, fill=color(tokens['text']))
+button_sheet.save(artifacts / f'refresh-button-preview-{version}.png')
+
 hero = Image.new('RGB', (1600, 650), canvas)
 pen = ImageDraw.Draw(hero)
 pen.text((60, 35), 'MEITAR  /  440', font=font('fonts/MeitarSans.ttf', 14), fill=color(tokens['primary']))

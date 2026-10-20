@@ -1,6 +1,6 @@
 // Records the same widget commands sent to Zepp. This is a contract/geometry
 // harness, not a replacement for firmware or simulator testing.
-export function nativeUI() {
+export function nativeUI({ ignoreCanvasVisibility = false } = {}) {
   const commands = []
   return {
     commands,
@@ -31,7 +31,12 @@ export function nativeUI() {
           command.polygons ||= []
           command.polygons.push(options)
         },
+        clear() {
+          command.polygons = []
+        },
         setProperty(name, value) {
+          if (ignoreCanvasVisibility && type === 'CANVAS' && name === 'visible')
+            return
           if (name === 'more') Object.assign(command, value)
           else command[name] = value
         },

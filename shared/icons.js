@@ -1,6 +1,8 @@
 // Small native pictograms: no image decoding, icon font, animation, or downloads.
 export function drawIcon(ui, name, x, y, size, color, background) {
   const parts = []
+  let isVisible = true
+  let repaint = null
   const rect = (dx, dy, w, h, radius = 0, cutout = false) => {
     const part = ui.createWidget(ui.widget.FILL_RECT, {
       x: x + dx * size,
@@ -71,10 +73,18 @@ export function drawIcon(ui, name, x, y, size, color, background) {
       points.push(point(0.34 - halfStroke, angle))
     points.push(points[0])
     canvas.drawPoly({ data_array: points, color })
+    // Clear the drawing as well as widget visibility so the longer Checking…
+    // label has the full button width even if native canvas pixels persist.
+    repaint = (visible) => {
+      canvas.clear()
+      if (visible) canvas.drawPoly({ data_array: points, color })
+    }
   }
   return {
     setVisible(visible) {
       for (const part of parts) part.setProperty(ui.prop.VISIBLE, visible)
+      if (visible !== isVisible && repaint) repaint(visible)
+      isVisible = visible
     },
   }
 }

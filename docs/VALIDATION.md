@@ -1,5 +1,16 @@
 # Validation record
 
+Version 0.7.1 busy-button fix (2026-10-20): the watch showed the C in Checking…
+overlapping the refresh arrow even though the widget was marked hidden. The
+refresh canvas now clears its drawing when hidden and redraws exactly one
+silhouette when Refresh returns. A regression deliberately ignores native Canvas
+visibility, runs three busy/idle cycles and verifies the busy button contains no
+arrow polygons, the idle drawing is restored, and no widgets are allocated.
+The native-command button preview renders that same visibility-ignoring case.
+All 98 tests pass; type/syntax, formatting, native-command renders and strict
+design checks are run separately. Hardware repaint behavior remains a watch
+acceptance check. Package: dist/Meitar-Bus-0.7.1.zab.
+
 Version 0.7.0 physical-watch card overhaul (2026-10-20): the user reported text
 too small, a card stuck on Ready and unreliable taps. The card now uses a 264px
 height, 136px nearby ETA, 96px clock, 30px units, 34px MTR/JLM route codes,

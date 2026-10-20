@@ -114,7 +114,10 @@ shadows, blur or motion. Buttons have a 16px radius. The rounded bus icon has
 paired windows, lights and wheels. Broadcast, calendar and refresh pictograms
 are static native shapes from shared/icons.js. Refresh uses one closed polygon
 for its curve and triangular head on a native Canvas, avoiding separate rounded
-bar joints. The canvas passes taps through to Refresh and hides while checking.
+bar joints. The canvas passes taps through to Refresh. Checking… uses a centered
+label with the arrow's canvas explicitly cleared, as well as hidden, so retained
+native drawing pixels cannot overlap its first letter. Refresh restores one
+silhouette when checking ends; repeated updates do not accumulate drawings.
 The launcher PNG is rendered from source geometry onto transparent RGBA.
 
 ## Shapes

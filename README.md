@@ -34,6 +34,10 @@ cached countdown on focus and on wrist wake while focused. It cannot fetch a
 new live ETA itself; tap its body to open the app. Battery consumption and manual
 Back/wrist-wake behavior still require physical-watch verification.
 
+Version 0.7.1 clears the refresh arrow's canvas during Checking… so it cannot
+overlap the centered label, then redraws the arrow when Refresh returns.
+[Button transitions](artifacts/refresh-button-preview-0.7.1.png) show the cycle.
+
 Version 0.7.0 is based on physical-watch feedback: a 264px card, centered 136px
 ETA, 30px units and 34px MTR/JLM route codes. Reverse/Reset remains in the app
 only. The full card opens the app, including its header, ETA and route text.
@@ -55,7 +59,7 @@ The card always follows the clock. After 18:00 both directions check tomorrow.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.7.0.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.7.1.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 

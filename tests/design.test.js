@@ -322,7 +322,7 @@ test('system margin translates the entire card once without shrinking its conten
 })
 
 test('refresh silhouette is a single closed fill at native sizes and hides while checking', () => {
-  for (const size of [22, 32]) {
+  for (const size of [22, 28, 32]) {
     const ui = nativeUI()
     const icon = drawIcon(ui, 'refresh', 0, 0, size, colors.ink, colors.primary)
     assert.equal(ui.commands.length, 1)
@@ -336,6 +336,7 @@ test('refresh silhouette is a single closed fill at native sizes and hides while
     )
     icon.setVisible(false)
     assert.ok(ui.commands.every((item) => item.visible === false))
+    assert.equal(shape.polygons.length, 0)
   }
   const ui = nativeUI()
   const update = buildWatchView(ui, () => {})
@@ -351,6 +352,32 @@ test('refresh silhouette is a single closed fill at native sizes and hides while
   assert.equal(icon.visible, false)
   update(model)
   assert.equal(icon.visible, true)
+})
+
+test('Checking clears refresh pixels even when firmware ignores Canvas visibility', () => {
+  const ui = nativeUI({ ignoreCanvasVisibility: true })
+  const update = buildWatchView(ui, () => {})
+  const model = viewModel(
+    prediction(),
+    readConfig(() => null),
+    NOW,
+  )
+  const icon = ui.commands.find((item) => item.type === 'CANVAS')
+  const original = structuredClone(icon.polygons)
+  const count = ui.commands.length
+  const button = ui.commands.find((item) => item.text === 'Refresh')
+  for (let cycle = 0; cycle < 3; cycle++) {
+    update({ ...model, action: 'Checking…' })
+    assert.equal(button.text, 'Checking…')
+    assert.deepEqual(icon.polygons, [], 'no arrow pixels can overlap the label')
+    update({ ...model, action: 'Checking…' })
+    assert.deepEqual(icon.polygons, [])
+    update(model)
+    update(model)
+    assert.equal(button.text, 'Refresh')
+    assert.deepEqual(icon.polygons, original, 'restore exactly one arrow')
+  }
+  assert.equal(ui.commands.length, count)
 })
 
 test('launcher icon retains an alpha channel at the native asset size', () => {
