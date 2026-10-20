@@ -104,25 +104,25 @@ pen.text((60, 80), 'Your next journey, at a glance.', font=font('fonts/MeitarSan
 for index, scene_index in enumerate([0, 14, 15]):
     hero.paste(images[scene_index], (40 + index * 520, 150), mask)
 hero.save(artifacts / f'design-icons-preview-{version}.png')
-card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 480, 220, False)
+card = render(json.loads((artifacts / 'card-layout.json').read_text(encoding='utf-8')), 480, 264, False)
 card.save(artifacts / f'card-icons-preview-{version}.png')
-before_path = artifacts / 'design-icons-preview-0.5.1.png'
-before_card_path = artifacts / 'card-icons-preview-0.5.1.png'
+before_path = artifacts / 'design-icons-preview-0.6.2.png'
+before_card_path = artifacts / 'card-icons-preview-0.6.2.png'
 if before_path.exists() and before_card_path.exists():
-    comparison = Image.new('RGB', (1080, 870), canvas)
+    comparison = Image.new('RGB', (1080, 920), canvas)
     comparison_pen = ImageDraw.Draw(comparison)
     before = Image.open(before_path).crop((40, 150, 520, 630))
     before_card = Image.open(before_card_path)
     for x, label, watch, shortcut in [
         (30, 'Previous', before, before_card),
-        (570, 'Sporty', images[0], card),
+        (570, 'Larger and simpler', images[0], card),
     ]:
         comparison_pen.text((x + 22, 26), label, font=font('fonts/MeitarSans.ttf', 14), fill=color(tokens['text']))
         comparison.paste(watch, (x, 90), mask)
         comparison.paste(shortcut, (x, 610))
     comparison.save(artifacts / f'ui-before-after-{version}.png')
 cards = json.loads((artifacts / 'card-scenes.json').read_text(encoding='utf-8'))
-card_sheet = Image.new('RGB', (4 * 500, math.ceil(len(cards) / 4) * 280), canvas)
+card_sheet = Image.new('RGB', (4 * 500, math.ceil(len(cards) / 4) * 324), canvas)
 card_pen = ImageDraw.Draw(card_sheet)
 for index, scene in enumerate(cards):
     bounds = scene['bounds']
@@ -130,9 +130,9 @@ for index, scene in enumerate(cards):
         card = render(scene['commands'], bounds['w'] + 2 * bounds['margin'], bounds['h'], False)
     except ValueError as error:
         raise ValueError(f"{scene['title']}: {error}") from error
-    x, y = index % 4 * 500 + 10, index // 4 * 280 + 10
+    x, y = index % 4 * 500 + 10, index // 4 * 324 + 10
     card_sheet.paste(card, (x, y))
-    card_pen.text((x + 10, y + 230), scene['title'], font=caption, fill=color(tokens['muted']))
+    card_pen.text((x + 10, y + bounds['h'] + 10), scene['title'], font=caption, fill=color(tokens['muted']))
 card_sheet.save(artifacts / f'card-icons-states-{version}.png')
 
 # Check actual-size raster connectivity, rather than only overlapping widget

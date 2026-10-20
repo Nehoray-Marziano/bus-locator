@@ -4,24 +4,11 @@ import { LocalStorage } from '@zos/storage'
 import { Screen } from '@zos/sensor'
 import { setWakeUpRelaunch } from '@zos/display'
 import { bindScreenVisibility } from '../shared/visibility.js'
+import { createWatchCache } from '../shared/watch-storage.js'
 import { createController } from './controller.js'
 import { buildWatchView } from './view.js'
 
-const store = new LocalStorage()
-function readCache() {
-  try {
-    return store.getItem('commute')
-  } catch {
-    return null
-  }
-}
-function writeCache(value) {
-  try {
-    store.setItem('commute', value)
-  } catch {
-    /* Session still works. */
-  }
-}
+const cache = createWatchCache(LocalStorage)
 
 Page(
   BasePage({
@@ -46,8 +33,8 @@ Page(
           this.request({ method: 'commute.get', params: { direction } }),
         initialDirection: this.initialDirection,
         render,
-        readCache,
-        writeCache,
+        readCache: cache.read,
+        writeCache: cache.write,
       })
       this.visibility = bindScreenVisibility({
         screen: new Screen(),

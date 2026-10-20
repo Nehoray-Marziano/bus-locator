@@ -10,6 +10,7 @@ export function drawIcon(ui, name, x, y, size, color, background) {
       radius: radius * size,
       color: cutout ? background : color,
     })
+    part.setEnable(false)
     parts.push(part)
   }
   const arc = (radius, start, end) => {
@@ -25,6 +26,7 @@ export function drawIcon(ui, name, x, y, size, color, background) {
       line_width: Math.max(2, Math.round(size / 11)),
       color,
     })
+    part.setEnable(false)
     parts.push(part)
   }
   if (name === 'bus') {

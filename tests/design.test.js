@@ -90,7 +90,10 @@ test('both surfaces show the boarding town before its destination', () => {
     const card = nativeUI()
     buildCardView(card, { w: 440, h: 200, radius: 30 }, () => {})(model)
     assert.ok(
-      card.commands.some((item) => item.text === `${boarding} to ${opposite}`),
+      card.commands.some(
+        (item) =>
+          item.text === (boarding === 'Meitar' ? 'MTR → JLM' : 'JLM → MTR'),
+      ),
     )
   }
 })
@@ -171,9 +174,9 @@ test('bundled fonts are small and every watch text widget uses them', () => {
   }
 })
 
-test('broadcast waves mark only fresh live data on both surfaces', () => {
+test('watch broadcast waves mark only fresh live data', () => {
   const config = readConfig(() => null)
-  for (const surface of ['watch', 'card']) {
+  for (const surface of ['watch']) {
     const ui = nativeUI()
     const update =
       surface === 'watch'
@@ -226,7 +229,7 @@ test('ETA colors distinguish live and scheduled data and clear on stale/demo sta
     assert.equal(source.color, colors.success)
     update(viewModel(prediction({ source: 'scheduled' }), config, NOW))
     assert.equal(number.color, colors.warning)
-    assert.equal(source.text, 'Scheduled')
+    assert.equal(source.text, surface === 'card' ? 'Est.' : 'Scheduled')
     assert.equal(source.color, colors.warning)
     for (const sample of [
       prediction({ demo: true }),
@@ -243,7 +246,7 @@ test('ETA colors distinguish live and scheduled data and clear on stale/demo sta
       status: 'PHONE UNREACHABLE',
     })
     assert.equal(number.color, colors.muted)
-    assert.equal(source.text, 'Cached ETA')
+    assert.equal(source.text, 'Cached')
     assert.equal(
       ui.commands.some(
         (item) =>

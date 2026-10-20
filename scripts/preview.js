@@ -107,7 +107,7 @@ const output = scenes.map(([title, model]) => {
 mkdirSync('artifacts', { recursive: true })
 writeFileSync('artifacts/watch-layouts.json', JSON.stringify(output, null, 2))
 const card = nativeUI()
-buildCardView(card, { w: 440, h: 220, radius: 36, margin: 20 }, () => {})(
+buildCardView(card, { w: 440, h: 264, radius: 36, margin: 20 }, () => {})(
   scenes[0][1],
 )
 writeFileSync(
@@ -117,11 +117,11 @@ writeFileSync(
 writeFileSync('artifacts/preview-colors.json', JSON.stringify(colors, null, 2))
 const cards = []
 for (const bounds of [
-  { w: 432, h: 220, radius: 48, margin: 24 },
-  { w: 400, h: 220, radius: 32, margin: 40 },
-  { w: 320, h: 220, radius: 32, margin: 80 },
+  { w: 432, h: 264, radius: 48, margin: 24 },
+  { w: 400, h: 264, radius: 32, margin: 40 },
+  { w: 320, h: 264, radius: 32, margin: 80 },
 ])
-  for (const index of scenes.keys()) {
+  for (const index of Array.from({ length: 14 }, (_, index) => index)) {
     const ui = nativeUI()
     buildCardView(ui, bounds, () => {})(scenes[index][1])
     cards.push({

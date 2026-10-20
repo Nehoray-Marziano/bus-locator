@@ -25,6 +25,8 @@ export function presentation(model) {
   const showClock = hasArrival && (model.tomorrow || Number(model.number) >= 60)
   const [emptyStatus, headline, recovery] =
     states[model.status] || states['NO UPDATE']
+  const shortTown = (town) =>
+    town === 'Meitar' ? 'MTR' : town === 'Jerusalem' ? 'JLM' : 'Your stop'
   return {
     hasArrival,
     live,
@@ -48,7 +50,7 @@ export function presentation(model) {
           ? 'Live'
           : scheduled
             ? 'Scheduled'
-            : 'Cached ETA'
+            : 'Cached'
       : emptyStatus,
     tone: live
       ? 'success'
@@ -70,13 +72,24 @@ export function presentation(model) {
         : 'min',
     headline: hasArrival ? '' : headline,
     detail: hasArrival ? '' : recovery,
-    cardValue: hasArrival
-      ? showClock
-        ? model.eta
-        : `${model.number}${model.number === 'Due' ? '' : ' min'}`
-      : emptyStatus,
-    cardDetail: hasArrival
-      ? `${model.tomorrow ? 'Tomorrow · ' : ''}${demo ? 'Demo' : live ? 'Live' : scheduled ? 'Scheduled' : 'Cached'}`
-      : 'Tap to check',
+    cardRoute: model.destination
+      ? `${shortTown(model.boarding)} → ${shortTown(model.destination)}`
+      : shortTown(model.boarding),
+    cardStatus: hasArrival
+      ? demo
+        ? 'Demo'
+        : live
+          ? 'Live'
+          : scheduled
+            ? 'Est.'
+            : 'Cached'
+      : '',
+    cardValue:
+      model.status === 'SETUP'
+        ? 'Open app'
+        : model.status === 'CHECKING'
+          ? 'Checking…'
+          : 'Tap to check',
+    cardDetail: model.status === 'NO UPDATE' ? 'No saved ETA' : emptyStatus,
   }
 }

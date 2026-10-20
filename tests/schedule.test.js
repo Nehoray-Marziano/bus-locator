@@ -224,5 +224,5 @@ test('phone timeout override never claims the cached number is a connected live 
   }
   assert.equal(presentation(model).hasArrival, true)
   assert.equal(presentation(model).live, false)
-  assert.equal(presentation(model).status, 'Cached ETA')
+  assert.equal(presentation(model).status, 'Cached')
 })

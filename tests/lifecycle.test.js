@@ -5,6 +5,7 @@ import { runInNewContext } from 'node:vm'
 import { bindScreenVisibility } from '../shared/visibility.js'
 import { createController } from '../page/controller.js'
 import { createCardController } from '../app-widget/controller.js'
+import { createWatchCache } from '../shared/watch-storage.js'
 import { readConfig } from '../shared/config.js'
 import { NOW, prediction } from './helpers.js'
 
@@ -37,18 +38,21 @@ function setup(surface, initialStatus = 1) {
       return screen
     },
     LocalStorage: function () {
+      let loaded = structuredClone(cache)
       return {
         getItem: () => {
           reads++
-          return cache
+          return loaded
         },
         setItem: (_key, value) => {
           cache = value
+          loaded = value
         },
       }
     },
     setWakeUpRelaunch: (value) => relaunch.push(value.relaunch),
     bindScreenVisibility,
+    createWatchCache,
     createController: (options) =>
       createController({
         ...options,

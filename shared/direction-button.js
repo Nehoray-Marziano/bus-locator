@@ -6,7 +6,7 @@ export function buildDirectionButton(ui, bounds, switchDirection) {
     ...bounds,
     radius: sizes.radius,
     text: 'Reverse',
-    text_size: 18,
+    text_size: 22,
     font: fonts.body,
     color: colors.primary,
     normal_color: colors.control,

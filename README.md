@@ -34,28 +34,28 @@ cached countdown on focus and on wrist wake while focused. It cannot fetch a
 new live ETA itself; tap its body to open the app. Battery consumption and manual
 Back/wrist-wake behavior still require physical-watch verification.
 
-Version 0.6.2 fixes the refresh arrowhead with a single continuous native shape.
-[Icon preview](artifacts/refresh-icon-preview-0.6.2.png) shows it at actual size
-and enlarged. The ETA changes from 0.6.1 remain: green for live predictions and amber for scheduled
-estimates on both surfaces. The card's nearby-arrival font grows from 60px to
-92px (53%); clock times grow from 48px to 64px (33%), before card-width scaling.
-Cached disconnected and demo values retain neutral colors.
+Version 0.7.0 is based on physical-watch feedback: a 264px card, centered 136px
+ETA, 30px units and 34px MTR/JLM route codes. Reverse/Reset remains in the app
+only. The full card opens the app, including its header, ETA and route text.
+The app also has larger ETA, source labels, town names and controls.
 
-The sporty design uses a black/graphite palette, source-colored arrival
-figures, orange actions and smaller semantic source indicators. The
-large mint/peach panels and lilac badges are removed. Space Grotesk and DM Sans
-replace the rounded lettering; nearby arrivals shrink from 120px to 112px.
-The compact card shares the same typography and uses a left-aligned arrival.
-The two bundled fonts total 38 KB. Native icons and normal screen sleep remain.
-[Card preview](artifacts/card-icons-preview-0.6.1.png),
-[16 watch states](artifacts/watch-icons-states-0.6.1.png), and
-[48 card layouts](artifacts/card-icons-states-0.6.1.png) use synthetic examples.
+The card now reopens native storage on focus instead of reusing its original
+in-memory snapshot. This fixes a card created empty remaining stuck on Ready
+after the app has saved an ETA. Empty cache now says Tap to check / No saved ETA.
+A fresh phone query still requires opening the full app; the card shows its saved
+result with the same freshness checks. Green means live and amber means estimated.
 
-**Temporary direction switch:** tap **Reverse** beside the boarding town in either view. The button becomes **Reset** to restore the clock choice immediately. Refresh keeps your temporary choice; leaving the view clears it. After 18:00 either direction checks tomorrow. The card switches cached views; tap its body to open the selected direction in the app for a fresh ETA. Neither view saves a direction preference.
+[Before and after](artifacts/ui-before-after-0.7.0.png),
+[16 watch states](artifacts/watch-icons-states-0.7.0.png), and
+[42 card layouts](artifacts/card-icons-states-0.7.0.png) use synthetic examples.
+
+**Temporary direction switch (app only):** tap Reverse beside the boarding town.
+Reset restores the clock choice; leaving the view clears the temporary choice.
+The card always follows the clock. After 18:00 both directions check tomorrow.
 
 ## Continue on your personal computer
 
-The current [installable package](dist/Meitar-Bus-0.6.2.zab) and versioned
+The current [installable package](dist/Meitar-Bus-0.7.0.zab) and versioned
 previews are included in this repository. You still need Zepp's developer-mode
 preview flow to install on the watch; the package is not a phone application.
 
@@ -114,8 +114,8 @@ Read [INSTALL.md](INSTALL.md) for simulator and watch installation. [Provider va
 
 The app includes an AppWidget for the vertical Shortcut Cards list, separate from
 full-screen SecondaryWidgets. To add it, swipe right from the watch face, scroll
-to the bottom of the card list, open its settings, and add Meitar Bus. Its presence
-still needs confirmation on the paired watch. The card shows the boarding location
+to the bottom of the card list, open its settings, and add Meitar Bus. The user
+has confirmed the card running on the watch. It shows the boarding location
 (Meitar before 10:00, Jerusalem until 18:00, then Meitar for tomorrow), cached countdown and
 freshness. Local updates run only while focused with the screen on and stop on
 pause or screen-off. Waking a still-focused card reloads cache immediately, even

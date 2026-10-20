@@ -18,11 +18,11 @@ export const fonts = {
   bold: 'fonts/MeitarBold.ttf',
 }
 export const sizes = {
-  countdown: 112,
-  clock: 76,
-  compactCountdown: 88,
-  cardCountdown: 92,
-  cardClock: 64,
+  countdown: 144,
+  clock: 88,
+  compactCountdown: 112,
+  cardCountdown: 136,
+  cardClock: 96,
   title: 40,
   caption: 20,
   button: 24,

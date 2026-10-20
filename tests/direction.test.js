@@ -130,61 +130,25 @@ test('a card launch selection is consumed for one app session only', async () =>
   }
 })
 
-test('card swaps cached directions without reads or networking, and clears the selection on exit', () => {
+test('card follows the automatic boarding direction without a swap action', () => {
   const stored = mergeCache(response(), response('return'))
-  const original = JSON.stringify(stored)
-  let reads = 0
-  let tick
-  const screens = []
-  const controller = createCardController({
-    readCache: () => {
-      reads++
-      return stored
-    },
-    now: () => NOW,
-    render: (model) => screens.push(model),
-    setTimer: (fn) => {
-      tick = fn
-      return 1
-    },
-    clearTimer: () => {},
-  })
-  controller.resume()
-  const before = reads
-  controller.switchDirection()
-  assert.equal(screens.at(-1).boarding, 'Jerusalem')
-  assert.equal(screens.at(-1).number, '10')
-  assert.equal(controller.getDirection(), 'return')
-  tick()
-  assert.equal(reads, before)
-  controller.pause()
-  assert.equal(controller.getDirection(), null)
-  controller.switchDirection()
-  controller.resume()
-  assert.equal(screens.at(-1).boarding, 'Meitar')
-  assert.equal(screens.at(-1).manual, false)
-  assert.equal(JSON.stringify(stored), original)
-})
-
-test('uncached card directions show no borrowed ETA and Auto follows a time boundary', () => {
   const screens = []
   let time = NOW
   const controller = createCardController({
-    readCache: () => response(),
+    readCache: () => stored,
     now: () => time,
     render: (model) => screens.push(model),
     setTimer: () => 1,
     clearTimer: () => {},
   })
   controller.resume()
-  controller.switchDirection()
-  assert.equal(screens.at(-1).unit, '')
-  assert.equal(screens.at(-1).boarding, 'Jerusalem')
-  time = Date.parse('2026-10-19T07:00:00Z')
-  controller.switchDirection()
+  assert.equal(screens.at(-1).boarding, 'Meitar')
+  time = Date.parse('2026-10-19T09:00:00Z')
+  controller.pause()
+  controller.resume()
   assert.equal(screens.at(-1).boarding, 'Jerusalem')
   assert.equal(screens.at(-1).manual, false)
-  assert.equal(controller.getDirection(), null)
+  assert.equal(controller.switchDirection, undefined)
   controller.pause()
 })
 
@@ -251,41 +215,74 @@ test('legacy cache migrates into two bounded slots without persisting a directio
   assert.deepEqual(Object.keys(demo.snapshots), ['morning'])
 })
 
-test('both surfaces expose separate Reverse/Reset and open/refresh buttons with stable touch targets', () => {
-  for (const surface of ['app', 'card']) {
-    const ui = nativeUI()
-    let opens = 0
-    let swaps = 0
-    const update =
-      surface === 'app'
-        ? buildWatchView(
-            ui,
-            () => opens++,
-            () => swaps++,
-          )
-        : buildCardView(
-            ui,
-            { w: 320, h: 220, radius: 32, margin: 16 },
-            () => opens++,
-            () => swaps++,
-          )
-    update(viewModel(prediction(), config, NOW))
-    const count = ui.commands.length
-    const control = ui.commands.find(
-      (item) => item.type === 'BUTTON' && item.text === 'Reverse',
-    )
-    assert.ok(control.w >= 48 && control.h >= 48)
-    control.click_func()
-    assert.equal(swaps, 1)
-    assert.equal(opens, 0)
-    update(
-      viewModel(prediction({ tripId: 'return' }), config, NOW, false, 'return'),
-    )
-    assert.equal(control.text, 'Reset')
-    control.click_func()
-    assert.equal(swaps, 2)
-    assert.equal(ui.commands.length, count)
-    update(viewModel(null, { error: 'Settings invalid' }, NOW))
-    assert.equal(control.visible, false)
+test('only the app exposes Reverse/Reset; the whole card opens the app', () => {
+  const ui = nativeUI()
+  let swaps = 0
+  const update = buildWatchView(
+    ui,
+    () => {},
+    () => swaps++,
+  )
+  update(viewModel(prediction(), config, NOW))
+  const control = ui.commands.find(
+    (item) => item.type === 'BUTTON' && item.text === 'Reverse',
+  )
+  assert.ok(control.w >= 48 && control.h >= 48)
+  control.click_func()
+  assert.equal(swaps, 1)
+  update(
+    viewModel(prediction({ tripId: 'return' }), config, NOW, false, 'return'),
+  )
+  assert.equal(control.text, 'Reset')
+  control.click_func()
+  assert.equal(swaps, 2)
+  update(viewModel(null, { error: 'Settings invalid' }, NOW))
+  assert.equal(control.visible, false)
+
+  const card = nativeUI()
+  let opens = 0
+  const render = buildCardView(
+    card,
+    { w: 432, h: 264, radius: 48, margin: 24 },
+    () => opens++,
+  )
+  render(viewModel(prediction(), config, NOW))
+  const buttons = card.commands.filter((item) => item.type === 'BUTTON')
+  assert.equal(buttons.length, 1)
+  assert.equal(buttons[0].w, 432)
+  assert.equal(buttons[0].h, 264)
+  assert.ok(
+    card.commands.slice(1).every((item) => item.enabled === false),
+    'text and decoration never swallow taps',
+  )
+  // Native z-order hit testing: taps on the ETA, header and route reach the
+  // same button because all higher widgets explicitly pass input through.
+  for (const [x, y] of [
+    [100, 35],
+    [240, 120],
+    [240, 230],
+    [420, 120],
+  ]) {
+    const target = [...card.commands]
+      .reverse()
+      .find(
+        (item) =>
+          item.enabled !== false &&
+          item.visible !== false &&
+          x >= item.x &&
+          y >= item.y &&
+          x < item.x + item.w &&
+          y < item.y + item.h,
+      )
+    assert.equal(target, buttons[0])
+    target.click_func()
   }
+  assert.equal(opens, 4)
+  render(viewModel(null, config, NOW))
+  assert.ok(card.commands.some((item) => item.text === 'Tap to check'))
+  assert.ok(
+    card.commands.every(
+      (item) => !['Ready', 'Reverse', 'Reset'].includes(item.text),
+    ),
+  )
 })

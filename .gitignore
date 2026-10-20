@@ -27,3 +27,5 @@ artifacts/*.png
 !artifacts/*-0.6.0.png
 !artifacts/*-0.6.1.png
 !artifacts/*-0.6.2.png
+!/dist/Meitar-Bus-0.7.0.zab
+!artifacts/*-0.7.0.png

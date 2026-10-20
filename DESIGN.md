@@ -18,13 +18,13 @@ colors:
 typography:
   display:
     fontFamily: 'Meitar Bold (Space Grotesk subset, 700)'
-    fontSize: '112px'
+    fontSize: '144px'
   body:
     fontFamily: 'Meitar Sans (DM Sans subset, 500)'
-    fontSize: '22px'
+    fontSize: '30px'
   utility:
     fontFamily: 'Meitar Sans (DM Sans subset, 500)'
-    fontSize: '18px'
+    fontSize: '26px'
 rounded:
   DEFAULT: '16px'
 spacing:
@@ -63,7 +63,7 @@ and icon use green for Live and amber for Scheduled on both surfaces. Demo and
 empty states use white numerals; disconnected cached live values use muted gray.
 Orange identifies the bus, boarding marker and actions. Source labels and icons
 remain visible alongside color. Stale/demo data cannot claim green Live.
-Reverse/Reset has a distinct graphite fill, including on the card, with a dark
+Reverse/Reset appears only in the app and has a distinct graphite fill with a dark
 orange pressed state. Refresh is the single solid orange action and darkens on
 press. Dividers separate information without surrounding every group.
 Text and pressed-state combinations meet AA contrast. No gradients or glow.
@@ -75,12 +75,13 @@ actions and supporting labels quiet and readable. The two static, renamed Latin
 subsets total 38,368 bytes; licenses are bundled separately. Fonts are never
 downloaded at runtime. The Latin glyph set includes all English UI punctuation.
 
-Nearby arrivals use 112px numerals, reduced from 120px; three-character arrivals
-use 88px and waits of an hour or more use a 76px clock. Tomorrow is explicit.
-The unit uses 24px; body labels 20-22px; Reverse/Reset 18px; boarding town 26px.
-Cards use 92px nearby arrivals (up from 60px) and 64px clocks (up from 48px)
-before safe-column scaling. Their taller arrival region preserves room for the
-unit, route and separate Reverse/Reset target.
+Physical-watch feedback on 2026-10-20 rejected the previous small text. The app
+now uses 144px nearby arrivals, 112px Due and 88px clocks. Source labels use 26px,
+units 30px, boarding towns 32px, destinations 28px, Refresh 26px and Reverse 22px.
+The card uses 136px nearby arrivals, 96px clocks, 30px units, 34px route codes,
+32px line number and 28px source labels. Width no longer shrinks every label.
+Only shorter-than-target card heights scale the whole layout; the actual card
+height is 264px. Tomorrow stays explicit. Font families and colors are unchanged.
 
 Sources: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and
 [DM Sans](https://github.com/googlefonts/dm-fonts), with their OFL licenses in
@@ -94,13 +95,17 @@ by "to" and the destination. Reverse sits beside the route it changes; Reset
 restores the automatic choice. Loading and recovery occupy the arrival region
 without moving the route or controls. No repeated arrival clock or check-age row.
 
-The 220px shortcut card shares the bus/line and source heading, a left-aligned
-arrival beside Reverse/Reset, and one full route line below. Both towns are shown
-in travel order. At least 28px horizontal insets respect the system margin and
-rounded edges; content is at most 320px wide. T-Rex 3's observed native origin
+The 264px shortcut card is one button with a line number, Live/Est. source label,
+large centered arrival and MTR → JLM or JLM → MTR route line. MTR means Meitar and
+JLM Jerusalem; the full app keeps full names. There is no Reverse/Reset on the
+card and no small source pictogram. Empty cache says Tap to check / No saved ETA
+instead of Ready. At least 28px insets respect native margin and rounded edges;
+content uses up to 376px. T-Rex 3's observed native origin
 includes the reported horizontal margin: apply it once to background, content
 and hit targets. Reported width already excludes that margin. Controls keep
-at least 48px touch height. Native widgets update in place without allocation.
+at least 48px touch height. Every card label explicitly passes taps through to
+the full-card button. App decoration and icons also pass input through. Native
+widgets update in place without allocation.
 
 ## Elevation & Depth
 
@@ -129,14 +134,16 @@ Automatic selection is Meitar before 10:00, Jerusalem until 18:00, and tomorrow'
 Meitar from 18:00. Settings remain editable. Shared Israel-time conversion handles
 DST and date rollovers. Backend stop IDs never appear in either view.
 
-shared/direction-button.js owns Reverse/Reset on both surfaces. Refresh preserves
+shared/direction-button.js owns Reverse/Reset in the app only. Refresh preserves
 the temporary choice; pause/destroy clears it. No direction preference is saved.
-The automatic Today/Tomorrow context remains in effect. The card passes its
-selection through router params when opening the app. shared/cache.js retains
+The automatic Today/Tomorrow context remains in effect. The card always follows
+the clock and opens the app without an override. shared/cache.js retains
 one observation per direction; missing cache never borrows the opposite ETA.
 
-The card reloads cache on focus and wrist wake and switches cached views without
-networking. Tap its body to check the selected direction in the full app.
+shared/watch-storage.js reopens LocalStorage for each read/write boundary. Native
+instances keep loaded snapshots, so reusing a card's original instance can hide
+ETAs later saved by the app. The card reloads on focus and wrist wake, with no
+storage reads on countdown ticks. Tap anywhere to open the app for a fresh ETA.
 Local redraws run only while focused with the screen on, stopping on pause or
 screen-off. The app reopens on wrist wake until explicit exit. Networking occurs
 only on app opening/waking, Reverse/Reset there, or Refresh. There is no GPS,
@@ -146,8 +153,8 @@ background polling, keep-awake, animation or remote asset request.
 
 - Do keep the arrival figure as the strongest visual group.
 - Do show boarding town before destination and label tomorrow.
-- Do pair source colors with readable labels and recognizable icons.
-- Do keep separate hit targets for card body and Reverse/Reset.
+- Do pair source colors with readable labels; keep icons in the full app.
+- Do keep the entire card clickable and reserve Reverse/Reset for the app.
 - Don't restore large mint/peach panels or give all controls equal emphasis.
 - Don't show backend IDs, fake vehicle progress or invented departures.
 - Don't add continuous motion, background requests or runtime font downloads.

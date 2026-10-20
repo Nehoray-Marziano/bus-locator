@@ -53,16 +53,19 @@ To add the vertical-list shortcut card, swipe right from the watch face, scroll
 to the bottom of the card list, open its settings, and choose Add → Meitar Bus.
 This is AppWidget, distinct from full-screen SecondaryWidget. Test that it shows Meitar before 10:00, Jerusalem until 18:00 and Meitar for tomorrow after 18:00; differentiates live/scheduled times; expires old live data;
 and opens the full app on tap. A fresh phone query still requires opening the
-app. Adding this card on the actual firmware remains a device acceptance check.
+app. The card is confirmed available on the user's watch; the revised layout,
+storage sharing and tap behavior below still need checking after installing.
 
 - During the morning trip, confirm **14100** and compare live line 440 prediction against the phone.
 - During the return trip, confirm **222** and verify `10440-1-#` returns the correct journey. The daily timetable now validates this mapping. Compare the live prediction during service as well.
 - Check that the screen explicitly labels demo, no prediction, expired data and disconnection.
-- For 0.6.1, compare the green Live/amber Scheduled ETA, enlarged card numerals,
-  orange actions and unboxed layout against artifacts/card-icons-preview-0.6.1.png. Check Due,
-  tomorrow's clock and both towns at normal wrist distance and outdoors. Confirm
-  that the card's Reverse button remains distinct from the card body and that
-  native font metrics match the desktop previews without clipping.
+- For 0.7.0, compare the enlarged card against artifacts/card-icons-preview-0.7.0.png.
+  It should be 264px tall with MTR/JLM labels and no Reverse/Reset button. Check
+  all labels at normal wrist distance and outdoors, including Due and tomorrow.
+- Start with an empty card, tap its header, wait for the app's ETA, then press
+  Back to the card. It must show the saved ETA instead of Ready. Repeat taps on
+  the number, route and surrounding space. Each must open the app. Check both
+  directions across the automatic switch time and confirm expired data is hidden.
 - Open the app, lower your wrist for a short sleep (under ten seconds), then
   raise it: the app should remain visible and refresh once. Repeat after a longer
   sleep (over ten seconds) to exercise Zepp's automatic destroy/relaunch path.
@@ -79,4 +82,7 @@ Account sign-in, QR scanning, physical watch behavior and the final live 440 com
 
 ## Temporary direction switching
 
-Tap Reverse beside the boarding town in the app or shortcut card. Refresh stays on that direction. Tap Reset to restore the time rule, or leave the view: the next session is automatic. After 18:00 both directions check tomorrow. The card uses cached data; tap its body to open the selected direction in the app for a phone check. Verify that tapping Reverse does not also open the app, that the selected direction reaches the app, and that returning to either view resets it.
+Tap Reverse beside the boarding town in the app. Refresh stays on that direction.
+Tap Reset to restore the time rule, or leave the app: the next session is automatic.
+After 18:00 both directions check tomorrow. The card always follows the clock and
+has no direction button. Tap anywhere on it to open the app for a fresh phone check.

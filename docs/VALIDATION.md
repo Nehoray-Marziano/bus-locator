@@ -1,5 +1,34 @@
 # Validation record
 
+Version 0.7.0 physical-watch card overhaul (2026-10-20): the user reported text
+too small, a card stuck on Ready and unreliable taps. The card now uses a 264px
+height, 136px nearby ETA, 96px clock, 30px units, 34px MTR/JLM route codes,
+32px line number and 28px Live/Est. labels. Width no longer scales every label
+down. Reverse/Reset is removed from the card; the app retains it with a larger
+56px target and 22px label. The app ETA is 144px, clock 88px, units 30px, town
+32px and destination 28px. Empty card states say Tap to check with a reason.
+
+Zepp documents that LocalStorage instances retain their loaded data in memory.
+The old card kept the instance created before the app fetched an ETA. The new
+shared/watch-storage.js reopens storage on each read/write boundary. A regression
+uses a fake with native per-instance snapshots, constructs an empty card, lets
+the actual page controller fetch/save, then verifies the card shows the ETA on
+focus while the old storage instance still reads null. Lifecycle tests now use
+the same snapshot semantics instead of a live shared variable.
+
+The card is one native button. All five text overlays explicitly pass input
+through. App icons and decorative widgets also disable gesture response. A
+z-order hit test checks header, ETA, route and surrounding-space taps reaching
+the same button. The renderer checks 16 watch states and 42 card states at three
+widths, including empty, Due, scheduled, tomorrow and cached data. Native watch
+storage, Bluetooth and touch behavior still require the next device acceptance
+pass. The card remains cache-only under Zepp's documented BLE limitation.
+Package: dist/Meitar-Bus-0.7.0.zab.
+
+All 97 deterministic tests pass, including the new native-storage regression and
+card hit testing. Type/syntax, formatting, strict project audit and DESIGN.md
+lint are checked separately; desktop renders are not a substitute for watch QA.
+
 Version 0.6.2 refresh icon fix (2026-10-20): replaced the separate arc and two
 rounded arrowhead bars with one closed, filled silhouette on a native Canvas.
 The head follows the clockwise tangent and shares the shaft's polygon, so native

@@ -6,8 +6,18 @@ import { buildDirectionButton } from '../shared/direction-button.js'
 export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const { widget, prop, align } = ui
   const labels = {}
-  const rect = (x, y, w, h, radius, color) =>
-    ui.createWidget(widget.FILL_RECT, { x, y, w, h, radius, color })
+  const rect = (x, y, w, h, radius, color) => {
+    const shape = ui.createWidget(widget.FILL_RECT, {
+      x,
+      y,
+      w,
+      h,
+      radius,
+      color,
+    })
+    shape.setEnable(false)
+    return shape
+  }
   const text = (
     name,
     x,
@@ -32,64 +42,65 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
       align_v: align.CENTER_V,
       text_style: ui.text_style.WRAP,
     })
+    labels[name].setEnable(false)
   }
   rect(0, 0, 480, 480, 240, colors.background)
   drawIcon(ui, 'bus', 100, 57, 26, colors.primary, colors.background)
-  text('line', 138, 51, 66, 40, 28, colors.text, fonts.bold, align.LEFT)
+  text('line', 138, 48, 76, 48, 32, colors.text, fonts.bold, align.LEFT)
   const live = drawIcon(
     ui,
     'live',
-    250,
+    230,
     60,
-    22,
+    26,
     colors.success,
     colors.background,
   )
   const calendar = drawIcon(
     ui,
     'calendar',
-    250,
+    230,
     60,
-    22,
+    26,
     colors.warning,
     colors.background,
   )
-  text('status', 283, 51, 116, 40, 20, colors.success, fonts.body, align.LEFT)
+  text('status', 266, 48, 144, 48, 26, colors.success, fonts.body, align.LEFT)
 
-  text('number', 80, 102, 320, 138, sizes.countdown, colors.text, fonts.bold)
-  text('unit', 88, 232, 304, 34, 24, colors.muted)
+  text('number', 80, 100, 320, 148, sizes.countdown, colors.text, fonts.bold)
+  text('unit', 88, 242, 304, 40, 30, colors.muted)
   text('headline', 88, 125, 304, 90, 30, colors.text, fonts.bold)
-  text('recovery', 88, 224, 304, 48, 20, colors.muted)
+  text('recovery', 88, 224, 304, 56, 24, colors.muted)
 
-  rect(88, 286, 304, 1, 0, colors.divider)
+  rect(88, 292, 304, 1, 0, colors.divider)
   // Two fixed stops show direction only; this is not a vehicle-progress bar.
-  rect(91, 324, 2, 30, 1, colors.divider)
-  rect(87, 316, 10, 10, 5, colors.primary)
-  rect(87, 351, 10, 10, 5, colors.muted)
-  rect(90, 354, 4, 4, 2, colors.background)
-  text('boarding', 112, 301, 176, 38, 26, colors.text, fonts.bold, align.LEFT)
+  rect(75, 324, 2, 30, 1, colors.divider)
+  rect(71, 316, 10, 10, 5, colors.primary)
+  rect(71, 351, 10, 10, 5, colors.muted)
+  rect(74, 354, 4, 4, 2, colors.background)
+  text('boarding', 96, 300, 204, 42, 32, colors.text, fonts.bold, align.LEFT)
   text(
     'destination',
-    112,
-    339,
-    176,
-    30,
-    20,
+    96,
+    342,
+    204,
+    36,
+    28,
     colors.muted,
     fonts.body,
     align.LEFT,
   )
   const updateDirection = buildDirectionButton(
     ui,
-    { x: 300, y: 314, w: 92, h: 48 },
+    { x: 308, y: 314, w: 104, h: 56 },
     switchDirection,
   )
 
-  const bounds = { x: 156, y: 398, w: 168, h: 52 }
+  const bounds = { x: 148, y: 398, w: 184, h: 58 }
   const button = ui.createWidget(widget.BUTTON, {
     ...bounds,
     radius: sizes.radius,
-    text_size: 22,
+    text_size: 26,
     font: fonts.body,
     normal_color: colors.primary,
     press_color: colors.primaryPressed,
@@ -100,9 +111,9 @@ export function buildWatchView(ui, refresh, switchDirection = () => {}) {
   const refreshIcon = drawIcon(
     ui,
     'refresh',
-    174,
+    164,
     413,
-    22,
+    28,
     colors.ink,
     colors.primary,
   )
